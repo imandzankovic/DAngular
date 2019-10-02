@@ -1,0 +1,47 @@
+<nav class="navbar navbar-light navbar-expand-lg fixed-top bg-white clean-navbar">
+  <div class="container"><a class="navbar-brand logo" href="index.html">MYPo</a><button data-toggle="collapse"
+      class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span
+        class="navbar-toggler-icon"></span></button>
+    <div class="collapse navbar-collapse" id="navcol-1">
+      <ul class="nav navbar-nav ml-auto">
+        <li class="nav-item" role="presentation"></li>
+        <li class="nav-item" role="presentation"><a class="nav-link" routerLink="/features"
+            routerLinkActive="active" *ngIf="!auth.loggedIn" >Features</a></li>
+        <li class="nav-item" role="presentation"><a class="nav-link" routerLink="/solutions"
+            routerLinkActive="active" *ngIf="!auth.loggedIn" >SERVICES</a></li>
+        <li class="nav-item" role="presentation"><a class="nav-link" routerLink="/blog"
+          routerLinkActive="active" *ngIf="!auth.loggedIn" >BLOG</a></li>
+        <li class="nav-item" role="presentation"><a class="nav-link" routerLink="/pricing"
+          routerLinkActive="active"  *ngIf="!auth.loggedIn" >Pricing</a></li>
+        <li class="nav-item" role="presentation"> <a routerLink="/login" class="nav-link" routerLinkActive="active"
+            *ngIf="!auth.loggedIn" style="margin-left: 209px">
+            <i class="fa fa-sign-in"></i>
+            Login
+          </a></li>
+        <li class="nav-item" role="presentation"><a routerLink="/register" class="nav-link" routerLinkActive="active"
+            *ngIf="!auth.loggedIn">
+            <i class="fa fa-user-plus"></i> Register
+          </a></li>
+          <li class="nav-item" role="presentation"><a routerLink="/user-dashboard" class="nav-link" routerLinkActive="active"
+            *ngIf="auth.loggedIn">
+            <i class="fa fa-user"></i> Dashboard
+          </a></li>
+        <!-- <li class="nav-item" role="presentation"><a routerLink="/account" class="nav-link" routerLinkActive="active"
+            *ngIf="auth.loggedIn">
+            <i class="fa fa-user"></i> Account ({{auth.currentUser.username}})
+          </a></li> -->
+        <li class="nav-item" role="presentation"><a routerLink="/admin" class="nav-link" routerLinkActive="active"
+            *ngIf="auth.loggedIn && auth.isAdmin">
+            <i class="fa fa-lock"></i> Admin
+          </a></li>
+        <li class="nav-item" role="presentation"><a routerLink="/logout" class="nav-link" routerLinkActive="active"
+            *ngIf="auth.loggedIn"  style="margin-left: -29px">
+            <i class="fa fa-sign-out"></i> Logout
+          </a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+<router-outlet></router-outlet>

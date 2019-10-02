@@ -1,0 +1,53 @@
+<div>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+
+    <button (click)="daj()">Dajii</button>
+        <button  *ngIf="isLoggedIn == 'true'" (click)="execute()">Execute</button>
+        <button *ngIf="isLoggedIn !='true'" (click)="click()">Sign In First</button>
+
+
+
+        <div class="card mb-3">
+            <h4 class="card-header">Current presis ({{presis.length}})</h4>
+            <div class="card-body">
+              <table class="table table-bordered">
+                <thead class="thead-light">
+                  <tr>
+                    <th scope="col">Id</th>
+                    <!-- <th scope="col">Age</th>
+                    <th scope="col">Weight</th> -->
+                    <th scope="col">Actions</th> 
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td colspan="4">There are no presis in the DB. </td>
+                  </tr>  
+                </tbody>
+                <tbody >
+                  <tr *ngFor="let cat of presis">
+                    <td>{{cat.title}}</td>
+                    <!-- <td>{{cat.age}}</td>
+                    <td>{{cat.weight}}</td> -->
+                    <td>
+                      <button class="btn btn-sm btn-primary" (click)="getPresentation(cat)">
+                        <i class="fa fa-list"></i> Open
+                      </button> 
+                      <!-- <button class="btn btn-sm btn-danger ml-1" (click)="deleteCat(cat)">
+                        <i class="fa fa-trash"></i> Delete
+                      </button> -->
+                    </td>
+                  </tr>  
+                </tbody>
+               
+              </table>
+            </div>
+          </div>
+       
+    </div>

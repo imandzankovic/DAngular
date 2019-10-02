@@ -1,0 +1,169 @@
+
+
+<br>
+<br>
+<br>
+
+  <div class="d-flex" id="wrapper">
+
+    <!-- Sidebar -->
+    <div class="bg-light border-right" id="sidebar-wrapper">
+     
+      <div class="list-group list-group-flush">
+      
+        <a class="list-group-item list-group-item-action bg-light">Dashboard</a>
+        <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+        <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">Presentations</a>
+        <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">Profile</a>
+        <a class="nav-link" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab" aria-controls="v-pills-messages" aria-selected="false">Messages</a>
+        <a class="nav-link" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab" aria-controls="v-pills-settings" aria-selected="false">Settings</a>
+      </div>
+      </div>
+    </div>
+    <!-- /#sidebar-wrapper -->
+
+    <!-- Page Content -->
+    <div id="page-content-wrapper">
+
+      <div class="container-fluid">
+          <div class="tab-content" id="v-pills-tabContent">
+            <br>
+            <br>
+            <br>
+              <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
+
+                  <div class="col-md-5 feature-box"><i class="icon-folder icon"></i>
+                  <h4 style="margin-left: 45px">Presentation Manager</h4>
+                  <p>Add your presentation!</p>
+
+                  
+              </div>
+                <button type="button" class="btn btn-primary btn-primary" *ngIf="isLoggedIn !='true'" (click)="click()"><i class="icon-plus"></i>Sign In with Google</button>
+                <button type="button" class="btn btn-primary btn-primary" *ngIf="isLoggedIn == 'true'" (click)="execute()"><i class="icon-plus"></i>Add Presentation</button>
+              
+                <br>
+                <br>
+                <!-- <button type="button" class="btn btn-primary btn-lg"  *ngIf="isLoggedIn == 'true'" (click)="getPresentations()"><i class="icon-plus"></i>Get Presentations</button> -->
+                <div  *ngIf="isLoggedIn == 'true'" class="card mb-2">
+                  <h4 class="card-header">Current Presentations ({{presis.length}})</h4>
+                  <div class="card-body">
+                    <table class="table table-bordered">
+                      <thead class="thead-light">
+                        <tr>
+                          <th scope="col">Title</th>
+                          <!-- <th scope="col">Age</th>
+                          <th scope="col">Weight</th> -->
+                          <th scope="col">Actions</th> 
+                        </tr>
+                      </thead>
+                      <!-- <tbody>
+                        <tr>
+                          <td colspan="4">There are no presentations in the DB. </td>
+                        </tr>  
+                      </tbody> -->
+                      <tbody >
+                        <tr *ngFor="let pres of presis">
+                          <td>{{pres.title}}</td>
+                          <!-- <td>{{cat.age}}</td>
+                          <td>{{cat.weight}}</td> -->
+                          <td>
+                            <button class="btn btn-sm btn-primary" (click)="getPresentation(pres)">
+                              <i class="fa fa-list"></i> Open
+                            </button> 
+                            <!-- <button class="btn btn-sm btn-danger ml-1" (click)="deleteCat(cat)">
+                              <i class="fa fa-trash"></i> Delete
+                            </button> -->
+                          </td>
+                        </tr>  
+                      </tbody>
+                     
+                    </table>
+                  </div>
+                </div>
+           
+              </div>
+                
+              <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+
+                  <app-loading [condition]="isLoading"></app-loading>
+
+                  <app-toast [message]="toast.message"></app-toast>
+                  
+                  <div class="card" *ngIf="!isLoading">
+                    <h4 class="card-header">Account settings</h4>
+                    <div class="card-body">
+                      <form #accountForm="ngForm" (ngSubmit)="save(user)">
+                        <div class="input-group">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text">
+                              <i class="fa fa-user"></i>
+                            </span>
+                          </div>
+                          <input class="form-control" type="text" name="username"
+                                 [(ngModel)]="user.username" placeholder="Username" required>
+                        </div>
+                        <br>
+                        <div class="input-group">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text">
+                              <i class="fa fa-envelope"></i>
+                            </span>
+                          </div>
+                          <input class="form-control" type="email" name="email"
+                                 [(ngModel)]="user.email" placeholder="Email" required>
+                        </div>
+                        <br>
+                        <div class="input-group">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text">
+                              <i class="fa fa-black-tie"></i>
+                            </span>
+                          </div>
+                          <select class="custom-select" name="role" [(ngModel)]="user.role">
+                            <option value="" disabled>Role</option>
+                            <option value="user">User</option>
+                            <option value="admin">Admin</option>
+                          </select>
+                        </div>
+                        <br>
+                        <button class="btn btn-primary" type="submit" [disabled]="!accountForm.form.valid">
+                          <i class="fa fa-save"></i> Save
+                        </button>
+                      </form>
+                    </div>
+                  </div>
+
+
+
+
+              </div>
+              <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">...</div>
+              <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">...</div>
+            </div>
+    
+      </div>
+    </div>
+    <!-- /#page-content-wrapper -->
+
+  </div>
+  <!-- /#wrapper -->
+
+  <!-- Bootstrap core JavaScript -->
+  
+
+  <!-- Menu Toggle Script -->
+<style>
+  a{
+     border-bottom: 1px solid grey;
+        border-top: 1px solid grey;
+        padding: 10px;
+
+    font-family: 'Segoe UI';
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: 	#696969;
+    text-align: left;
+  }
+  
+</style>

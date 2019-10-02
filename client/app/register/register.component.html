@@ -1,0 +1,76 @@
+<app-toast [message]="toast.message"></app-toast>
+
+<main class="page registration-page">
+  <section class="clean-block clean-form dark">
+      <div class="container">
+          <div class="block-heading">
+              <h2 class="text-info">Registration</h2>
+              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc quam urna, dignissim nec auctor in, mattis vitae leo.</p>
+          </div>
+    <form [formGroup]="registerForm" (ngSubmit)="register()">
+      <div class="input-group" [ngClass]="setClassUsername()">
+        <div class="input-group-prepend">
+          <span class="input-group-text">
+            <i class="fa fa-user"></i>
+          </span>
+        </div>
+        <input class="form-control" type="text" name="username"
+               formControlName="username" placeholder="Username" autofocus>
+      </div>
+      <br>
+      <div class="input-group" [ngClass]="setClassEmail()">
+        <div class="input-group-prepend">
+          <span class="input-group-text">
+            <i class="fa fa-envelope"></i>
+          </span>
+        </div>
+        <input class="form-control" type="email" name="email"
+               formControlName="email" placeholder="Email">
+      </div>
+      <br>
+      <div class="input-group" [ngClass]="setClassPassword()">
+        <div class="input-group-prepend">
+          <span class="input-group-text">
+            <i class="fa fa-key"></i>
+          </span>
+        </div>
+        <input class="form-control" type="password" name="password"
+               formControlName="password" placeholder="Password">
+      </div>
+      <br>
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text">
+            <i class="fa fa-black-tie"></i>
+          </span>
+        </div>
+        <select class="custom-select" name="role" formControlName="role">
+          <option value="" selected disabled>Role</option>
+          <option value="user">User</option>
+          <option value="admin">Admin</option>
+        </select>
+        <br>
+      </div>
+      <br>
+      <button class="btn btn-primary btn-block" type="submit" [disabled]="!registerForm.valid">
+        <i class="fa fa-user-plus"></i> Register
+      </button>
+    </form>
+  </div>
+</section>
+</main>
+
+<!-- <main class="page registration-page">
+  <section class="clean-block clean-form dark">
+      <div class="container">
+          <div class="block-heading">
+              <h2 class="text-info">Registration</h2>
+              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc quam urna, dignissim nec auctor in, mattis vitae leo.</p>
+          </div>
+          <form>
+              <div class="form-group"><label for="name">Name</label><input class="form-control item" type="text" id="name"></div>
+              <div class="form-group"><label for="password">Password</label><input class="form-control item" type="password" id="password"></div>
+              <div class="form-group"><label for="email">Email</label><input class="form-control item" type="email" id="email"></div><button class="btn btn-primary btn-block" type="submit">Sign Up</button></form>
+      </div>
+  </section>
+</main> -->
