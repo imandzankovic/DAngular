@@ -30,7 +30,7 @@ export class SlideService {
     getSlides (): Observable<Slide[]> {
         return this.http.get<Slide[]>(apiUrl)
           .pipe(
-            tap(heroes => console.log('fetched slides')),
+            tap(slides => console.log('fetched slides')),
             catchError(this.handleError('getSlides', []))
           );
       }

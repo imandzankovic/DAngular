@@ -17,24 +17,14 @@ export class UserDashboardComponent implements OnInit {
 
   public authIsLoaded: boolean = false;
   public isLoggedIn: string = 'false';
-  public presentationId;
   user: User;
   isLoading = true;
-
-  public pr;
-  presentations: Presentation[] = [];
-  presis: any;
 
 
   constructor(private presentationService: PresentationService,
     private auth: AuthService,
     public toast: ToastComponent,
     private userService: UserService) { }
-
-
-
-  
-
   
   getUser() {
     this.userService.getUser(this.auth.currentUser).subscribe(
