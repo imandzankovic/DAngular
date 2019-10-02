@@ -1,45 +1,71 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { BehaviorSubject } from 'rxjs';
-import { tap } from 'rxjs/operators';
-import { HttpClient } from '@angular/common/http';
+import { BehaviorSubject, of } from 'rxjs';
+import { tap, catchError } from 'rxjs/operators';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Presentation } from '../shared/models/presentation.model';
-import { GoogleService } from './google.service';
 
-export var presentations: any;
+
+const httpOptions = {
+    headers: new HttpHeaders({'Content-Type': 'application/json'})
+  };
+  const apiUrl = "/api/presentation";
+  
 @Injectable()
 export class PresentationService {
 
+    private handleError<T> (operation = 'operation', result?: T) {
+        return (error: any): Observable<T> => {
+      
+          // TODO: send the error to remote logging infrastructure
+          console.error(error); // log to console instead
+      
+          // Let the app keep running by returning an empty result.
+          return of(result as T);
+        };
+      }
 
-    public loggedIn = new BehaviorSubject<string>(localStorage.getItem('loggedin'));
-    loggedin;
+    constructor(private http: HttpClient) { }
 
-    constructor(private googleService: GoogleService, private http: HttpClient) { }
-
-    get isLoggedIn() {
-        return this.loggedIn.asObservable();
-    }
-
-
-    addPresentation(Id: string, title: string): Observable<Presentation> {
-        console.log(Id)
-        var p = new Presentation();
-        p.presentationId = Id;
-        p.title = title;
-
-        return this.http.post<Presentation>('/api/presentation', p);
-    }
-
-    getPresentations(): Observable<Presentation[]> {
-        return this.http.get<Presentation[]>('/api/presentation').pipe(
-            tap(data => console.log('All' + JSON.stringify(data)))
+    getPresentations (): Observable<Presentation[]> {
+        return this.http.get<Presentation[]>(apiUrl)
+          .pipe(
+            tap(heroes => console.log('fetched presentations')),
+            catchError(this.handleError('getPresentations', []))
+          );
+      }
+      
+      getPresentation(id: number): Observable<Presentation> {
+        const url = `${apiUrl}/${id}`;
+        return this.http.get<Presentation>(url).pipe(
+          tap(_ => console.log(`fetched presentation id=${id}`)),
+          catchError(this.handleError<Presentation>(`getPresentation id=${id}`))
         );
-    }
-
-    getPresentation(presentation: any): Observable<Presentation> {
-        return this.http.get<Presentation>(`/api/presentation/${presentation}`).pipe(
-            tap(data => this.googleService.getPresentationsFromDrive(data.presentationId)))
-    }
+      }
+      
+      addPresentation (presentation): Observable<Presentation> {
+        return this.http.post<Presentation>(apiUrl, presentation, httpOptions).pipe(
+          tap((presentation: Presentation) => console.log(`added presentation w/ id=${presentation.presentationId}`)),
+          catchError(this.handleError<Presentation>('addPresentation'))
+        );
+      }
+      
+      updatePresentation (id, presentation): Observable<any> {
+        const url = `${apiUrl}/${id}`;
+        return this.http.put(url, presentation, httpOptions).pipe(
+          tap(_ => console.log(`updated presentation id=${id}`)),
+          catchError(this.handleError<any>('updatePresentation'))
+        );
+      }
+      
+      deletePresentation (id): Observable<Presentation> {
+        const url = `${apiUrl}/${id}`;
+      
+        return this.http.delete<Presentation>(url, httpOptions).pipe(
+          tap(_ => console.log(`deleted presentation id=${id}`)),
+          catchError(this.handleError<Presentation>('deletePresentation'))
+        );
+      }
 
 }
 

@@ -24,7 +24,8 @@ import { PaymentComponent } from './pricing/payment/payment.component';
 import { FaqComponent } from './faq/faq.component';
 import { UserDashboardComponent } from './user-dashboard/user-dashboard.component';
 import { PresentationComponent } from './presentation/presentation.component';
-import { GoogleAuthenticatorComponent } from './google-authenticator/google-authenticator.component';
+import { SlidesComponent } from './slides/slides.component';
+
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -41,7 +42,7 @@ const routes: Routes = [
   { path: 'faq', component: FaqComponent },
   { path: 'user-dashboard', component: UserDashboardComponent },
   { path: 'presentation', component: PresentationComponent },
-  { path: 'google', component: GoogleAuthenticatorComponent },
+  { path: 'slides', component: SlidesComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'login', component: LoginComponent },
   { path: 'logout', component: LogoutComponent },

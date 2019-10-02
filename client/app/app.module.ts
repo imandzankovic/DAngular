@@ -9,7 +9,6 @@ import { CatService } from './services/cat.service';
 import { UserService } from './services/user.service';
 import { AuthService } from './services/auth.service';
 import {AuthenticatorService} from './services/authenticator.service';
-import {GoogleService} from './services/google.service';
 import { AuthGuardLogin } from './services/auth-guard-login.service';
 import { AuthGuardAdmin } from './services/auth-guard-admin.service';
 // Components
@@ -34,8 +33,10 @@ import { PaymentComponent } from './pricing/payment/payment.component';
 import { FaqComponent } from './faq/faq.component';
 import { UserDashboardComponent } from './user-dashboard/user-dashboard.component';
 import { PresentationComponent } from './presentation/presentation.component';
-import { GoogleAuthenticatorComponent } from './google-authenticator/google-authenticator.component';
 import { PresentationService } from './services/presentation.service';
+import { SlideService } from './services/slide.service';
+import { SlidesComponent } from './slides/slides.component';
+
 
 export function tokenGetter() {
   return localStorage.getItem('token');
@@ -58,13 +59,14 @@ export function tokenGetter() {
     SolutionsComponent,
     HomeComponent,
     BlogComponent,
+    SlidesComponent,
     BlogPostComponent,
     PricingComponent,
     PaymentComponent,
     FaqComponent,
     UserDashboardComponent,
-    PresentationComponent,
-    GoogleAuthenticatorComponent
+    PresentationComponent
+    
   ],
   imports: [
     AppRoutingModule,
@@ -78,11 +80,11 @@ export function tokenGetter() {
   ],
   providers: [
     AuthService,
-    GoogleService,
     PresentationService,
     AuthGuardLogin,
     AuthGuardAdmin,
     CatService,
+    SlideService,
     UserService,
     AuthenticatorService,
     
