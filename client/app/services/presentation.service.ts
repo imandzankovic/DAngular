@@ -30,7 +30,8 @@ export class PresentationService {
     getPresentations (): Observable<Presentation[]> {
         return this.http.get<Presentation[]>(apiUrl)
           .pipe(
-            tap(heroes => console.log('fetched presentations')),
+            // tap(heroes => console.log('fetched presentations')),
+            tap(data => console.log('All' + JSON.stringify(data))),
             catchError(this.handleError('getPresentations', []))
           );
       }
@@ -44,8 +45,10 @@ export class PresentationService {
       }
       
       addPresentation (presentation): Observable<Presentation> {
+        console.log(presentation)
         return this.http.post<Presentation>(apiUrl, presentation, httpOptions).pipe(
-          tap((presentation: Presentation) => console.log(`added presentation w/ id=${presentation.presentationId}`)),
+          //tap((presentation: Presentation) => console.log(`added presentation w/ id=${presentation.presentationId}`)),
+          tap((presentation: Presentation) => console.log(`added presentation ${presentation.presentationId}`)),
           catchError(this.handleError<Presentation>('addPresentation'))
         );
       }
