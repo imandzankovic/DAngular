@@ -36,6 +36,7 @@ import { PresentationComponent } from './presentation/presentation.component';
 import { PresentationService } from './services/presentation.service';
 import { SlideService } from './services/slide.service';
 import { SlidesComponent } from './slides/slides.component';
+import { TestcanvasComponent } from './testcanvas/testcanvas.component';
 
 
 export function tokenGetter() {
@@ -65,7 +66,8 @@ export function tokenGetter() {
     PaymentComponent,
     FaqComponent,
     UserDashboardComponent,
-    PresentationComponent
+    PresentationComponent,
+    TestcanvasComponent
     
   ],
   imports: [

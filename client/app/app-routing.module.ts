@@ -25,6 +25,7 @@ import { FaqComponent } from './faq/faq.component';
 import { UserDashboardComponent } from './user-dashboard/user-dashboard.component';
 import { PresentationComponent } from './presentation/presentation.component';
 import { SlidesComponent } from './slides/slides.component';
+import { TestcanvasComponent } from './testcanvas/testcanvas.component';
 
 
 const routes: Routes = [
@@ -43,6 +44,7 @@ const routes: Routes = [
   { path: 'user-dashboard', component: UserDashboardComponent },
   { path: 'presentation', component: PresentationComponent },
   { path: 'slides', component: SlidesComponent },
+  { path: 'canvas', component: TestcanvasComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'login', component: LoginComponent },
   { path: 'logout', component: LogoutComponent },
