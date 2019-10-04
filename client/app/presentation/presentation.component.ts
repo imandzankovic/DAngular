@@ -9,7 +9,7 @@ declare var $: any;
 import * as CanvasJS from './canvasjs.min';
 
 
-var listOfShapes = new Array();
+
 @Component({
   selector: 'app-presentation',
   templateUrl: './presentation.component.html',
@@ -24,8 +24,16 @@ export class PresentationComponent implements OnInit {
   presentations: Presentation[];
   slides: Slide[];
   showImage: boolean = false;
-  public listOfShapes: [];
 
+  private listOfShapes = new Array();
+
+  setValue(val) {
+    this.listOfShapes = val;
+  }
+
+  getValue() {
+    return this.listOfShapes ;
+  }
 
   getPresentations() {
     this.presentationService.getPresentations().subscribe(
@@ -173,17 +181,21 @@ export class PresentationComponent implements OnInit {
 
 
   removeFromList(id: any) {
+    console.log('ovo je iz remova liste')
     console.log(id)
-    $.each(this.listOfShapes, function (index, element) {
+    var listOfShapes=this.getValue();
+    this.showList(listOfShapes);
+    $.each(listOfShapes, function (index, element) {
       console.log(element)
 
-      var index = this.listOfShapes.findIndex(x => x.id === '#' + id)
-      console.log(index)
-      if (index != -1)
-        this.listOfShapes.splice(index, 1);
+      var indexOfElement = listOfShapes.findIndex(x => x.id === id)
+      console.log(indexOfElement)
+
+      if (indexOfElement != -1)
+        listOfShapes.splice(indexOfElement, 1);
 
     });
-    return this.listOfShapes;
+    return listOfShapes;
   }
 
   addText() {
@@ -302,6 +314,8 @@ export class PresentationComponent implements OnInit {
 
     deleteButton.addEventListener('click', () => {
 
+      console.log('ehehehehe')
+      this.showList(this.getValue())
       console.log(input.id)
       this.removeInput(input.id, deleteButton.id)
 
@@ -321,24 +335,28 @@ export class PresentationComponent implements OnInit {
 
   renderByList(value, id) {
 
-    if (this.listOfShapes != undefined) {
-      listOfShapes = this.listOfShapes;
-    }
+    // if (this.listOfShapes != undefined) {
+    //   listOfShapes = this.listOfShapes;
+    // }
+    var listOfShapes=this.getValue();
     console.log('ovo je uslo u redner list' + value)
     
     var i = { id: id, y: 0, label: this.isEmpty(value) ? "Option 1" : value.val() };
-    var index = listOfShapes.findIndex(fruit => fruit.id === i.id)
+    var index = this.getValue().findIndex(fruit => fruit.id === i.id)
 
     if (index == -1) {
       listOfShapes.push(i);
+     
     }
 
     else {
       listOfShapes[index] = i;
+      
     }
 
   
-    this.showList(listOfShapes);
+    this.setValue(listOfShapes)
+    this.showList(this.getValue());
     return listOfShapes;
   }
 
