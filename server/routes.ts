@@ -36,6 +36,7 @@ export default function setRoutes(app) {
   router.route('/presentation').post(presentationCtrl.insert);
   router.route('/presentation').get(presentationCtrl.getAll);
   router.route('/presentation/:id').get(presentationCtrl.get);
+  router.route('/presentation/:id').put(presentationCtrl.update);
   router.route('/presentation/:id').delete(presentationCtrl.delete);
 
  //slide

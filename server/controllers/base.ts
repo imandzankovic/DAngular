@@ -23,6 +23,7 @@ abstract class BaseCtrl {
 
   // Insert
   insert = async (req, res) => {
+    console.log('uso u post')
     try {
       const obj = await new this.model(req.body).save();
       console.log(req.body)
@@ -33,20 +34,39 @@ abstract class BaseCtrl {
   }
 
   // Get by id
-  get = async (req, res) => {
+  get =  async (req, res) => {
+    console.log('get by id')
     try {
+ 
       const obj = await this.model.findOne({ _id: req.params.id });
+      console.log(obj)
       res.status(200).json(obj);
     } catch (err) {
       return res.status(500).json({ error: err.message });
     }
+    // try{
+    //   this.model.findOne({ _id :req.params.id }, function(err, doc) {
+    //     if (err){
+    //         // error
+    //         throw err;
+    //     } else if (doc) {
+    //         // film exists
+    //         console.log("Film is "+doc);
+    //         res.status(200).json(doc);
+    //     } 
+    // });
+    // }
+    // catch(err){
+    //   return res.status(500).json({ error: err.message });
+    // }
   }
 
   // Update by id
   update = async (req, res) => {
+    console.log('uso u update')
     try {
       await this.model.findOneAndUpdate({ _id: req.params.id }, req.body);
-      res.sendStatus(200);
+      res.send(req.body).status(200);
     } catch (err) {
       return res.status(400).json({ error: err.message });
     }

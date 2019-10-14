@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject, of } from 'rxjs';
-import { tap, catchError } from 'rxjs/operators';
+import { tap, catchError, map } from 'rxjs/operators';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Presentation } from '../shared/models/presentation.model';
 
@@ -44,20 +44,47 @@ export class PresentationService {
         );
       }
       
-      addPresentation (presentation): Observable<Presentation> {
-        console.log(presentation)
-        return this.http.post<Presentation>(apiUrl, presentation, httpOptions).pipe(
-          //tap((presentation: Presentation) => console.log(`added presentation w/ id=${presentation.presentationId}`)),
-          tap((presentation: Presentation) => console.log(`added presentation ${presentation.presentationId}`)),
-          catchError(this.handleError<Presentation>('addPresentation'))
-        );
+      // addPresentation (presentation): Observable<Presentation> {
+      //   return this.http.post<Presentation>(apiUrl, presentation, httpOptions).pipe(
+      //     //tap((presentation: Presentation) => console.log(`added presentation w/ id=${presentation.presentationId}`)),
+      //     tap((presentation: Presentation) => console.log(`added presentation ${presentation.presentationId}`)),
+      //     catchError(this.handleError<Presentation>('addPresentation'))
+      //   );
+      // }
+
+      NewGuid() {
+        var sGuid = "";
+        for (var i = 0; i < 32; i++) {
+          sGuid += Math.floor(Math.random() * 0xF).toString(0xF);
+        }
+    
+        return sGuid;
       }
+
+      addPresentation(presentation: Presentation): Observable<Presentation> {
+        const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+        console.log('uslo u create')
+        return this.http.post<Presentation>(apiUrl, presentation, { headers: headers })
+          .pipe(
+            tap(data => console.log('createPresentation: ' + JSON.stringify(data))),
+            catchError(this.handleError)
+          );
+      };
       
       updatePresentation (id, presentation): Observable<any> {
         const url = `${apiUrl}/${id}`;
-        return this.http.put(url, presentation, httpOptions).pipe(
-          tap(_ => console.log(`updated presentation id=${id}`)),
+        console.log(presentation)
+        return this.http.put(url, presentation, httpOptions)
+        // .pipe(
+        //   tap(_ => console.log(`updated presentation id=${id}`)),
+        //   catchError(this.handleError<any>('updatePresentation'))
+        // );
+        .pipe(
+          tap(() => console.log('staza ' + url + 'updateProduct: ' + presentation._id, 'body' + presentation.title)),
+          // Return the product on an update
+          map(() => presentation),
           catchError(this.handleError<any>('updatePresentation'))
+         
         );
       }
       

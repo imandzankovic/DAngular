@@ -10,6 +10,7 @@ import * as CanvasJS from './canvasjs.min';
 
 
 
+
 @Component({
   selector: 'app-presentation',
   templateUrl: './presentation.component.html',
@@ -24,7 +25,7 @@ export class PresentationComponent implements OnInit {
   presentations: Presentation[];
   slides: Slide[];
   showImage: boolean = false;
-
+  presentation: Presentation;
   private listOfShapes = new Array();
 
   setValue(val) {
@@ -32,7 +33,26 @@ export class PresentationComponent implements OnInit {
   }
 
   getValue() {
-    return this.listOfShapes ;
+    return this.listOfShapes;
+  }
+
+  private pId;
+  setpId(val) {
+    this.pId = val;
+    console.log(this.pId)
+  }
+
+  getpId() {
+    return this.pId;
+  }
+
+  private sId;
+  setsId(val) {
+    this.sId = val;
+  }
+
+  getsId() {
+    return this.sId;
   }
 
   getPresentations() {
@@ -49,21 +69,39 @@ export class PresentationComponent implements OnInit {
     );
   }
 
+  preview() {
+    window.open('http://localhost:3000/api/presentation/' + this.getpId());
+
+  }
+
+
   addPresentation() {
     this.showImage = true;
-    var p = new Presentation();
-    p.presentationId = this.NewGuid();
-    console.log(p)
-    //$("#tab-content").toggle();
+    console.log(this.presentation)
+    this.presentation = new Presentation();
+    this.presentationService.addPresentation(this.presentation)
+      //.subscribe(
+      // () => 
+      // console.log(`The new ${this.presentation.presentationId} was saved`),
+      // //this.setpId(p.presentationId),
+      // (error: any) => console.log(error)
 
-    this.presentationService.addPresentation(p).subscribe(
-      res => {
-        this.presentations.push(res);
-        this.toast.setMessage('item added successfully.', 'success');
-      },
-      error => console.log(error)
-    );
 
+      // .subscribe(
+      //   res => {
+      //     this.presentations.push(res);
+      //     console.log('iiiiiiiiiieededee' + res.presentationId)
+      //     this.toast.setMessage('item added successfully.', 'success');
+      //   },
+      //   error => console.log(error)
+      // );
+      .subscribe(data => {
+        //console.log(data._id)
+        this.presentation = data;
+        //this.presentation.presentationId=data._id
+        console.log(this.presentation)
+        //console.log(JSON.stringify(data._id))
+      });
   }
 
   NewGuid() {
@@ -183,7 +221,7 @@ export class PresentationComponent implements OnInit {
   removeFromList(id: any) {
     console.log('ovo je iz remova liste')
     console.log(id)
-    var listOfShapes=this.getValue();
+    var listOfShapes = this.getValue();
     this.showList(listOfShapes);
     $.each(listOfShapes, function (index, element) {
       console.log(element)
@@ -199,9 +237,6 @@ export class PresentationComponent implements OnInit {
   }
 
   addText() {
-
-
-    //postSlide('string');
 
     //get container where content will be displayed
     var form = this.getElementById("container123");
@@ -235,16 +270,11 @@ export class PresentationComponent implements OnInit {
     height:28px;`
 
     this.setColumnText(h2, input);
-    //h2.innerHTML = input.value;
     tab2.appendChild(input)
     $('a[href="#tabs-2"]').click();
 
-
-
     input.onkeyup = () => {
-
       this.setColumnText(h2, input);
-      //h2.innerHTML = input.value;
     }
 
   }
@@ -253,10 +283,6 @@ export class PresentationComponent implements OnInit {
 
     console.log('uslo u chart')
     this.showList(list);
-    // $.each(list, function (index, element) {
-    //   console.log(element)
-    // });
-
 
     var chart = new CanvasJS.Chart("chartContainer",
       {
@@ -335,26 +361,23 @@ export class PresentationComponent implements OnInit {
 
   renderByList(value, id) {
 
-    // if (this.listOfShapes != undefined) {
-    //   listOfShapes = this.listOfShapes;
-    // }
-    var listOfShapes=this.getValue();
+    var listOfShapes = this.getValue();
     console.log('ovo je uslo u redner list' + value)
-    
+
     var i = { id: id, y: 0, label: this.isEmpty(value) ? "Option 1" : value.val() };
     var index = this.getValue().findIndex(fruit => fruit.id === i.id)
 
     if (index == -1) {
       listOfShapes.push(i);
-     
+
     }
 
     else {
       listOfShapes[index] = i;
-      
+
     }
 
-  
+
     this.setValue(listOfShapes)
     this.showList(this.getValue());
     return listOfShapes;
@@ -410,7 +433,7 @@ export class PresentationComponent implements OnInit {
 
     console.log('idic ' + input.id)
 
-    var a=$("#" + input.id);
+    var a = $("#" + input.id);
     console.log('iz ove neke funcccc' + a);
     var list = this.renderByList($("#" + input.id).val(val), input.id);
     this.renderChart(list);
@@ -454,7 +477,27 @@ export class PresentationComponent implements OnInit {
     });
   }
 
+  onlyUnique(value, index, self) {
+    return self.indexOf(value) === index;
+  }
 
+  savePresentation() {
+    console.log('kliknuo na save')
+
+    var p = this.presentation;
+    //console.log(this.presentation._id)
+    console.log(this.presentation)
+    this.presentationService.updatePresentation(this.presentation._id, p)
+
+      .subscribe(
+        data => {
+          console.log("PUT Request is successful ", data);
+        },
+        error => {
+          console.log("Rrror", error);
+        }
+      );
+  }
 
   ngOnInit() {
 
