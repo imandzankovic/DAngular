@@ -7,6 +7,8 @@ import { ToastComponent } from '../shared/toast/toast.component';
 import * as $ from 'jquery';
 declare var $: any;
 import * as CanvasJS from './canvasjs.min';
+import { DOMElement } from '../shared/models/DOMelements.model';
+import { ElementSchemaRegistry } from '@angular/compiler';
 
 
 
@@ -27,6 +29,7 @@ export class PresentationComponent implements OnInit {
   showImage: boolean = false;
   presentation: Presentation;
   private listOfShapes = new Array();
+  counter:boolean = false;
 
   setValue(val) {
     this.listOfShapes = val;
@@ -122,23 +125,11 @@ export class PresentationComponent implements OnInit {
   //     return false;
   // }
 
-  getPosition(id) {
-    console.log(id)
 
-    var element = document.getElementById(id)
-
-    var position = $(element).offset();
-    var x = position.left;
-    var y = position.top;
-    return {
-      x,
-      y
-    }
-
-  }
 
   getElements() {
 
+    console.log('get u elements')
     var arrayname = new Array();
     var list = $('#container123 :header');
     var canvas = $("#chartContainer .canvasjs-chart-canvas").get(0);
@@ -157,15 +148,24 @@ export class PresentationComponent implements OnInit {
 
       console.log("val je  | " + i.value)
 
-      if (i.type == 'h2') {
-        i.x = this.getPosition(element.id).x;
-        i.y = this.getPosition(element.id).y;
+
+      if (i.type == 'h2') () => {
+
+        // var element = document.getElementById(element.id)
+
+        // var position = $(element).offset();
+        // var x = position.left;
+        // var y = position.top;
+
+        i.x = '250';
+        i.y = '330';
+
       }
 
       arrayname.push(i);
 
     })
-
+   
     this.showList(arrayname)
     return arrayname;
 
@@ -176,6 +176,19 @@ export class PresentationComponent implements OnInit {
     $.each(arrayname, function (index, element) {
       console.log(element)
     })
+  }
+
+  copyList(arrayname: any) {
+    var list: Array<DOMElement> = [];
+    console.log('bad copy')
+    $.each(arrayname, function (index, element) {
+      var w = new DOMElement();
+      w = element;
+      list.push(w);
+    })
+    console.log('iz bad copija')
+    this.showList(list)
+    return list;
   }
 
   setColumnText(h2: any, input: any) {
@@ -243,7 +256,7 @@ export class PresentationComponent implements OnInit {
 
     //create section - slide, for presentation 
     var section = this.createElement("section");
-    this.addClass(section, "slide");
+    this.addClass(section, "slide123");
 
     //title to be displayed
     var h2 = document.createElement("h2");
@@ -424,6 +437,20 @@ export class PresentationComponent implements OnInit {
     $('a[href="#tabs-2"]').click();
   }
 
+  getPosition(id) {
+    console.log(id)
+
+    var element = document.getElementById(id)
+
+    var position = $(element).offset();
+    var x = position.left;
+    var y = position.top;
+    return {
+      x,
+      y
+    }
+
+  }
 
   update(input: any) {
 
@@ -451,29 +478,38 @@ export class PresentationComponent implements OnInit {
 
       var section = document.createElement("section");
       section.classList.add("slide");
-      section.style.cssText = `background-color:white`;
+      //section.style.cssText = `background-color:white`;
+      section.style.cssText = `height: 100px; width:140px; background-color: white`;
+     
 
-      if (element.type == 'h2') {
-        var h2 = this.createElement("h2");
-        h2.classList.add("title");
-        h2.id = this.NewGuid();
-
-        h2.style.cssText = 'font-size:15px';
-        $('#' + h2.id).css({ top: element.x + 'px', left: element.y + 'px', position: 'absolute' });
-        h2.innerHTML = element.value;
-
-        var br = this.createElement("br");
-        section.appendChild(h2);
-        slides.appendChild(section);
-        slides.appendChild(br);
-      }
 
       if (element.type == 'chart') {
         var img = new Image();
         img.src = element.value;
+        img.height=100;
+        img.width=130;
+
         console.log(img)
         slides.appendChild(img)
       }
+      if (element.type == 'h2') {
+        console.log('uslo u type h2 for tip')
+        var h2 = document.createElement("h2");
+        h2.classList.add("title");
+        h2.id = (Math.floor(Math.random() * (+20 - +5)) + +5).toString();
+    
+        h2.style.cssText = 'font-size:15px';
+        $('#' + h2.id).css({ top: element.x + 'px', left: element.y + 'px', position: 'absolute' });
+       //$('#' + h2.id).css({ top: '230' + 'px', left: '110' + 'px', position: 'absolute' }); 
+       h2.innerHTML = element.value;
+    
+        var br = document.createElement("br");
+        section.appendChild(h2);
+        slides.appendChild(section);
+        slides.appendChild(br);
+     
+      }
+   
     });
   }
 
@@ -497,6 +533,39 @@ export class PresentationComponent implements OnInit {
           console.log("Rrror", error);
         }
       );
+  }
+
+  
+  createSlide() {
+    this.counter=true;
+    console.log(this.counter)
+
+    var arrayname = this.getElements();
+    console.log('ovo su' + this.showList(arrayname));
+
+    var s = new Slide();
+    var els = this.copyList(arrayname)
+    s.elements = els;
+    console.log('iz create slidea')
+    this.showList(s.elements)
+    this.slidesService.addSlide(s)
+      .subscribe(res => {
+        console.log(res)
+        this.presentation.slides.push(res);
+        this.show(res);
+
+      }, (err) => {
+        console.log(err);
+
+      });
+
+      if (this.counter) {
+        //$('#container123').html('');
+        $('.slide123').empty();
+        $('.tab-content :input').val('');
+        $('a[href="#tabs-1"]').click();
+    }
+
   }
 
   ngOnInit() {

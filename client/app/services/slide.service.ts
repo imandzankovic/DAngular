@@ -44,6 +44,8 @@ export class SlideService {
       }
       
       addSlide (slide): Observable<Slide> {
+        console.log('dobio slide')
+        console.log(slide)
         return this.http.post<Slide>(apiUrl, slide, httpOptions).pipe(
           tap((slide: Slide) => console.log(`added slide w/ id=${slide.slideId}`)),
           catchError(this.handleError<Slide>('addSlide'))
