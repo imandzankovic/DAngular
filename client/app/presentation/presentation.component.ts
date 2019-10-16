@@ -398,6 +398,9 @@ export class PresentationComponent implements OnInit {
   renderByList(value, id) {
 
     var listOfShapes = this.getValue();
+    console.log('nananananananaa enanana e')
+    console.log(listOfShapes)
+    if(this.getValue() == []) return;
     console.log('ovo je uslo u redner list' + value)
 
     var i = { id: id, y: 0, label: this.isEmpty(value) ? "Option 1" : value.val() };
@@ -537,13 +540,10 @@ export class PresentationComponent implements OnInit {
 
     });
 
-    if (canva != undefined || canva != null) {
-      console.log('znas ti')
-      console.log(canva)
-    
+    if (canva.length!=0) {
+
       var chartDiv = document.createElement("div");
 
-      // chartDiv.classList.add('chart-container')
       chartDiv.id = (Math.floor(Math.random() * (+20 - +5)) + +5).toString();
       chartDiv.style.cssText = `height: 100px; width: 150px;`
       //chartDiv.innerHTML = "<div id='chartContainer1'  style='height:100px; width:100px'></div>";
@@ -562,7 +562,7 @@ export class PresentationComponent implements OnInit {
           },
           data: [              
           {
-            // Change type to "doughnut", "line", "splineArea", etc.
+        
             type: "column",
             // dataPoints: [
             //   { label: "apple",  y: 10  },
@@ -589,7 +589,6 @@ export class PresentationComponent implements OnInit {
     console.log('kliknuo na save')
 
     var p = this.presentation;
-    //console.log(this.presentation._id)
     console.log(this.presentation)
     this.presentationService.updatePresentation(this.presentation._id, p)
 
@@ -628,10 +627,17 @@ export class PresentationComponent implements OnInit {
       });
 
     if (this.counter) {
-      //$('#container123').html('');
+
       $('.slide123').empty();
       $('.tab-content :input').val('');
       $('a[href="#tabs-1"]').click();
+      $('.wrapper').remove();
+      $('#tab2').empty();
+      console.log('hug me')
+      console.log($('#chartContainer')) 
+      this.setValue([])
+      $('#chartContainer').empty();
+
     }
 
   }
