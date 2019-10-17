@@ -31,6 +31,9 @@ export class PresentationComponent implements OnInit {
   presentation: Presentation;
   private listOfShapes = new Array();
   private containerId :any;
+  private sectionId :any;
+  slideSection:any
+  c:any = 0;
   counter: boolean = false;
 
   setValue(val) {
@@ -47,6 +50,14 @@ export class PresentationComponent implements OnInit {
 
   getContainerId() {
     return this.containerId;
+  }
+
+  setSectionId(val) {
+    this.sectionId = val;
+  }
+
+  getSectionId() {
+    return this.sectionId;
   }
 
   private pId;
@@ -162,17 +173,19 @@ export class PresentationComponent implements OnInit {
     }
 
     $.each(list, function (index, element) {
-      console.log('Element je ' + element.value)
+     
       //let i = { id: "", type: "", value: "", x: "", y: "" };
 
       let i=new DOMElement();
       i.elementId = element.id;
-      i.type = $("#" + i.elementId).prop('tagName') == 'H2' ? 'h2' : 'chart'
+      //i.type = $("#" + i.elementId).prop('tagName') == 'H2' ? 'h2' : 'chart'
+      i.type = document.getElementById(i.elementId).tagName == 'H2' ? 'h2' : 'chart'
       if (i.type == 'chart') i.value = element.value;
       else {
         i.value = document.getElementById(i.elementId) == null ? element.value : document.getElementById(i.elementId).innerHTML;
       }
 
+      console.log('Element je ' + element.value)
       console.log("tip je  | " + i.type)
 
       if (i.type == 'h2') () => {
@@ -294,6 +307,8 @@ export class PresentationComponent implements OnInit {
     //make space between slides
     var br=document.createElement("br")
     slidesPanel.appendChild(br)
+
+    this.slideSection=slideSection;
 
     //title to be displayed
     var h2 = document.createElement("h2");
@@ -499,6 +514,8 @@ export class PresentationComponent implements OnInit {
     this.addClass(slideSection,"slide")
     slideSection.style.cssText = `height: 100px; width:140px; background-color: white;`;
     
+    this.slideSection=slideSection;
+
     //create chartContainer
     var container=document.createElement("div")
     container.style.cssText=`height: 100px; width: 140px;`;
@@ -556,87 +573,193 @@ export class PresentationComponent implements OnInit {
 
   }
 
-  show(data: any) {
-   
-   this.procesElements(data,'slidesWell')
-    var section=document.getElementById(data._id)
-    section.addEventListener('click', () => {
-      this.clickSlide(data)
-    })
+  displaySlide(h2:any, sectionId:any){
+ 
+        //create section - slide, for presentation 
+        $('#container123').empty()
 
+        var form = this.getElementById("container123");
+        var sectionMain = this.createElement("section");
+        this.addClass(sectionMain, "slide123");
+        //append section to main panel
+        form.appendChild(sectionMain);
+
+        var section = $("#" + sectionId)
+        console.log('uzeo sam ' + section)
+    
+        var slideSection=this.slideSection;
+        console.log('uzeo sam opet ' + slideSection)
+
+        //this.addClass(slideSection,"slide")
+        //slideSection.style.cssText = `height: 100px; width:140px; background-color: white;`;
+        //append slide section to slide panel
+        //slidesPanel.appendChild(slideSection);
+        //make space between slides
+       // var br=document.createElement("br")
+        //slidesPanel.appendChild(br)
+    
+       
+    
+        //title to be displayed
+        //var h2 = document.createElement("h2");
+        //this.setElementId(h2);
+        // this.addClass(h2, "title");
+        // h2.style.cssText = 'color:black'
+    
+        //title to be displayed in slide panel
+        var h2a = $('#' + sectionId).children();
+        console.log('ovu izdaju')
+        console.log(h2a)
+
+        h2a=h2a[0]
+        console.log('ovaj brodolom')
+        console.log(h2a)
+        //this.setElementId(h2a);
+        //this.addClass(h2a, "title");
+        h2a.style.cssText = 'color:black'
+    
+        //append h2 to section in main panel
+        //slideSection.appendChild(h2a);
+        
+        //append h2 to section in slide panel
+        sectionMain.appendChild(h2);
+        
+        //get tab2, where input will be created
+        var tab2 = this.getElementById("tab2");
+    
+        //create input for tab2
+        var input = this.createInput(h2.innerHTML);
+    
+        input.style.cssText = `border:0px; /*important*/
+        background-color: white; /*important*/
+        position:absolute; /*important*/
+        top:4px;
+        left:9px;
+        width:256px;
+        height:28px;`
+    
+        this.setColumnText(h2, input);
+        this.setColumnText(h2a, input);
+        tab2.appendChild(input)
+        $('a[href="#tabs-2"]').click();
+    
+        var timeout = null;
+        input.onkeyup = () => {
+          this.setColumnText(h2, input);
+          this.setColumnText(h2a, input);
+          clearTimeout(timeout);
+
+          timeout = setTimeout( () =>{
+             //get elements from main container
+    var arrayname = this.getElements();
+    console.log('ovo su' + this.showList(arrayname));
+
+    //create new slide object and set elements to result from getElements function
+   this.slidesService.getSlide(sectionId).subscribe(res=>{
+     res.elements=arrayname;
+    console.log('iz get slidea')
+    this.showList(res.elements)
+
+//add slide on backend
+    this.slidesService.updateSlide(sectionId,res)
+      .subscribe(res => {
+        console.log(res)
+        console.log('daj mi id iz update')
+        //this.slideSection.id=res._id;
+        this.presentation.slides.push(res);
+        //this.show(res._id)
+
+      }, (err) => {
+        console.log(err);
+
+      });
+
+   })
+        }, 500);
+        }
+
+           
+   
 
   }
 
-
-
-  clickSlide(data) {
+  clickSlide(slideId : any) {
     
-    
-    console.log(data._id)
+    console.log(slideId)
     $('#container123 :header').remove();
     $('#container123 section').remove();
 
-      var h2 = this.procesElements(data, 'container123').h2;
+    this.slidesService.getSlide(slideId).subscribe(res => {
+      console.log(res)
+      console.log('daj mi id')
+ 
+      var h2=this.procesElements(res,'container123').h2
+      this.displaySlide(h2, slideId);
+    }, (err) => {
+      console.log(err);
 
-      var h2a = document.createElement("h2");
-      this.setElementId(h2a);
-      this.addClass(h2a, "title");
-      h2a.style.cssText = 'color:black'
+    });
+    //   //var h2 = this.procesElements(data, 'container123').h2;
+
+    //   var h2a = document.createElement("h2");
+    //   this.setElementId(h2a);
+    //   this.addClass(h2a, "title");
+    //   h2a.style.cssText = 'color:black'
       
      
-      document.getElementById('container123').appendChild(h2a)
-      var tab2 = this.getElementById("tab2");
+    //   document.getElementById('container123').appendChild(h2a)
+    //   var tab2 = this.getElementById("tab2");
 
-      //create input for tab2
-      var input = this.createInput(h2.innerHTML);
+    //   //create input for tab2
+    //   var input = this.createInput(h2.innerHTML);
 
-      input.style.cssText = `border:0px; /*important*/
-    background-color: white; /*important*/
-    position:absolute; /*important*/
-    top:4px;
-    left:9px;
-    width:256px;
-    height:28px;`
+    //   input.style.cssText = `border:0px; /*important*/
+    // background-color: white; /*important*/
+    // position:absolute; /*important*/
+    // top:4px;
+    // left:9px;
+    // width:256px;
+    // height:28px;`
 
-      this.setColumnText(h2, input);
-      this.setColumnText(h2a, input);
+    //   this.setColumnText(h2, input);
+    //   this.setColumnText(h2a, input);
 
-      tab2.appendChild(input)
-      $('a[href="#tabs-2"]').click();
+    //   tab2.appendChild(input)
+    //   $('a[href="#tabs-2"]').click();
 
-      input.onkeyup = () => {
+    //   input.onkeyup = () => {
 
-        this.setColumnText(h2, input);
-        this.setColumnText(h2a, input);
+    //     this.setColumnText(h2, input);
+    //     this.setColumnText(h2a, input);
      
-      }
+    //   }
 
-      var arrayname = this.getElements();
-      console.log('ovo su' + this.showList(arrayname));
+    //   var arrayname = this.getElements();
+    //   console.log('ovo su' + this.showList(arrayname));
   
-      //var s = new Slide();
-      //var els = this.copyList(arrayname)
-      data.elements = arrayname;
-      console.log('iz click slide input key')
-      this.showList(data.elements)
+    //   //var s = new Slide();
+    //   //var els = this.copyList(arrayname)
+    //   data.elements = arrayname;
+    //   console.log('iz click slide input key')
+    //   this.showList(data.elements)
 
      
 
-      // this.slidesService.updateSlide(data._id,data)
-      // .subscribe(res => {
-      //   console.log(res)
-      //   console.log('daj mi id')
-      //   this.presentation.slides.push(res);
+    //   // this.slidesService.updateSlide(data._id,data)
+    //   // .subscribe(res => {
+    //   //   console.log(res)
+    //   //   console.log('daj mi id')
+    //   //   this.presentation.slides.push(res);
        
 
-      // }, (err) => {
-      //   console.log(err);
+    //   // }, (err) => {
+    //   //   console.log(err);
 
-      // });
+    //   // });
 
-     var section=document.getElementById(data._id)
-      section.innerHTML=''
-      section.appendChild(h2)
+    //  var section=document.getElementById(data._id)
+    //   section.innerHTML=''
+    //   section.appendChild(h2)
 
   }
 
@@ -649,7 +772,7 @@ export class PresentationComponent implements OnInit {
     var slides = document.getElementById(id);
     var section = document.createElement("section");
     var h2 = document.createElement("h2");
-    section.classList.add("slide");
+    section.classList.add("slide2");
     section.id = data._id
     section.style.cssText = `height: 100px; width:140px; background-color: white;`;
 
@@ -754,6 +877,21 @@ export class PresentationComponent implements OnInit {
   }
 
 
+  panelClick(e){
+
+    console.log(e.target.id)
+
+    this.clickSlide(e.target.id)
+  //   $('#slidesWell').click(function (e) {
+     
+  //         console.log(e.target)
+  //         //console.log(e.target.id); // The id of the clicked element
+
+     
+  // });
+
+
+  }
   createSlide() {
     this.counter = true;
     console.log(this.counter)
@@ -768,21 +906,33 @@ export class PresentationComponent implements OnInit {
     console.log('iz create slidea')
     this.showList(s.elements)
 
+   
     //add slide on backend
-    this.slidesService.addSlide(s)
-      .subscribe(res => {
+    this.slidesService.addSlide(s) 
+      .subscribe(res => { 
+        
         console.log(res)
         console.log('daj mi id')
+     
+        console.log($('#slidesWell section')[this.c]);
+        $('#slidesWell section')[this.c].id=res._id;
+        console.log($('#slidesWell section')[this.c])
+
         this.presentation.slides.push(res);
+        this.c++;
+        console.log('brojaccccccc' + this.c)
+       
 
       }, (err) => {
         console.log(err);
 
       });
 
+
     if (this.counter) {
       //empty fields for new slide
       $('#container123 :header').remove();
+      $('.slide2').remove();
       $('.slide123').empty();
       $('.tab-content :input').val('');
       $('a[href="#tabs-1"]').click();
@@ -802,7 +952,10 @@ export class PresentationComponent implements OnInit {
     this.getPresentations();
     this.addPresentation();
     $('a[href="#tabs-1"]').click();
+
+
   }
+ 
 
 }
 

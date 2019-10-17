@@ -21,7 +21,7 @@
       </ul>
       <div class="text-center d-none d-md-inline"><button class="btn rounded-circle border-0" id="sidebarToggle"
           type="button"></button></div> -->
-      <div id="slidesWell" style="height: 100px; width:140px; background-color: white"></div>
+      <div id="slidesWell" style="height: 100px; width:140px; background-color: white" (click)="panelClick($event)"></div>
       <div id="operations" style="margin-top: 225px" >
         <button class="btn btn-default" id="addSlide" type="button" style="background-color: white" (click)="createSlide()">Add
           Slide</button>
