@@ -9,6 +9,7 @@ declare var $: any;
 import * as CanvasJS from './canvasjs.min';
 import { DOMElement } from '../shared/models/DOMelements.model';
 import { ElementSchemaRegistry } from '@angular/compiler';
+import { Subject } from 'rxjs';
 
 
 
@@ -29,6 +30,7 @@ export class PresentationComponent implements OnInit {
   showImage: boolean = false;
   presentation: Presentation;
   private listOfShapes = new Array();
+  private containerId :any;
   counter: boolean = false;
 
   setValue(val) {
@@ -37,6 +39,14 @@ export class PresentationComponent implements OnInit {
 
   getValue() {
     return this.listOfShapes;
+  }
+
+  setContainerId(val) {
+    this.containerId = val;
+  }
+
+  getContainerId() {
+    return this.containerId;
   }
 
   private pId;
@@ -129,22 +139,20 @@ export class PresentationComponent implements OnInit {
 
   getElements() {
 
-    console.log('get u elements')
-    var arrayname = new Array();
+    //var arrayname = new Array();
+    var arrayname: Array<DOMElement> = [];
+    //get h2 elements from main container
     var list = $('#container123 :header');
 
+    //get input elements for list to render chart
     var canvas = $('.wrapper :input[type=text]')
-    console.log('dale sin miedo')
-    //console.log(canvas)
+
     $(canvas).each(function () {
       console.log(this.type);
     });
 
-    // if (canvas != undefined) {
-    //   var dataURL = canvas.toDataURL();
-    //   list.push(dataURL);
-    // }
 
+    //check if there is elements for chart, i fos push it into the list
     if (canvas != undefined || canvas != null) {
       $(canvas).each(function () {
         console.log('ovaj san')
@@ -155,30 +163,22 @@ export class PresentationComponent implements OnInit {
 
     $.each(list, function (index, element) {
       console.log('Element je ' + element.value)
-      let i = { id: "", type: "", value: "", x: "", y: "" };
+      //let i = { id: "", type: "", value: "", x: "", y: "" };
 
-      i.id = element.id;
-      i.type = $("#" + i.id).prop('tagName') == 'H2' ? 'h2' : 'chart'
+      let i=new DOMElement();
+      i.elementId = element.id;
+      i.type = $("#" + i.elementId).prop('tagName') == 'H2' ? 'h2' : 'chart'
       if (i.type == 'chart') i.value = element.value;
       else {
-        i.value = document.getElementById(i.id) == null ? element.value : document.getElementById(i.id).innerHTML;
+        i.value = document.getElementById(i.elementId) == null ? element.value : document.getElementById(i.elementId).innerHTML;
       }
-
-
 
       console.log("tip je  | " + i.type)
 
-
       if (i.type == 'h2') () => {
 
-        // var element = document.getElementById(element.id)
-
-        // var position = $(element).offset();
-        // var x = position.left;
-        // var y = position.top;
-
-        i.x = '250';
-        i.y = '330';
+        i.x = 250;
+        i.y = 330;
 
       }
 
@@ -198,18 +198,18 @@ export class PresentationComponent implements OnInit {
     })
   }
 
-  copyList(arrayname: any) {
-    var list: Array<DOMElement> = [];
-    console.log('bad copy')
-    $.each(arrayname, function (index, element) {
-      var w = new DOMElement();
-      w = element;
-      list.push(w);
-    })
-    console.log('iz bad copija')
-    this.showList(list)
-    return list;
-  }
+  // copyList(arrayname: any) {
+  //   var list: Array<DOMElement> = [];
+  //   console.log('bad copy')
+  //   $.each(arrayname, function (index, element) {
+  //     var w = new DOMElement();
+  //     w = element;
+  //     list.push(w);
+  //   })
+  //   console.log('iz bad copija')
+  //   this.showList(list)
+  //   return list;
+  // }
 
   setColumnText(h2: any, input: any) {
     h2.innerHTML = input.value;
@@ -233,15 +233,17 @@ export class PresentationComponent implements OnInit {
     return document.createElement(element);
   }
 
-  createInput() {
+  createInput(value='') {
 
     var input = document.createElement("input");
     input.type = 'text'
     input.id = this.setElementId(input);
     input.style.fontFamily = 'Nunito';
     input.style.color = 'black';
-    input.value = 'your title';
-    //addClass(input,"form-control");
+    if(value=='') input.value = 'your title'; 
+    else{
+       input.value=value;
+    }
 
     return input;
   }
@@ -274,9 +276,24 @@ export class PresentationComponent implements OnInit {
     //get container where content will be displayed
     var form = this.getElementById("container123");
 
+    //get slides panel where slide will be displayed
+    var slidesPanel=this.getElementById("slidesWell")
+
     //create section - slide, for presentation 
     var section = this.createElement("section");
     this.addClass(section, "slide123");
+    //append section to main panel
+    form.appendChild(section);
+
+    //create section - slide, for display slide in panel
+    var slideSection=this.createElement("section");
+    this.addClass(slideSection,"slide")
+    slideSection.style.cssText = `height: 100px; width:140px; background-color: white;`;
+    //append slide section to slide panel
+    slidesPanel.appendChild(slideSection);
+    //make space between slides
+    var br=document.createElement("br")
+    slidesPanel.appendChild(br)
 
     //title to be displayed
     var h2 = document.createElement("h2");
@@ -284,10 +301,18 @@ export class PresentationComponent implements OnInit {
     this.addClass(h2, "title");
     h2.style.cssText = 'color:black'
 
+    //title to be displayed in slide panel
+    var h2a = document.createElement("h2");
+    this.setElementId(h2a);
+    this.addClass(h2a, "title");
+    h2a.style.cssText = 'color:black'
 
+    //append h2 to section in main panel
+    slideSection.appendChild(h2a);
+    
+    //append h2 to section in slide panel
     section.appendChild(h2);
-    form.appendChild(section);
-
+    
     //get tab2, where input will be created
     var tab2 = this.getElementById("tab2");
 
@@ -303,21 +328,23 @@ export class PresentationComponent implements OnInit {
     height:28px;`
 
     this.setColumnText(h2, input);
+    this.setColumnText(h2a, input);
     tab2.appendChild(input)
     $('a[href="#tabs-2"]').click();
 
     input.onkeyup = () => {
       this.setColumnText(h2, input);
+      this.setColumnText(h2a, input);
     }
 
   }
 
-  renderChart(list: any) {
+  renderChart(list: any,chartid:any) {
 
     console.log('uslo u chart')
     this.showList(list);
 
-    var chart = new CanvasJS.Chart("chartContainer",
+    var chart1 = new CanvasJS.Chart("chartContainer",
       {
         theme: "dark",
         title: {
@@ -331,14 +358,30 @@ export class PresentationComponent implements OnInit {
         ]
       });
 
-    chart.render();
+    chart1.render();
+
+    if(chartid == 0) chartid=this.NewGuid();
+
+    var chart2 = new CanvasJS.Chart(chartid,
+    {
+      theme: "dark",
+      title: {
+        text: "Adding dataPoints Dynamically"
+      },
+      data: [
+        {
+          type: "column",
+          dataPoints: list
+        }
+      ]
+    });
+
+  chart2.render();
 
   }
 
   makeSection() {
 
-    // var wrap=this.createElement("div");
-    // this.addClass(wrap,'wrapper123')
     var buttonDiv = this.createElement("div");
     this.addClass(buttonDiv, 'wrapper');
     buttonDiv.style.cssText = ` width:310px; /*follow your image's size*/
@@ -382,7 +425,7 @@ export class PresentationComponent implements OnInit {
 
       var list = this.removeFromList(input.id);
 
-      this.renderChart(list);
+      this.renderChart(list,this.getContainerId());
     })
 
 
@@ -408,14 +451,11 @@ export class PresentationComponent implements OnInit {
 
     if (index == -1) {
       listOfShapes.push(i);
-
     }
 
     else {
       listOfShapes[index] = i;
-
     }
-
 
     this.setValue(listOfShapes)
     this.showList(this.getValue());
@@ -452,11 +492,34 @@ export class PresentationComponent implements OnInit {
     var tab2 = document.getElementById("tab2");
     tab2.appendChild(butNew);
 
+    //get chart on slides panel 
+    var slidesPanel=this.getElementById("slidesWell")
+
+    var slideSection=this.createElement("section");
+    this.addClass(slideSection,"slide")
+    slideSection.style.cssText = `height: 100px; width:140px; background-color: white;`;
+    
+    //create chartContainer
+    var container=document.createElement("div")
+    container.style.cssText=`height: 100px; width: 140px;`;
+    this.setContainerId(this.NewGuid());
+    container.id=this.getContainerId();
+
+    console.log('kontejner id je  ' + container.id )
+
+    //append container to section 
+    slideSection.appendChild(container);
+    //append slide section to slide panel
+    slidesPanel.appendChild(slideSection);
+    //make space between slides
+    var br=document.createElement("br")
+    slidesPanel.appendChild(br)
+
     butNew.addEventListener('click', () => {
       let input = this.makeSection();
-
+      
       input.onkeyup = () => {
-        this.update(input);
+        this.update(input,container.id);
       }
     });
 
@@ -478,7 +541,7 @@ export class PresentationComponent implements OnInit {
 
   }
 
-  update(input: any) {
+  update(input: any,chartid:any) {
 
     var val = $("#" + input.id).get().map(function (i) {
       return $(i).val();
@@ -489,26 +552,109 @@ export class PresentationComponent implements OnInit {
     var a = $("#" + input.id);
     console.log('iz ove neke funcccc' + a);
     var list = this.renderByList($("#" + input.id).val(val), input.id);
-    this.renderChart(list);
+    this.renderChart(list,chartid);
 
   }
 
   show(data: any) {
-    var canva = new Array();
-     var slides = document.getElementById("slidesWell");
+   
+   this.procesElements(data,'slidesWell')
+    var section=document.getElementById(data._id)
+    section.addEventListener('click', () => {
+      this.clickSlide(data)
+    })
 
-      var section = document.createElement("section");
-      section.classList.add("slide");
-      //section.style.cssText = `background-color:white`;
-      section.style.cssText = `height: 100px; width:140px; background-color: white`;
+
+  }
+
+
+
+  clickSlide(data) {
+    
+    
+    console.log(data._id)
+    $('#container123 :header').remove();
+    $('#container123 section').remove();
+
+      var h2 = this.procesElements(data, 'container123').h2;
+
+      var h2a = document.createElement("h2");
+      this.setElementId(h2a);
+      this.addClass(h2a, "title");
+      h2a.style.cssText = 'color:black'
+      
      
-    console.log('uslo u show')
-    this.showList(data)
+      document.getElementById('container123').appendChild(h2a)
+      var tab2 = this.getElementById("tab2");
+
+      //create input for tab2
+      var input = this.createInput(h2.innerHTML);
+
+      input.style.cssText = `border:0px; /*important*/
+    background-color: white; /*important*/
+    position:absolute; /*important*/
+    top:4px;
+    left:9px;
+    width:256px;
+    height:28px;`
+
+      this.setColumnText(h2, input);
+      this.setColumnText(h2a, input);
+
+      tab2.appendChild(input)
+      $('a[href="#tabs-2"]').click();
+
+      input.onkeyup = () => {
+
+        this.setColumnText(h2, input);
+        this.setColumnText(h2a, input);
+     
+      }
+
+      var arrayname = this.getElements();
+      console.log('ovo su' + this.showList(arrayname));
+  
+      //var s = new Slide();
+      //var els = this.copyList(arrayname)
+      data.elements = arrayname;
+      console.log('iz click slide input key')
+      this.showList(data.elements)
+
+     
+
+      // this.slidesService.updateSlide(data._id,data)
+      // .subscribe(res => {
+      //   console.log(res)
+      //   console.log('daj mi id')
+      //   this.presentation.slides.push(res);
+       
+
+      // }, (err) => {
+      //   console.log(err);
+
+      // });
+
+     var section=document.getElementById(data._id)
+      section.innerHTML=''
+      section.appendChild(h2)
+
+  }
+
+  procesElements(data, id) {
+
+    console.log('procesuj')
+    console.log(data)
+
+    var canva = new Array();
+    var slides = document.getElementById(id);
+    var section = document.createElement("section");
+    var h2 = document.createElement("h2");
+    section.classList.add("slide");
+    section.id = data._id
+    section.style.cssText = `height: 100px; width:140px; background-color: white;`;
+
     $.each(data.elements, function (index, element) {
-      console.log('bieber justin')
       console.log(element)
-     
-      console.log('halo halo' + canva)
 
       if (element.type == 'chart') {
 
@@ -518,15 +664,14 @@ export class PresentationComponent implements OnInit {
         canva.push(i)
 
       }
-      
 
       if (element.type == 'h2') {
         console.log('uslo u type h2 for tip')
-        var h2 = document.createElement("h2");
+
         h2.classList.add("title");
         h2.id = (Math.floor(Math.random() * (+20 - +5)) + +5).toString();
 
-        h2.style.cssText = 'font-size:15px';
+        h2.style.cssText = 'font-size:15px; color:black';
         $('#' + h2.id).css({ top: element.x + 'px', left: element.y + 'px', position: 'absolute' });
         //$('#' + h2.id).css({ top: '230' + 'px', left: '110' + 'px', position: 'absolute' }); 
         h2.innerHTML = element.value;
@@ -540,29 +685,29 @@ export class PresentationComponent implements OnInit {
 
     });
 
-    if (canva.length!=0) {
+    if (canva.length != 0) {
 
       var chartDiv = document.createElement("div");
 
       chartDiv.id = (Math.floor(Math.random() * (+20 - +5)) + +5).toString();
       chartDiv.style.cssText = `height: 100px; width: 150px;`
-      //chartDiv.innerHTML = "<div id='chartContainer1'  style='height:100px; width:100px'></div>";
+    //chartDiv.innerHTML = "<div id='chartContainer1'  style='height:100px; width:100px'></div>";
 
-      var br = document.createElement("br");
-      section.appendChild(chartDiv);
+    var br = document.createElement("br");
+    section.appendChild(chartDiv);
 
-      slides.appendChild(section);
-      slides.appendChild(br);
+    slides.appendChild(section);
+    slides.appendChild(br);
 
-     
-      var chart = new CanvasJS.Chart(chartDiv.id,
-        {
-          title:{
-            text: "My First Chart in CanvasJS"              
-          },
-          data: [              
+
+    var chart = new CanvasJS.Chart(chartDiv.id,
+      {
+        title: {
+          text: "My First Chart in CanvasJS"
+        },
+        data: [
           {
-        
+
             type: "column",
             // dataPoints: [
             //   { label: "apple",  y: 10  },
@@ -573,13 +718,19 @@ export class PresentationComponent implements OnInit {
             // ]
             dataPoints: canva
           }
-          ]
-        });
-        chart.render();
-      
-   
-    }
+        ]
+      });
+    chart.render();
+
+
   }
+  console.log('shooooooooo')
+  console.log(h2.innerHTML)
+
+
+  return {section,h2};
+
+}
 
   onlyUnique(value, index, self) {
     return self.indexOf(value) === index;
@@ -607,19 +758,22 @@ export class PresentationComponent implements OnInit {
     this.counter = true;
     console.log(this.counter)
 
+    //get elements from main container
     var arrayname = this.getElements();
     console.log('ovo su' + this.showList(arrayname));
 
+    //create new slide object and set elements to result from getElements function
     var s = new Slide();
-    var els = this.copyList(arrayname)
-    s.elements = els;
+    s.elements = arrayname;
     console.log('iz create slidea')
     this.showList(s.elements)
+
+    //add slide on backend
     this.slidesService.addSlide(s)
       .subscribe(res => {
         console.log(res)
+        console.log('daj mi id')
         this.presentation.slides.push(res);
-        this.show(res);
 
       }, (err) => {
         console.log(err);
@@ -627,7 +781,8 @@ export class PresentationComponent implements OnInit {
       });
 
     if (this.counter) {
-
+      //empty fields for new slide
+      $('#container123 :header').remove();
       $('.slide123').empty();
       $('.tab-content :input').val('');
       $('a[href="#tabs-1"]').click();

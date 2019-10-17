@@ -43,6 +43,7 @@ export default function setRoutes(app) {
  router.route('/slide').post(slideCtrl.insert);
  router.route('/slide').get(slideCtrl.getAll);
  router.route('/slide/:id').get(slideCtrl.get);
+ router.route('/slide/:id').put(slideCtrl.update);
  router.route('/slide/:id').delete(slideCtrl.delete);
 
 
