@@ -47,7 +47,7 @@ export class SlideService {
         console.log('dobio slide')
         console.log(slide)
         return this.http.post<Slide>(apiUrl, slide, httpOptions).pipe(
-          tap((slide: Slide) => console.log(`added slide w/ id=${slide.slideId}`)),
+          tap((slide: Slide) => console.log(`added slide w/ id=${slide._id}`)),
           catchError(this.handleError<Slide>('addSlide'))
         );
       }
