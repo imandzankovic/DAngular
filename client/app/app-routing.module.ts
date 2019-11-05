@@ -26,11 +26,13 @@ import { UserDashboardComponent } from './user-dashboard/user-dashboard.componen
 import { PresentationComponent } from './presentation/presentation.component';
 import { SlidesComponent } from './slides/slides.component';
 import { TestcanvasComponent } from './testcanvas/testcanvas.component';
+import { ChatComponent } from './chat/chat.component';
 
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent},
+  { path: 'chat', component: ChatComponent},
   { path: 'about', component: AboutComponent },
   { path: 'cats', component: CatsComponent },
   { path: 'contact', component: ContactComponent }, 

@@ -8,7 +8,7 @@ import { SharedModule } from './shared/shared.module';
 import { CatService } from './services/cat.service';
 import { UserService } from './services/user.service';
 import { AuthService } from './services/auth.service';
-import {AuthenticatorService} from './services/authenticator.service';
+import { AuthenticatorService } from './services/authenticator.service';
 import { AuthGuardLogin } from './services/auth-guard-login.service';
 import { AuthGuardAdmin } from './services/auth-guard-admin.service';
 // Components
@@ -37,7 +37,14 @@ import { PresentationService } from './services/presentation.service';
 import { SlideService } from './services/slide.service';
 import { SlidesComponent } from './slides/slides.component';
 import { TestcanvasComponent } from './testcanvas/testcanvas.component';
+import { ChatComponent } from './chat/chat.component';
+import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
+import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
+import { ChatService } from './services/chat.service';
+import { WebsocketService } from './services/websocket.service';
 
+const config: SocketIoConfig = { url: 'http://localhost:4200', options: {} };
 
 export function tokenGetter() {
   return localStorage.getItem('token');
@@ -67,12 +74,16 @@ export function tokenGetter() {
     FaqComponent,
     UserDashboardComponent,
     PresentationComponent,
-    TestcanvasComponent
-    
+    TestcanvasComponent,
+    ChatComponent
+
   ],
   imports: [
     AppRoutingModule,
     SharedModule,
+    BrowserModule,
+    FormsModule,
+    SocketIoModule.forRoot(config),
     JwtModule.forRoot({
       config: {
         tokenGetter,
@@ -86,10 +97,12 @@ export function tokenGetter() {
     AuthGuardLogin,
     AuthGuardAdmin,
     CatService,
+    ChatService,
+    WebsocketService,
     SlideService,
     UserService,
     AuthenticatorService,
-    
+
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   bootstrap: [AppComponent]

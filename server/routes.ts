@@ -4,6 +4,7 @@ import CatCtrl from './controllers/cat';
 import PresentationCtrl from './controllers/presentation';
 import SlideCtrl from './controllers/slide';
 import UserCtrl from './controllers/user';
+import ChatCtrl from './controllers/chat';
 
 
 export default function setRoutes(app) {
@@ -14,6 +15,7 @@ export default function setRoutes(app) {
   const userCtrl = new UserCtrl();
   const presentationCtrl = new PresentationCtrl();
   const slideCtrl = new SlideCtrl();
+  const chatCtrl = new ChatCtrl();
 
   // Cats
   router.route('/cats').get(catCtrl.getAll);
@@ -46,6 +48,12 @@ export default function setRoutes(app) {
  router.route('/slide/:id').put(slideCtrl.update);
  router.route('/slide/:id').delete(slideCtrl.delete);
 
+  //chat
+  router.route('/chats').post(chatCtrl.insert);
+  router.route('/chats').get(chatCtrl.getAll);
+  //router.route('/chat/:id').get(chatCtrl.get);
+  // router.route('/slide/:id').put(slideCtrl.update);
+  // router.route('/slide/:id').delete(slideCtrl.delete);
 
   // Apply the routes to our application with the prefix /api
   app.use('/api', router);
