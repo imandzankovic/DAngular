@@ -10,6 +10,7 @@ import * as CanvasJS from './canvasjs.min';
 import { DOMElement } from '../shared/models/DOMelements.model';
 import { ElementSchemaRegistry } from '@angular/compiler';
 import { Subject } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
 
 
 
@@ -24,7 +25,9 @@ export class PresentationComponent implements OnInit {
 
   constructor(private presentationService: PresentationService,
     private slidesService: SlideService,
-    public toast: ToastComponent) { }
+    public toast: ToastComponent,
+    private route: ActivatedRoute,
+    private router:Router) { }
   presentations: Presentation[];
   slides: Slide[];
   showImage: boolean = false;
@@ -1033,19 +1036,71 @@ export class PresentationComponent implements OnInit {
     console.log(e.target.id)
     alert(e.target.id)
 
+    
     this.clickSlide(e.target.id)
-
-    //   $('#slidesWell').click(function (e) {
-
-    //         console.log(e.target)
-    //         //console.log(e.target.id); // The id of the clicked element
-
-
-    // });
-
+    this.share(e.target.id)
 
   }
 
+  share(slideId){
+   
+   var form = document.getElementById("nemamKad");
+
+   var button = this.createElement("button");
+   button.style.cssText='margin-left: 100px'
+   this.addClass(button,'btn');
+
+   button.innerHTML = 'Share';
+   
+
+   form.appendChild(button);
+
+  
+   var id=''
+   this.slidesService.getSlide(slideId).subscribe(res => {
+    console.log(res)
+    id=res._id;
+    console.log('daj mi id')
+
+    var containsChar = false;
+    var question='';
+    $(res.elements).each(function () {
+      if (this.type == 'chart') {
+        console.log('ima nas chartova')
+        containsChar = true;
+      }
+      question=this.value
+
+    });
+    console.log(containsChar)
+
+
+    if (containsChar == false) {
+      console.log('cica maca')
+      console.log(question)
+      // var h2 = this.procesElements(res, 'container123').h2
+      // console.log('mila ' + h2)
+      // this.displaySlide(h2, slideId);
+    }
+
+    // else {
+    //   var canva = this.procesElements(res, 'container123').canva
+    //   this.displayGraph(slideId, canva)
+
+    // }
+
+  }, (err) => {
+    console.log(err);
+
+  });
+
+  button.addEventListener('click', ()=>{
+    console.log(id);
+    
+    this.router.navigate(['/chat', id]);
+  })
+   
+  }
 
   saveSlide(){
     

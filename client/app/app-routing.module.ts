@@ -32,7 +32,7 @@ import { ChatComponent } from './chat/chat.component';
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent},
-  { path: 'chat', component: ChatComponent},
+  { path: 'chat/:id', component: ChatComponent},
   { path: 'about', component: AboutComponent },
   { path: 'cats', component: CatsComponent },
   { path: 'contact', component: ContactComponent }, 
