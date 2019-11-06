@@ -1,13 +1,17 @@
 import * as mongoose from 'mongoose';
+var Schema = mongoose.Schema;
 
 const chatSchema = new mongoose.Schema(
     {
-      message: {
+      answer: {
         type: String
       },
       sender: {
         type: String
-      }
+      },
+      slide:
+       {type: Schema.Types.ObjectId, ref: 'Slide'}
+    
     },
     {
       timestamps: true

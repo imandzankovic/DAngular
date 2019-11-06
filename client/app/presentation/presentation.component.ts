@@ -11,6 +11,9 @@ import { DOMElement } from '../shared/models/DOMelements.model';
 import { ElementSchemaRegistry } from '@angular/compiler';
 import { Subject } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
+import { User } from '../shared/models/user.model';
+import { AuthService } from '../services/auth.service';
+import { UserService } from '../services/user.service';
 
 
 
@@ -27,7 +30,9 @@ export class PresentationComponent implements OnInit {
     private slidesService: SlideService,
     public toast: ToastComponent,
     private route: ActivatedRoute,
-    private router:Router) { }
+    private router:Router,
+    private auth: AuthService,
+    private userService: UserService) { }
   presentations: Presentation[];
   slides: Slide[];
   showImage: boolean = false;
@@ -81,6 +86,7 @@ export class PresentationComponent implements OnInit {
   getsId() {
     return this.sId;
   }
+
 
   getPresentations() {
     this.presentationService.getPresentations().subscribe(
@@ -1096,7 +1102,7 @@ export class PresentationComponent implements OnInit {
 
   button.addEventListener('click', ()=>{
     console.log(id);
-    
+
     this.router.navigate(['/chat', id]);
   })
    

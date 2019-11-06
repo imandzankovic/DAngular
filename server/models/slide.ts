@@ -26,6 +26,7 @@ var slidesSchema = new Schema({
     slide: {
         type: String
     },
+    answers:[{type: String}],
     elements : [ElementSchema]
 });
 

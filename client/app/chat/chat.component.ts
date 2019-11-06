@@ -43,31 +43,20 @@ export class ChatComponent implements OnInit {
 
       });
       console.log(containsChar)
-
-
       if (containsChar == false) {
-
         this.displaySlide(h2, slideId);
       }
-
       else {
-
-        console.log(canva)
-        
+        console.log(canva)   
         this.displayPool(canva,slideId)
-
       }
 
     }, (err) => {
       console.log(err);
-
     });
   }
 
   displaySlide(h2: any, sectionId: any) {
-
-    //create section - slide, for presentation 
-    //$('#container123').empty()
 
     var form = document.getElementById("form-group");
     var question = document.createElement("h2");
@@ -75,8 +64,6 @@ export class ChatComponent implements OnInit {
     //append section to main panel
     form.appendChild(question);
 
-
-    //create input for tab2
     var input = document.createElement("input");  
     input.type = 'text'
 
@@ -89,121 +76,22 @@ export class ChatComponent implements OnInit {
     //     height:28px;`
 
     form.appendChild(input)
-    var timeout = null;
-    // input.onkeyup = () => {
-    //   this.setColumnText(h2, input);
-    //   this.setColumnText(h2a, input);
-
-    //   clearTimeout(timeout);
-
-    //   timeout = setTimeout(() => {
-
-    //     // let a = sectionId + 'samsungA50';
-    //     // var allChildren = $('.slide123').find('*');
-
-    //     // console.log(allChildren)
-
-
-    //     // //and set their id to slide id
-    //     // allChildren.each(function () {
-    //     //   console.log('desinfekt')
-    //     //   console.log(this);
-    //     //   (this).id = a;
-    //     // });
-
-    //     // console.log(allChildren)
-    //     // console.log('zhelanie')
-    //     this.updateSlide(sectionId)
-    //   }, 500);
-
-    // }
-
-
+   
   }
-
- createRadioElement( name, checked ) {
-    var radioInput;
-    try {
-      console.log('ma hajde')
-         var radioHtml = "<input type='radio'  value='"+name + "' name='my"+name+"'>Female ";
-        //  if ( checked ) {
-        //      radioHtml += ' checked="checked"';
-        //  }
-        //  radioHtml += '/>';
-        console.log(radioHtml)
-         radioInput = document.createElement(radioHtml);
-     } catch( err ) {
-         radioInput = document.createElement('input');
-         radioInput.setAttribute('type', 'radio');
-         radioInput.setAttribute('name', name);
-         if ( checked ) {
-             radioInput.setAttribute('checked', 'checked');
-         }
-     }
-     return radioInput;}
 
   displayPool(canva: any, sectionId: any) {
 
-    //create section - slide, for presentation 
-    //$('#container123').empty()
-   
     var form = document.getElementById("form-group");
     canva.forEach(element => {
       console.log("elenet")
-      var radioBtn =  $('<input type="radio" name="radiobtn" >'+element.value +'</input>');
+      var radioBtn = $('<input type="radio" name="radioGroup" value="' + element.value + '" >' + element.value + '</input>');
       radioBtn.appendTo('#form-group');
-      var br=document.createElement("br");
+      var br = document.createElement("br");
 
       // form.appendChild(radio);
       form.appendChild(br)
     });
-
-
-   
-
-    // //create input for tab2
-    // var input = document.createElement("input");  
-    // input.type = 'text'
-
-    // input.style.cssText = `border:0px; /*important*/
-    //     background-color: white; /*important*/
-    //     position:absolute; /*important*/
-    //     top:4px;
-    //     left:9px;
-    //     width:256px;
-    //     height:28px;`
-
-    // form.appendChild(input)
-    // var timeout = null;
-    // input.onkeyup = () => {
-    //   this.setColumnText(h2, input);
-    //   this.setColumnText(h2a, input);
-
-    //   clearTimeout(timeout);
-
-    //   timeout = setTimeout(() => {
-
-    //     // let a = sectionId + 'samsungA50';
-    //     // var allChildren = $('.slide123').find('*');
-
-    //     // console.log(allChildren)
-
-
-    //     // //and set their id to slide id
-    //     // allChildren.each(function () {
-    //     //   console.log('desinfekt')
-    //     //   console.log(this);
-    //     //   (this).id = a;
-    //     // });
-
-    //     // console.log(allChildren)
-    //     // console.log('zhelanie')
-    //     this.updateSlide(sectionId)
-    //   }, 500);
-
-    // }
-
-
+ 
   }
 
 
@@ -224,11 +112,20 @@ export class ChatComponent implements OnInit {
 
     var v = ($("input[name='radioGroup']:checked").val())
     console.log(v)
-    this.chat.sendMsg(v);
 
-    $("input[name='radioGroup']:checked").val('')
+    if (v == undefined) {
+      var msg = $('#form-group :input[type=text]').val();
+      console.log(msg)
+      this.chat.sendMsg(msg, this.id);
+      
+    }
+
+    else {
+      this.chat.sendMsg(v, this.id);
+
+      $("input[name='radioGroup']:checked").val('')
+
+    }
 
   }
-
-
 }
