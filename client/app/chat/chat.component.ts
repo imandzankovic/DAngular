@@ -13,22 +13,22 @@ import { Slide } from '../shared/models/slide.model';
 export class ChatComponent implements OnInit {
   title = 'app';
   slide: Slide;
-  id:any;
-  
-  constructor(private chat: ChatService,
-              private route: ActivatedRoute,
-              private slidesService: SlideService) { }
+  id: any;
 
-              
+  constructor(private chat: ChatService,
+    private route: ActivatedRoute,
+    private slidesService: SlideService) { }
+
+
   getSlide(slideId) {
-    
+
     this.slidesService.getSlide(slideId).subscribe(res => {
       console.log(res)
       console.log('daj mi id')
 
       var containsChar = false;
-      var h2='';
-      var canva=[];
+      var h2 = '';
+      var canva = [];
 
       $(res.elements).each(function () {
         if (this.type == 'chart') {
@@ -36,9 +36,9 @@ export class ChatComponent implements OnInit {
           containsChar = true;
           canva.push(this);
         }
-        else{
+        else {
           console.log(this)
-          h2=this;
+          h2 = this;
         }
 
       });
@@ -47,8 +47,8 @@ export class ChatComponent implements OnInit {
         this.displaySlide(h2, slideId);
       }
       else {
-        console.log(canva)   
-        this.displayPool(canva,slideId)
+        console.log(canva)
+        this.displayPool(canva, slideId)
       }
 
     }, (err) => {
@@ -60,11 +60,11 @@ export class ChatComponent implements OnInit {
 
     var form = document.getElementById("form-group");
     var question = document.createElement("h2");
-    question.innerHTML=h2.value;
+    question.innerHTML = h2.value;
     //append section to main panel
     form.appendChild(question);
 
-    var input = document.createElement("input");  
+    var input = document.createElement("input");
     input.type = 'text'
 
     // input.style.cssText = `border:0px; /*important*/
@@ -76,7 +76,7 @@ export class ChatComponent implements OnInit {
     //     height:28px;`
 
     form.appendChild(input)
-   
+
   }
 
   displayPool(canva: any, sectionId: any) {
@@ -91,7 +91,7 @@ export class ChatComponent implements OnInit {
       // form.appendChild(radio);
       form.appendChild(br)
     });
- 
+
   }
 
 
@@ -117,12 +117,12 @@ export class ChatComponent implements OnInit {
       var msg = $('#form-group :input[type=text]').val();
       console.log(msg)
       this.chat.sendMsg(msg, this.id);
-      
+
     }
 
     else {
-      this.chat.sendMsg(v, this.id);
 
+      this.chat.sendMsg(v, this.id);
       $("input[name='radioGroup']:checked").val('')
 
     }

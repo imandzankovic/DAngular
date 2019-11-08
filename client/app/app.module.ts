@@ -43,6 +43,8 @@ import { FormsModule } from '@angular/forms';
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 import { ChatService } from './services/chat.service';
 import { WebsocketService } from './services/websocket.service';
+import { PresentationDetailComponent } from './presentation-detail/presentation-detail.component';
+import { SlideDetailComponent } from './slide-detail/slide-detail.component';
 
 const config: SocketIoConfig = { url: 'http://localhost:4200', options: {} };
 
@@ -75,7 +77,9 @@ export function tokenGetter() {
     UserDashboardComponent,
     PresentationComponent,
     TestcanvasComponent,
-    ChatComponent
+    ChatComponent,
+    PresentationDetailComponent,
+    SlideDetailComponent
 
   ],
   imports: [

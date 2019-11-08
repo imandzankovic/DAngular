@@ -33,6 +33,7 @@ export class PresentationComponent implements OnInit {
     private router:Router,
     private auth: AuthService,
     private userService: UserService) { }
+
   presentations: Presentation[];
   slides: Slide[];
   showImage: boolean = false;
@@ -43,6 +44,7 @@ export class PresentationComponent implements OnInit {
   slideSection: any
   c: any = 0;
   counter: boolean = false;
+  presisId:any;
 
   setValue(val) {
     this.listOfShapes = val;
@@ -103,7 +105,10 @@ export class PresentationComponent implements OnInit {
   }
 
   preview() {
-    window.open('http://localhost:3000/api/presentation/' + this.getpId());
+
+    var url='http://localhost:4200/presentation/' + this.presisId;
+    window.open(url, '_blank');
+    //this.router.navigate(['/presentation', this.presisId]);
 
   }
 
@@ -113,28 +118,14 @@ export class PresentationComponent implements OnInit {
     console.log(this.presentation)
     this.presentation = new Presentation();
     this.presentationService.addPresentation(this.presentation)
-      //.subscribe(
-      // () => 
-      // console.log(`The new ${this.presentation.presentationId} was saved`),
-      // //this.setpId(p.presentationId),
-      // (error: any) => console.log(error)
-
-
-      // .subscribe(
-      //   res => {
-      //     this.presentations.push(res);
-      //     console.log('iiiiiiiiiieededee' + res.presentationId)
-      //     this.toast.setMessage('item added successfully.', 'success');
-      //   },
-      //   error => console.log(error)
-      // );
       .subscribe(data => {
         //console.log(data._id)
         this.presentation = data;
-        //this.presentation.presentationId=data._id
+        this.presisId=data._id;
         console.log(this.presentation)
-        //console.log(JSON.stringify(data._id))
+
       });
+
   }
 
   NewGuid() {
@@ -245,8 +236,8 @@ export class PresentationComponent implements OnInit {
 
     element.id = this.NewGuid();
     return element.id;
-
   }
+
   getElementById(id) {
     return document.getElementById(id);
   }
@@ -867,15 +858,17 @@ export class PresentationComponent implements OnInit {
       console.log('daj mi id')
 
       var containsChar = false;
+      var containsAnswers=false;
       $(res.elements).each(function () {
         if (this.type == 'chart') {
           console.log('ima nas chartova')
           containsChar = true;
         }
+        if(res.answers!=null) containsAnswers=true;
 
 
       });
-      console.log(containsChar)
+      // console.log(containsChar)
 
 
       if (containsChar == false) {
@@ -1050,6 +1043,7 @@ export class PresentationComponent implements OnInit {
 
   share(slideId){
    
+    $('#nemamKad').empty();
    var form = document.getElementById("nemamKad");
 
    var button = this.createElement("button");
@@ -1084,9 +1078,6 @@ export class PresentationComponent implements OnInit {
     if (containsChar == false) {
       console.log('cica maca')
       console.log(question)
-      // var h2 = this.procesElements(res, 'container123').h2
-      // console.log('mila ' + h2)
-      // this.displaySlide(h2, slideId);
     }
 
     // else {
@@ -1103,7 +1094,9 @@ export class PresentationComponent implements OnInit {
   button.addEventListener('click', ()=>{
     console.log(id);
 
-    this.router.navigate(['/chat', id]);
+    var url='http://localhost:4200/chat/' + id;
+    window.open(url, '_blank');
+    //this.router.navigate(['/chat', id]);
   })
    
   }
@@ -1151,6 +1144,10 @@ export class PresentationComponent implements OnInit {
         this.c++;
         console.log('brojaccccccc' + this.c)
 
+        this.presentationService.updatePresentation(this.presisId,this.presentation).subscribe(res=>{
+          console.log('no mas pelea')
+          console.log(res)
+        })
 
       }, (err) => {
         console.log(err);
@@ -1158,7 +1155,6 @@ export class PresentationComponent implements OnInit {
       });
 
   }
-
 
    setChildrenIds(sectionId){
 
@@ -1267,7 +1263,10 @@ export class PresentationComponent implements OnInit {
               this.setChildrenIds(sectionId);
               
               this.presentation.slides.push(res);
-              //this.show(res._id)
+              this.presentationService.updatePresentation(this.presisId,this.presentation).subscribe(res=>{
+                console.log('no mas pelea')
+                console.log(res)
+              })
 
             }, (err) => {
               console.log(err);
@@ -1277,6 +1276,7 @@ export class PresentationComponent implements OnInit {
         })
        
   }
+  
   ngOnInit() {
 
     this.getPresentations();

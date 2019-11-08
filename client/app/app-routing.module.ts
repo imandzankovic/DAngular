@@ -27,6 +27,8 @@ import { PresentationComponent } from './presentation/presentation.component';
 import { SlidesComponent } from './slides/slides.component';
 import { TestcanvasComponent } from './testcanvas/testcanvas.component';
 import { ChatComponent } from './chat/chat.component';
+import { PresentationDetailComponent } from './presentation-detail/presentation-detail.component';
+import { SlideDetailComponent } from './slide-detail/slide-detail.component';
 
 
 const routes: Routes = [
@@ -45,6 +47,8 @@ const routes: Routes = [
   { path: 'faq', component: FaqComponent },
   { path: 'user-dashboard', component: UserDashboardComponent },
   { path: 'presentation', component: PresentationComponent },
+  { path: 'presentation/:id', component: PresentationDetailComponent },
+  { path: 'slide/:id', component: SlideDetailComponent },
   { path: 'slides', component: SlidesComponent },
   { path: 'canvas', component: TestcanvasComponent },
   { path: 'register', component: RegisterComponent },
