@@ -126,6 +126,8 @@ export class ChatComponent implements OnInit {
       $("input[name='radioGroup']:checked").val('')
 
     }
-
+    
+    var url='http://localhost:4200/slide/' + this.id;
+    window.open(url, '_blank');
   }
 }
