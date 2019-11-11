@@ -14,6 +14,10 @@ export class ChatComponent implements OnInit {
   title = 'app';
   slide: Slide;
   id: any;
+  dPool: any;
+  h2El: any;
+  canvaEls:any[];
+
 
   constructor(private chat: ChatService,
     private route: ActivatedRoute,
@@ -29,12 +33,14 @@ export class ChatComponent implements OnInit {
       var containsChar = false;
       var h2 = '';
       var canva = [];
+  
 
       $(res.elements).each(function () {
         if (this.type == 'chart') {
           console.log('ima nas chartova')
           containsChar = true;
           canva.push(this);
+         
         }
         else {
           console.log(this)
@@ -44,11 +50,15 @@ export class ChatComponent implements OnInit {
       });
       console.log(containsChar)
       if (containsChar == false) {
-        this.displaySlide(h2, slideId);
+        this.dPool = false;
+        this.h2El=h2;
+        //this.displaySlide(h2, slideId);
       }
       else {
         console.log(canva)
-        this.displayPool(canva, slideId)
+        this.dPool = true;
+        this.canvaEls=canva;
+        //this.displayPool(canva, slideId)
       }
 
     }, (err) => {
@@ -83,13 +93,24 @@ export class ChatComponent implements OnInit {
 
     var form = document.getElementById("form-group");
     canva.forEach(element => {
+      var labela = document.createElement('label')
+      labela.classList.add('container');
+
       console.log("elenet")
       var radioBtn = $('<input type="radio" name="radioGroup" value="' + element.value + '" >' + element.value + '</input>');
-      radioBtn.appendTo('#form-group');
+      //radioBtn.appendTo('#form-group');
+      radioBtn.appendTo(labela);
+
+      var span = document.createElement('span')
+      span.classList.add('checkmark')
+      labela.appendChild(span)
+
       var br = document.createElement("br");
 
+      form.appendChild(labela)
       // form.appendChild(radio);
       form.appendChild(br)
+
     });
 
   }
@@ -126,8 +147,8 @@ export class ChatComponent implements OnInit {
       $("input[name='radioGroup']:checked").val('')
 
     }
-    
-    var url='http://localhost:4200/slide/' + this.id;
+
+    var url = 'http://localhost:4200/slide/' + this.id;
     window.open(url, '_blank');
   }
 }

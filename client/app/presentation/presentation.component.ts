@@ -306,7 +306,8 @@ export class PresentationComponent implements OnInit {
     //create section - slide, for display slide in panel
     var slideSection = this.createElement("section");
     this.addClass(slideSection, "slide")
-    slideSection.style.cssText = `height: 100px; width:140px; background-color: white;`;
+    slideSection.style.cssText = `height: 100px; width:140px; background-color: white; border: 2px solid grey;
+    border-radius: 5px;`;
     //append slide section to slide panel
     slidesPanel.appendChild(slideSection);
     //make space between slides
@@ -325,10 +326,12 @@ export class PresentationComponent implements OnInit {
     var h2a = document.createElement("h2");
     this.setElementId(h2a);
     this.addClass(h2a, "title");
-    h2a.style.cssText = 'color:black'
+    h2a.style.cssText = ` text-overflow: ellipsis;  white-space: nowrap;
+    overflow: hidden; color:black; font-size:0.8vw; margin-left:10px; margin-top:10px`
 
     //append h2 to section in main panel
     slideSection.appendChild(h2a);
+    
 
     //append h2 to section in slide panel
     section.appendChild(h2);
@@ -550,6 +553,68 @@ export class PresentationComponent implements OnInit {
 
   addGraph() {
 
+    var tab2 = document.getElementById("tab2");
+
+    var slidesPanel = this.getElementById("slidesWell");
+
+    var slideSection = this.createElement("section");
+    this.addClass(slideSection, "slide")
+    slideSection.style.cssText = `height: 100px; width:140px; background-color: white; border: 2px solid grey;
+    border-radius: 5px;`;
+
+    this.slideSection = slideSection;
+
+    slidesPanel.appendChild(slideSection);
+
+    var mainContainer = this.getElementById("container123")
+
+    var mainSlideSection = this.createElement("section");
+    this.addClass(mainSlideSection, "slide")
+    mainSlideSection.style.cssText = `height: 300px; width:440px; background-color: white;`;
+
+    mainContainer.appendChild(mainSlideSection);
+
+    var h2 = document.createElement("h2");
+    this.setElementId(h2);
+    this.addClass(h2, "title");
+    h2.style.cssText = 'color:black'
+
+    //title to be displayed in slide panel
+    var h2a = document.createElement("h2");
+    this.setElementId(h2a);
+    this.addClass(h2a, "title");
+    h2a.style.cssText = ` text-overflow: ellipsis;  white-space: nowrap;
+    overflow: hidden; color:black; font-size:0.8vw; margin-left:10px; margin-top:10px`
+
+    //append h2 to section in main panel
+    slideSection.appendChild(h2a);
+    
+    //append h2 to section in slide panel
+    mainSlideSection.appendChild(h2);
+    
+    var hinput = this.createInput();
+
+    hinput.style.cssText = `border:0px; /*important*/
+    background-color: white; /*important*/
+    position:absolute; /*important*/
+    top:4px;
+    left:9px;
+    width:256px;
+    height:28px;`
+
+    this.setColumnText(h2, hinput);
+    this.setColumnText(h2a, hinput);
+    tab2.appendChild(hinput)
+
+    hinput.onkeyup = () => {
+      this.setColumnText(h2, hinput);
+      this.setColumnText(h2a, hinput);
+
+      // timeout = setTimeout(() => {
+      //     this.saveSlide();
+      // }, 500);
+    }
+
     var butNew = document.createElement("button");
     $(butNew).addClass('.btn btn-primary btn-block');
     butNew.innerHTML = 'Add';
@@ -562,22 +627,11 @@ export class PresentationComponent implements OnInit {
     width:256px;
     height:28px;`;
 
-
-    var tab2 = document.getElementById("tab2");
     tab2.appendChild(butNew);
-
-    //get chart on slides panel 
-    var slidesPanel = this.getElementById("slidesWell")
-
-    var slideSection = this.createElement("section");
-    this.addClass(slideSection, "slide")
-    slideSection.style.cssText = `height: 100px; width:140px; background-color: white;`;
-
-    this.slideSection = slideSection;
 
     //create chartContainer
     var container = document.createElement("div")
-    container.style.cssText = `height: 80px; width: 120px;`;
+    container.style.cssText = `height: 60px; width: 90px;`;
     this.setContainerId(this.NewGuid());
     container.id = this.getContainerId();
 
@@ -586,30 +640,25 @@ export class PresentationComponent implements OnInit {
     //append container to section 
     slideSection.appendChild(container);
     //append slide section to slide panel
-    slidesPanel.appendChild(slideSection);
+  
     //make space between slides
     var br = document.createElement("br")
     slidesPanel.appendChild(br)
 
-
     //get chart on slides panel 
-    var mainContainer = this.getElementById("container123")
-
-    var mainSlideSection = this.createElement("section");
-    this.addClass(mainSlideSection, "slide")
-    mainSlideSection.style.cssText = `height: 100px; width:140px; background-color: white;`;
-
+   
     //create chartContainer
     var mainChartDiv = document.createElement("div")
-    mainChartDiv.style.cssText = `height: 100px; width: 140px;`;
+    mainChartDiv.style.cssText = `height: 300px; width: 540px;`;
     
     mainChartDiv.id = 'chartContainer'
 
     //append container to section 
     mainSlideSection.appendChild(mainChartDiv);
     //append slide section to slide panel
-    mainContainer.appendChild(mainSlideSection);
+  
 
+   
     butNew.addEventListener('click', () => {
       let input = this.makeSection();
 
@@ -681,7 +730,8 @@ export class PresentationComponent implements OnInit {
     console.log(h2a)
     //this.setElementId(h2a);
     //this.addClass(h2a, "title");
-    h2a.style.cssText = 'color:black'
+    h2a.style.cssText = ` text-overflow: ellipsis;  white-space: nowrap;
+    overflow: hidden; color:black; font-size:0.8vw; margin-left:10px; margin-top:10px`
 
     //append h2 to section in slide panel
     sectionMain.appendChild(h2);
@@ -771,9 +821,9 @@ export class PresentationComponent implements OnInit {
     this.setValue([])
     this.setValue(canva)
     var list=this.getValue();
-    this.renderChart(list, sectionId,sectionId + 'samsungA50');
 
-   
+    document.getElementById(sectionId + 'samsungA50').style.cssText='height: 300px; width:540px;'
+    this.renderChart(list, sectionId,sectionId + 'samsungA50');
 
     console.log('nusa')
     var children = $('.slide2').find('*')
@@ -858,14 +908,12 @@ export class PresentationComponent implements OnInit {
       console.log('daj mi id')
 
       var containsChar = false;
-      var containsAnswers=false;
+
       $(res.elements).each(function () {
         if (this.type == 'chart') {
           console.log('ima nas chartova')
           containsChar = true;
         }
-        if(res.answers!=null) containsAnswers=true;
-
 
       });
       // console.log(containsChar)
@@ -909,6 +957,7 @@ export class PresentationComponent implements OnInit {
 
       if (element.type == 'chart') {
 
+    
         console.log('uslo u type chart for tip')
         console.log(element)
         var i = { id: element._id, y: 0, label: element.value };
@@ -1234,7 +1283,6 @@ export class PresentationComponent implements OnInit {
       $('a[href="#tabs-1"]').click();
       $('.wrapper').remove();
       $('#tab2').empty();
-      console.log('hug me')
       console.log($('#chartContainer'))
       this.setValue([])
       $('#chartContainer').empty();

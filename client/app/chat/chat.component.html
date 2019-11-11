@@ -3,25 +3,37 @@
 <br>
 <br>
 <form id="form">
-    <div class="form-group">
-        <div id="form-group"></div>
-        
-        <!-- <label class="container">One
-            <input type="radio" id="radio1" name="radioGroup" value="1"> 1<br>
-            <span class="checkmark"></span>
-        </label>
-        <label class="container">Two
-            <input type="radio" id="radio1" name="radioGroup" value="2"> 2<br>
-            <span class="checkmark"></span>
-        </label> -->
+    <div class="form-group" *ngIf="dPool">
+        <div id="form-group" *ngFor="let c of canvaEls">
 
-        <br>
-        <br>
-        <button (click)="sendMessage()">Send Message</button>
-        <!-- <input  id="message"  class="message_input"  placeholder="Type your message here..."  /> -->
-        <!-- <input type="radio" id="radio1" name="radioGroup" value="1"> 1<br>
-        <input type="radio" id="radio2" name="radioGroup" value="2"> 2<br> -->
+            <label class="container">{{c.value}}
+                <input type="radio" id="radio1" name="radioGroup" value="{{c.value}}"><br>
+                <span class="checkmark"></span>
+            </label>
+        </div>
+        <br><br>
+
+        <button class="btn btn-primary" (click)="sendMessage()" style="margin-left: 120px;">Submit</button>
     </div>
-    <!-- <button  class="send_message" (click)="submit()">Send</button> -->
-    <!-- <button  class="send_message" (click)="submit($event)">Send</button> -->
+
+
+    <div class="form-group" *ngIf="!dPool">
+    
+        <div id="form-group">
+    
+            <h2 style="margin-left:70px">{{h2El.value}}</h2>
+    
+            <br><br>
+            <div style="margin-right: 300px; margin-left: 40px;">
+                <div class="input-group mb-3">
+    
+                    <input type="text" class="form-control" aria-describedby="basic-addon1">
+                </div>
+            </div>
+        </div>
+        <br><br>
+
+        <button class="btn btn-primary" (click)="sendMessage()" style="margin-left: 120px;">Submit</button>
+    </div>
+
 </form>
