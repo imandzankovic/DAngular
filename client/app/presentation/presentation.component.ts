@@ -45,6 +45,7 @@ export class PresentationComponent implements OnInit {
   c: any = 0;
   counter: boolean = false;
   presisId: any;
+  id:any
 
   setValue(val) {
     this.listOfShapes = val;
@@ -113,19 +114,29 @@ export class PresentationComponent implements OnInit {
   }
 
 
-  addPresentation() {
-    this.showImage = true;
-    console.log(this.presentation)
-    this.presentation = new Presentation();
-    this.presentationService.addPresentation(this.presentation)
-      .subscribe(data => {
-        //console.log(data._id)
-        this.presentation = data;
-        this.presisId = data._id;
-        console.log(this.presentation)
+  // addPresentation() {
+  //   this.showImage = true;
+  //   console.log(this.presentation)
+  //   this.presentation = new Presentation();
+  //   this.presentationService.addPresentation(this.presentation)
+  //     .subscribe(data => {
+  //       //console.log(data._id)
+  //       this.presentation = data;
+  //       this.presisId = data._id;
+  //       console.log(this.presentation)
 
-      });
+  //     });
 
+  // }
+
+  getEmptyPresentation() {
+    this.presentationService.getPresentation(this.id).subscribe(res => {
+
+      this.presentation = res;
+      this.presisId = res._id;
+      
+
+    })
   }
 
   NewGuid() {
@@ -1352,8 +1363,8 @@ export class PresentationComponent implements OnInit {
 
   ngOnInit() {
 
-    this.getPresentations();
-    this.addPresentation();
+    this.id = this.route.snapshot.paramMap.get('id');
+    this.getEmptyPresentation();
     $('a[href="#tabs-1"]').click();
 
 

@@ -8,6 +8,7 @@ import { Presentation } from '../shared/models/presentation.model';
 import { PresentationService } from '../services/presentation.service';
 
 
+
 @Component({
   selector: 'app-user-dashboard',
   templateUrl: './user-dashboard.component.html',
@@ -19,6 +20,7 @@ export class UserDashboardComponent implements OnInit {
   public isLoggedIn: string = 'false';
   user: User;
   isLoading = true;
+  presentations: Presentation[];
 
 
   constructor(private presentationService: PresentationService,
@@ -40,15 +42,24 @@ export class UserDashboardComponent implements OnInit {
       error => console.log(error)
     );
   }
+  delete(id){
+    this.presentationService.deletePresentation(id)
+    .subscribe(
+      res => {this.toast.setMessage('deleted Presentation!', 'success') 
+      this.presentations.pop()},
+      error => {console.log(error)}
+     
+    );
+  }
 
   ngOnInit() {
     this.getUser();
    
-    // this.presentationService.getPresentations().subscribe(
-    //   data => this.presis = data,
-    //   error => console.log(error),
+    this.presentationService.getPresentations().subscribe(
+      data => this.presentations = data,
+      error => console.log(error),
 
-    // );
+    );
   }
 
 

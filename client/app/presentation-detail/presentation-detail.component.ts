@@ -62,6 +62,7 @@ export class PresentationDetailComponent implements OnInit {
     slideSection.classList.add("slide2");
 
     var canva = new Array();
+    var title='';
     $.each(data, function (index, element) {
 
       if (element.type == 'chart') {
@@ -76,7 +77,11 @@ export class PresentationDetailComponent implements OnInit {
         canva.push(i)
 
       }
+     
 
+      if(element.type=='input'){
+          title=element.value
+      }
       if (element.type == 'h2') {
         console.log('uslo u type h2 for tip')
 
@@ -124,7 +129,7 @@ export class PresentationDetailComponent implements OnInit {
 
     });
 
-    if (canva.length != 0) { this.processKanva(canva, slideSection, slidesPanel) }
+    if (canva.length != 0) { this.processKanva(canva, slideSection, slidesPanel,title) }
 
   }
 
@@ -132,7 +137,7 @@ export class PresentationDetailComponent implements OnInit {
 
   }
 
-  processKanva(canva, slideSection, slidesPanel) {
+  processKanva(canva, slideSection, slidesPanel,title) {
 
     var chartDiv = document.createElement("div");
 
@@ -149,7 +154,7 @@ export class PresentationDetailComponent implements OnInit {
     var chart = new CanvasJS.Chart(chartDiv.id,
       {
         title: {
-          text: "My First Chart in CanvasJS"
+          text: title
         },
         data: [
           {
