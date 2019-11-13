@@ -9,7 +9,7 @@ declare var $: any;
 import * as CanvasJS from './canvasjs.min';
 import { DOMElement } from '../shared/models/DOMelements.model';
 import { ElementSchemaRegistry } from '@angular/compiler';
-import { Subject } from 'rxjs';
+import { Subject, Observable } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { User } from '../shared/models/user.model';
 import { AuthService } from '../services/auth.service';
@@ -113,30 +113,183 @@ export class PresentationComponent implements OnInit {
 
   }
 
+  updatePresentation(id){
 
-  // addPresentation() {
-  //   this.showImage = true;
-  //   console.log(this.presentation)
-  //   this.presentation = new Presentation();
-  //   this.presentationService.addPresentation(this.presentation)
-  //     .subscribe(data => {
-  //       //console.log(data._id)
-  //       this.presentation = data;
-  //       this.presisId = data._id;
-  //       console.log(this.presentation)
+    
+  }
+ 
+  updateTitle(){
 
-  //     });
+    var input=$('#pTitle')
+    Observable.fromEvent(input, 'keyup').debounceTime(1000)
+    .subscribe(value => 
+      {
+        console.log(input.val())
+        this.presentation.title=input.val();
+            console.log('check')
+            console.log(this.presentation)
+            this.presentationService.updatePresentation(this.presisId, this.presentation).subscribe(res => {
+              console.log('no mas pelea')
+              console.log(res)}
+      )
+ 
+  })
+}
 
-  // }
 
-  getEmptyPresentation() {
+  getCreatedPresentation() {
     this.presentationService.getPresentation(this.id).subscribe(res => {
 
       this.presentation = res;
       this.presisId = res._id;
+
+      this.slides = res.slides;
+      this.getSlidesByIds(this.slides)
       
 
     })
+  }
+
+  getSlidesByIds(listOfSlideIds: any) {
+
+    listOfSlideIds.forEach(element => {
+      this.slidesService.getSlide(element).subscribe(res => {
+        console.log('jugar con fuego')
+        console.log(res)
+        this.appendSlides(res.elements, res._id, res.answers, 'slidesWell')
+      })
+    });
+  }
+
+  appendSlides(data, id, answers, panelId) {
+
+    //get slides panel where slide will be displayed
+    var slidesPanel = this.getElementById(panelId)
+
+    //create section - slide, for display slide in panel
+    var slideSection = this.createElement("section");
+    this.addClass(slideSection, "slide")
+    slideSection.style.cssText = `height: 100px; width:140px; background-color: white;`;
+    //append slide section to slide panel
+    slidesPanel.appendChild(slideSection);
+    slideSection.id = id;
+
+    var h2 = document.createElement("h2");
+    slideSection.classList.add("slide2");
+
+    var canva = new Array();
+    var title='';
+    $.each(data, function (index, element) {
+
+      if (element.type == 'chart') {
+        var n=0;
+        console.log('uslo u type chart for tip')
+        console.log(element)
+        answers.forEach(answer => {
+          
+            if(element.value==answer) n++;
+        });
+        var i = { id: element._id,label: element.value, y:n };
+        canva.push(i)
+
+      }
+     
+
+      if(element.type=='input'){
+          title=element.value
+      }
+      if (element.type == 'h2') {
+        console.log('uslo u type h2 for tip')
+
+        h2.classList.add("title");
+        h2.id = (Math.floor(Math.random() * (+20 - +5)) + +5).toString();
+
+        h2.style.cssText = 'font-size:15px; color:black';
+        $('#' + h2.id).css({ top: element.x + 'px', left: element.y + 'px', position: 'absolute' });
+        //$('#' + h2.id).css({ top: '230' + 'px', left: '110' + 'px', position: 'absolute' }); 
+        h2.innerHTML = element.value;
+
+        var br = document.createElement("br");
+        slideSection.appendChild(h2);
+        slidesPanel.appendChild(slideSection);
+        slidesPanel.appendChild(br);
+
+        var children = slideSection.children;
+        for (var j = 0; j < children.length; j++) {
+          console.log(children.length)
+          var e = children[j];
+
+          //e.id = slideSection.id + 'samsungA50'
+          e.id = slideSection.id;
+          console.log(e)
+
+        }
+
+        console.log('shooooooooo')
+        console.log(h2.innerHTML)
+        //return { h2 };        
+
+        answers.forEach(item => {
+          var frame=document.createElement("div")
+          frame.style.cssText='border-style: solid;;border-color: black;'
+          var h2 = document.createElement("h2");
+          h2.innerHTML=item;
+          h2.style.cssText = 'font-size:15px; color:black';
+          frame.appendChild(h2);
+          frame.id=id;
+          h2.id=id;
+          slideSection.appendChild(frame);
+
+        });
+      }
+
+    });
+
+    if (canva.length != 0) { this.processKanva(canva, slideSection, slidesPanel,title) }
+
+  }
+  processKanva(canva, slideSection, slidesPanel,title) {
+
+    var chartDiv = document.createElement("div");
+
+    chartDiv.id = (Math.floor(Math.random() * (+20 - +5)) + +5).toString();
+    chartDiv.style.cssText = `height: 100px; width: 150px;`
+    chartDiv.innerHTML = "<div id='chartContainer1'  style='height:100px; width:100px'></div>";
+
+    var br = document.createElement("br");
+    slideSection.appendChild(chartDiv);
+
+    slidesPanel.appendChild(slideSection);
+    slidesPanel.appendChild(br);
+
+    var chart = new CanvasJS.Chart(chartDiv.id,
+      {
+        title: {
+          text: title
+        },
+        data: [
+          {
+
+            type: "column",
+            dataPoints: canva
+          }
+        ]
+      });
+    chart.render();
+
+    var allChildren = $('#' + slideSection.id).find('*');
+
+    //var allChildren = e.find('*');
+
+    //and set their id to slide id
+    allChildren.each(function () {
+      console.log('desinfekt')
+      console.log(this);
+      (this).id = slideSection.id;
+    });
+
+    console.log(allChildren)
+
   }
 
   NewGuid() {
@@ -765,21 +918,6 @@ export class PresentationComponent implements OnInit {
 
       timeout = setTimeout(() => {
 
-        // let a = sectionId + 'samsungA50';
-        // var allChildren = $('.slide123').find('*');
-
-        // console.log(allChildren)
-
-
-        // //and set their id to slide id
-        // allChildren.each(function () {
-        //   console.log('desinfekt')
-        //   console.log(this);
-        //   (this).id = a;
-        // });
-
-        // console.log(allChildren)
-        // console.log('zhelanie')
         this.updateSlide(sectionId)
       }, 500);
 
@@ -1364,7 +1502,7 @@ export class PresentationComponent implements OnInit {
   ngOnInit() {
 
     this.id = this.route.snapshot.paramMap.get('id');
-    this.getEmptyPresentation();
+    this.getCreatedPresentation();
     $('a[href="#tabs-1"]').click();
 
 

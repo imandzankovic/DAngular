@@ -133,9 +133,6 @@ export class PresentationDetailComponent implements OnInit {
 
   }
 
-  appendGraph(){
-
-  }
 
   processKanva(canva, slideSection, slidesPanel,title) {
 
@@ -684,9 +681,6 @@ export class PresentationDetailComponent implements OnInit {
         }, 500);
       }
     });
-
-
- 
 
     $('a[href="#tabs-2"]').click();
 

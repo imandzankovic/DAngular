@@ -6,6 +6,7 @@ import { UserService } from '../services/user.service';
 import { User } from '../shared/models/user.model';
 import { Presentation } from '../shared/models/presentation.model';
 import { PresentationService } from '../services/presentation.service';
+import { Router } from '@angular/router';
 
 
 
@@ -21,12 +22,15 @@ export class UserDashboardComponent implements OnInit {
   user: User;
   isLoading = true;
   presentations: Presentation[];
+  presentation:any;
+  presisId: string;
 
 
   constructor(private presentationService: PresentationService,
     private auth: AuthService,
     public toast: ToastComponent,
-    private userService: UserService) { }
+    private userService: UserService,
+    private router: Router) { }
   
   getUser() {
     this.userService.getUser(this.auth.currentUser).subscribe(
@@ -41,6 +45,21 @@ export class UserDashboardComponent implements OnInit {
       res => this.toast.setMessage('account settings saved!', 'success'),
       error => console.log(error)
     );
+  }
+  
+ addPresentation() {
+
+    this.presentation = new Presentation();
+    this.presentationService.addPresentation(this.presentation)
+      .subscribe(data => {
+        //console.log(data._id)
+        this.presentation = data;
+        this.presisId = data._id;
+        console.log('lijepa azra')
+        console.log(this.presentation)
+        this.router.navigate(['/presentation',this.presisId]);
+      });
+
   }
   delete(id){
     this.presentationService.deletePresentation(id)
