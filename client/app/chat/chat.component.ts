@@ -11,12 +11,13 @@ import { Slide } from '../shared/models/slide.model';
   styleUrls: ['./chat.component.scss']
 })
 export class ChatComponent implements OnInit {
-  title = 'app';
+  //title = 'app';
   slide: Slide;
   id: any;
   dPool: any;
   h2El: any;
   canvaEls:any[];
+  title:any;
 
 
   constructor(private chat: ChatService,
@@ -33,6 +34,7 @@ export class ChatComponent implements OnInit {
       var containsChar = false;
       var h2 = '';
       var canva = [];
+      var title=''
   
 
       $(res.elements).each(function () {
@@ -42,9 +44,15 @@ export class ChatComponent implements OnInit {
           canva.push(this);
          
         }
-        else {
+        else if(this.type=='H2' || this.type=='h2'){
           console.log(this)
           h2 = this;
+        }
+        else if(this.type=='input'){
+          console.log('orbaco')
+          title=this.value;
+          console.log(this.title)
+          containsChar = true;
         }
 
       });
@@ -58,6 +66,7 @@ export class ChatComponent implements OnInit {
         console.log(canva)
         this.dPool = true;
         this.canvaEls=canva;
+        this.title=title;
         //this.displayPool(canva, slideId)
       }
 
@@ -66,54 +75,54 @@ export class ChatComponent implements OnInit {
     });
   }
 
-  displaySlide(h2: any, sectionId: any) {
+  // displaySlide(h2: any, sectionId: any) {
 
-    var form = document.getElementById("form-group");
-    var question = document.createElement("h2");
-    question.innerHTML = h2.value;
-    //append section to main panel
-    form.appendChild(question);
+  //   var form = document.getElementById("form-group");
+  //   var question = document.createElement("h2");
+  //   question.innerHTML = h2.value;
+  //   //append section to main panel
+  //   form.appendChild(question);
 
-    var input = document.createElement("input");
-    input.type = 'text'
+  //   var input = document.createElement("input");
+  //   input.type = 'text'
 
-    // input.style.cssText = `border:0px; /*important*/
-    //     background-color: white; /*important*/
-    //     position:absolute; /*important*/
-    //     top:4px;
-    //     left:9px;
-    //     width:256px;
-    //     height:28px;`
+  //   // input.style.cssText = `border:0px; /*important*/
+  //   //     background-color: white; /*important*/
+  //   //     position:absolute; /*important*/
+  //   //     top:4px;
+  //   //     left:9px;
+  //   //     width:256px;
+  //   //     height:28px;`
 
-    form.appendChild(input)
+  //   form.appendChild(input)
 
-  }
+  // }
 
-  displayPool(canva: any, sectionId: any) {
+  // displayPool(canva: any, sectionId: any) {
 
-    var form = document.getElementById("form-group");
-    canva.forEach(element => {
-      var labela = document.createElement('label')
-      labela.classList.add('container');
+  //   var form = document.getElementById("form-group");
+  //   canva.forEach(element => {
+  //     var labela = document.createElement('label')
+  //     labela.classList.add('container');
 
-      console.log("elenet")
-      var radioBtn = $('<input type="radio" name="radioGroup" value="' + element.value + '" >' + element.value + '</input>');
-      //radioBtn.appendTo('#form-group');
-      radioBtn.appendTo(labela);
+  //     console.log("elenet")
+  //     var radioBtn = $('<input type="radio" name="radioGroup" value="' + element.value + '" >' + element.value + '</input>');
+  //     //radioBtn.appendTo('#form-group');
+  //     radioBtn.appendTo(labela);
 
-      var span = document.createElement('span')
-      span.classList.add('checkmark')
-      labela.appendChild(span)
+  //     var span = document.createElement('span')
+  //     span.classList.add('checkmark')
+  //     labela.appendChild(span)
 
-      var br = document.createElement("br");
+  //     var br = document.createElement("br");
 
-      form.appendChild(labela)
-      // form.appendChild(radio);
-      form.appendChild(br)
+  //     form.appendChild(labela)
+  //     // form.appendChild(radio);
+  //     form.appendChild(br)
 
-    });
+  //   });
 
-  }
+  // }
 
 
   ngOnInit() {

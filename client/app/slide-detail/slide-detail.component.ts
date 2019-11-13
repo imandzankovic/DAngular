@@ -30,8 +30,10 @@ export class SlideDetailComponent implements OnInit {
   addClass(element, clas) {
     element.classList.add(clas);
   }
-  processKanva(canva, slideSection, slidesPanel) {
+  processKanva(canva, slideSection, slidesPanel,title) {
 
+    console.log('mackam')
+    console.log(title)
     var chartDiv = document.createElement("div");
 
     chartDiv.id = (Math.floor(Math.random() * (+20 - +5)) + +5).toString();
@@ -47,7 +49,7 @@ export class SlideDetailComponent implements OnInit {
     var chart = new CanvasJS.Chart(chartDiv.id,
       {
         title: {
-          text: "My First Chart in CanvasJS"
+          text: title
         },
         data: [
           {
@@ -103,6 +105,7 @@ export class SlideDetailComponent implements OnInit {
     slideSection.classList.add("slide2");
 
     var canva = new Array();
+    var title;
     $.each(data, function (index, element) {
 
       if (element.type == 'chart') {
@@ -118,6 +121,13 @@ export class SlideDetailComponent implements OnInit {
 
       }
 
+     
+      if(element.type=='input'){
+        console.log('uso u input')
+        console.log(element)
+        title=element.value;
+       
+      }
       if (element.type == 'h2') {
         console.log('uslo u type h2 for tip')
 
@@ -170,7 +180,7 @@ export class SlideDetailComponent implements OnInit {
 
     });
 
-    if (canva.length != 0) { this.processKanva(canva, slideSection, slidesPanel) }
+    if (canva.length != 0) { this.processKanva(canva, slideSection, slidesPanel,title) }
 
   }
 

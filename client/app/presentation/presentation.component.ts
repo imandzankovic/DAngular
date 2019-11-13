@@ -30,7 +30,7 @@ export class PresentationComponent implements OnInit {
     private slidesService: SlideService,
     public toast: ToastComponent,
     private route: ActivatedRoute,
-    private router:Router,
+    private router: Router,
     private auth: AuthService,
     private userService: UserService) { }
 
@@ -44,7 +44,7 @@ export class PresentationComponent implements OnInit {
   slideSection: any
   c: any = 0;
   counter: boolean = false;
-  presisId:any;
+  presisId: any;
 
   setValue(val) {
     this.listOfShapes = val;
@@ -106,7 +106,7 @@ export class PresentationComponent implements OnInit {
 
   preview() {
 
-    var url='http://localhost:4200/presentation/' + this.presisId;
+    var url = 'http://localhost:4200/presentation/' + this.presisId;
     window.open(url, '_blank');
     //this.router.navigate(['/presentation', this.presisId]);
 
@@ -121,7 +121,7 @@ export class PresentationComponent implements OnInit {
       .subscribe(data => {
         //console.log(data._id)
         this.presentation = data;
-        this.presisId=data._id;
+        this.presisId = data._id;
         console.log(this.presentation)
 
       });
@@ -200,7 +200,11 @@ export class PresentationComponent implements OnInit {
     })
 
     this.showList(arrayname)
-    return arrayname;
+    var title = $("#tab2 :input")[0];
+    console.log('aqua viva')
+    console.log(title)
+    title = { id: title.id, type: "input", value: title.value, x: "", y: "" };
+    return { arrayname, title };
 
   }
 
@@ -246,15 +250,15 @@ export class PresentationComponent implements OnInit {
     return document.createElement(element);
   }
 
-  createInput(value = '', inputId='') {
+  createInput(value = '', inputId = '') {
 
     var input = document.createElement("input");
     input.type = 'text'
-    if(inputId==''){
+    if (inputId == '') {
       input.id = this.setElementId(input);
     }
-    else{
-      input.id=inputId
+    else {
+      input.id = inputId
     }
     input.style.fontFamily = 'Nunito';
     input.style.color = 'black';
@@ -331,7 +335,7 @@ export class PresentationComponent implements OnInit {
 
     //append h2 to section in main panel
     slideSection.appendChild(h2a);
-    
+
 
     //append h2 to section in slide panel
     section.appendChild(h2);
@@ -367,7 +371,7 @@ export class PresentationComponent implements OnInit {
 
   }
 
-  renderChart(list: any, chartid: any, chartid2: any) {
+  renderChart(list: any, chartid: any, chartid2: any, title: '') {
 
     console.log('uslo u chart')
     //this.showList(list);
@@ -381,7 +385,7 @@ export class PresentationComponent implements OnInit {
         {
           theme: "dark",
           title: {
-            text: "Adding dataPoints Dynamically"
+            text: title
           },
           data: [
             {
@@ -399,7 +403,7 @@ export class PresentationComponent implements OnInit {
         {
           theme: "dark",
           title: {
-            text: "Adding dataPoints Dynamically"
+            text: title
           },
           data: [
             {
@@ -418,7 +422,7 @@ export class PresentationComponent implements OnInit {
       {
         theme: "dark",
         title: {
-          text: "Adding dataPoints Dynamically"
+          text: title
         },
         data: [
           {
@@ -432,7 +436,7 @@ export class PresentationComponent implements OnInit {
 
   }
 
-  makeSection(value = '', inputId='', sectionId='') {
+  makeSection(value = '', inputId = '', sectionId = '') {
 
     var buttonDiv = this.createElement("div");
     this.addClass(buttonDiv, 'wrapper');
@@ -449,7 +453,7 @@ export class PresentationComponent implements OnInit {
     var deleteButton = document.createElement("button");
     deleteButton.innerHTML = 'x';
     deleteButton.id = this.setElementId(deleteButton);
-    var input = this.createInput(value,inputId);
+    var input = this.createInput(value, inputId);
 
     input.style.cssText = `border:0px; /*important*/
     background-color:transparent; /*important*/
@@ -472,7 +476,7 @@ export class PresentationComponent implements OnInit {
 
       console.log('ehehehehe')
       console.log(sectionId)
-      if(sectionId == '') console.log('true je ovo')
+      if (sectionId == '') console.log('true je ovo')
 
       this.showList(this.getValue())
       console.log(input.id)
@@ -480,13 +484,13 @@ export class PresentationComponent implements OnInit {
 
       var list = this.removeFromList(input.id);
 
-      if(sectionId == ''){
-        this.renderChart(list,this.getContainerId(),'') 
+      if (sectionId == '') {
+        this.renderChart(list, this.getContainerId(), '', '')
       }
- 
-      else{
-        let a=sectionId + 'samsungA50'
-        this.renderChart(list,sectionId,a) 
+
+      else {
+        let a = sectionId + 'samsungA50'
+        this.renderChart(list, sectionId, a, '')
       }
     })
 
@@ -514,7 +518,7 @@ export class PresentationComponent implements OnInit {
       var indexOfElement = listOfShapes.findIndex(x => x.id === id)
       console.log(indexOfElement)
 
-      if (element.id==undefined)
+      if (element.id == undefined)
         listOfShapes.splice(indexOfElement, 1);
 
     });
@@ -574,24 +578,6 @@ export class PresentationComponent implements OnInit {
 
     mainContainer.appendChild(mainSlideSection);
 
-    var h2 = document.createElement("h2");
-    this.setElementId(h2);
-    this.addClass(h2, "title");
-    h2.style.cssText = 'color:black'
-
-    //title to be displayed in slide panel
-    var h2a = document.createElement("h2");
-    this.setElementId(h2a);
-    this.addClass(h2a, "title");
-    h2a.style.cssText = ` text-overflow: ellipsis;  white-space: nowrap;
-    overflow: hidden; color:black; font-size:0.8vw; margin-left:10px; margin-top:10px`
-
-    //append h2 to section in main panel
-    slideSection.appendChild(h2a);
-    
-    //append h2 to section in slide panel
-    mainSlideSection.appendChild(h2);
-    
     var hinput = this.createInput();
 
     hinput.style.cssText = `border:0px; /*important*/
@@ -602,18 +588,12 @@ export class PresentationComponent implements OnInit {
     width:256px;
     height:28px;`
 
-    this.setColumnText(h2, hinput);
-    this.setColumnText(h2a, hinput);
+    // this.setColumnText(h2, hinput);
+    // this.setColumnText(h2a, hinput);
     tab2.appendChild(hinput)
+    var title = hinput.value
 
-    hinput.onkeyup = () => {
-      this.setColumnText(h2, hinput);
-      this.setColumnText(h2a, hinput);
 
-      // timeout = setTimeout(() => {
-      //     this.saveSlide();
-      // }, 500);
-    }
 
     var butNew = document.createElement("button");
     $(butNew).addClass('.btn btn-primary btn-block');
@@ -640,32 +620,42 @@ export class PresentationComponent implements OnInit {
     //append container to section 
     slideSection.appendChild(container);
     //append slide section to slide panel
-  
+
     //make space between slides
     var br = document.createElement("br")
     slidesPanel.appendChild(br)
 
     //get chart on slides panel 
-   
+
     //create chartContainer
     var mainChartDiv = document.createElement("div")
     mainChartDiv.style.cssText = `height: 300px; width: 540px;`;
-    
+
     mainChartDiv.id = 'chartContainer'
 
     //append container to section 
     mainSlideSection.appendChild(mainChartDiv);
     //append slide section to slide panel
-  
 
-   
+
     butNew.addEventListener('click', () => {
       let input = this.makeSection();
 
       input.onkeyup = () => {
-        this.update(input, container.id,'');
+        var list = this.update(input);
+        this.rend(list, container.id, '', title)
       }
     });
+
+    hinput.onkeyup = () => {
+      // this.setColumnText(h2, hinput);
+      // this.setColumnText(h2a, hinput);
+      title = hinput.value
+      this.rend(this.getValue(), 'chartContainer', container.id, title)
+      // timeout = setTimeout(() => {
+      //     this.saveSlide();
+      // }, 500);
+    }
 
     $('a[href="#tabs-2"]').click();
   }
@@ -685,12 +675,11 @@ export class PresentationComponent implements OnInit {
 
   }
 
-  update(input: any, chartid: any, optionalid:any) {
-
-   
-    console.log(chartid) 
-    console.log('uso sam u update i dobio sam ove id')
-    console.log(optionalid)
+  rend(list, chartid, optionalid, title) {
+    
+    this.renderChart(list, chartid, optionalid, title);
+  }
+  update(input: any) {
 
     var val = $("#" + input.id).get().map(function (i) {
       return $(i).val();
@@ -701,7 +690,7 @@ export class PresentationComponent implements OnInit {
     var a = $("#" + input.id);
     console.log('iz ove neke funcccc' + a);
     var list = this.renderByList($("#" + input.id).val(val), input.id);
-    this.renderChart(list, chartid,optionalid);
+    return list;
 
   }
 
@@ -788,7 +777,7 @@ export class PresentationComponent implements OnInit {
 
   }
 
-  displayGraph(sectionId: any, canva: any) {
+  displayGraph(sectionId: any, canva: any, title: any) {
 
     this.setValue(canva)
     console.log('AHMOOOOO' + sectionId)
@@ -817,31 +806,31 @@ export class PresentationComponent implements OnInit {
     var slideSection = $("#slidesWell section").find('#' + sectionId);
     console.log('uzeo sam ')
     console.log(slideSection)
-  
-    this.setValue([])
-    this.setValue(canva)
-    var list=this.getValue();
 
-    document.getElementById(sectionId + 'samsungA50').style.cssText='height: 300px; width:540px;'
-    this.renderChart(list, sectionId,sectionId + 'samsungA50');
+    // this.setValue([])
+    // this.setValue(canva)
+    // var list=this.getValue();
 
-    console.log('nusa')
-    var children = $('.slide2').find('*')
+    //document.getElementById(sectionId + 'samsungA50').style.cssText='height: 300px; width:540px;'
+    //this.renderChart(list, sectionId,sectionId + 'samsungA50');
 
-    children.each(function () {
-      console.log('kamen')
-      console.log(this);
-      (this).id = sectionId + 'samsungA50';
-    });
+    // console.log('nusa')
+    // var children = $('.slide2').find('*')
 
-//     for (var i = 0; i < children.length; i++) {
-//       console.log(children.length)
-//       var element = children[i];
-//       console.log('kamelia')
-//  console.log(element)
+    // children.each(function () {
+    //   console.log('kamen')
+    //   console.log(this);
+    //   (this).id = sectionId + 'samsungA50';
+    // });
 
-      //element.id = section.id + 'samsungA50'
-     
+    //     for (var i = 0; i < children.length; i++) {
+    //       console.log(children.length)
+    //       var element = children[i];
+    //       console.log('kamelia')
+    //  console.log(element)
+
+    //element.id = section.id + 'samsungA50'
+
 
     //}
 
@@ -850,9 +839,9 @@ export class PresentationComponent implements OnInit {
       console.log('azra moa')
       console.log(obj)
       this.setValue(canva)
-      
-      var input = this.makeSection(obj.label,obj.id, sectionId);
-      input.id=obj.id
+
+      var input = this.makeSection(obj.label, obj.id, sectionId);
+      input.id = obj.id
 
       console.log('cime si dosla')
       console.log(input)
@@ -862,10 +851,12 @@ export class PresentationComponent implements OnInit {
 
         clearTimeout(timeout);
         console.log(input)
-        let a=sectionId + 'samsungA50';
+        let a = sectionId + 'samsungA50';
         console.log('presula')
 
-        this.update(input, sectionId,a);
+        var s = this.update(input);
+        this.rend(s, sectionId, a, title)
+
 
         timeout = setTimeout(() => {
           this.updateSlide(sectionId)
@@ -873,7 +864,7 @@ export class PresentationComponent implements OnInit {
       }
     });
 
-   
+
     butNew.addEventListener('click', () => {
       let input = this.makeSection();
 
@@ -881,8 +872,9 @@ export class PresentationComponent implements OnInit {
       input.onkeyup = () => {
         clearTimeout(timeout);
 
-        let a=sectionId + 'samsungA50';
-        this.update(input, sectionId,a);
+        let a = sectionId + 'samsungA50';
+        var list = this.update(input);
+        this.rend(list, sectionId, a, title)
 
         timeout = setTimeout(() => {
           this.updateSlide(sectionId)
@@ -890,6 +882,25 @@ export class PresentationComponent implements OnInit {
       }
     });
 
+    var hinput = this.createInput();
+
+    hinput.style.cssText = `border:0px; /*important*/
+    background-color: white; /*important*/
+    position:absolute; /*important*/
+    top:4px;
+    left:9px;
+    width:256px;
+    height:28px;`
+
+
+    tab2.appendChild(hinput)
+    hinput.value=title;
+    var titleh = hinput.value
+
+    hinput.onkeyup = () => {
+      titleh = hinput.value
+      this.rend(this.getValue(), sectionId + 'samsungA50', sectionId, titleh)
+    }
     $('a[href="#tabs-2"]').click();
 
   }
@@ -899,7 +910,7 @@ export class PresentationComponent implements OnInit {
     console.log(slideId)
     $('#container123 :header').remove();
     $('#container123 section').remove();
-    
+
     $('.input-group').empty();
     this.setValue([])
 
@@ -926,8 +937,10 @@ export class PresentationComponent implements OnInit {
       }
 
       else {
-        var canva = this.procesElements(res, 'container123').canva
-        this.displayGraph(slideId, canva)
+        var elements = this.procesElements(res, 'container123');
+        var canva = elements.canva;
+        var title = elements.title.value;
+        this.displayGraph(slideId, canva, title)
 
       }
 
@@ -944,6 +957,7 @@ export class PresentationComponent implements OnInit {
     console.log(data)
 
     var canva = new Array();
+    var title;
     var slides = document.getElementById(id);
     var section = document.createElement("section");
     var h2 = document.createElement("h2");
@@ -957,12 +971,15 @@ export class PresentationComponent implements OnInit {
 
       if (element.type == 'chart') {
 
-    
         console.log('uslo u type chart for tip')
         console.log(element)
         var i = { id: element._id, y: 0, label: element.value };
         canva.push(i)
 
+      }
+
+      if (element.type == 'input') {
+        title = element;
       }
 
       if (element.type == 'h2') {
@@ -987,17 +1004,17 @@ export class PresentationComponent implements OnInit {
           console.log(children.length)
           var e = children[j];
           console.log('kamelia')
-  
+
           e.id = section.id + 'samsungA50'
           console.log(e)
-  
+
         }
 
         console.log('shooooooooo')
         console.log(h2.innerHTML)
-    
+
         return { h2 };
-       
+
       }
 
     });
@@ -1011,9 +1028,9 @@ export class PresentationComponent implements OnInit {
 
       var chartDiv = document.createElement("div");
 
-     
+
       chartDiv.id = (Math.floor(Math.random() * (+20 - +5)) + +5).toString();
-      chartDiv.style.cssText = `height: 100px; width: 150px;`
+      chartDiv.style.cssText = `height: 300px; width: 450px;`
       chartDiv.innerHTML = "<div id='chartContainer1'  style='height:100px; width:100px'></div>";
 
       var br = document.createElement("br");
@@ -1025,7 +1042,7 @@ export class PresentationComponent implements OnInit {
       var chart = new CanvasJS.Chart(chartDiv.id,
         {
           title: {
-            text: "My First Chart in CanvasJS"
+            text: title.value
           },
           data: [
             {
@@ -1050,10 +1067,10 @@ export class PresentationComponent implements OnInit {
       }
 
 
-      return { canva };
+      return { canva, title };
     }
 
-    return { section,h2 };
+    return { section, h2 };
 
   }
 
@@ -1084,76 +1101,80 @@ export class PresentationComponent implements OnInit {
     console.log(e.target.id)
     alert(e.target.id)
 
-    
+
     this.clickSlide(e.target.id)
     this.share(e.target.id)
 
   }
 
-  share(slideId){
-   
+  share(slideId) {
+
     $('#nemamKad').empty();
-   var form = document.getElementById("nemamKad");
+    var form = document.getElementById("nemamKad");
 
-   var button = this.createElement("button");
-   button.style.cssText='margin-left: 100px'
-   this.addClass(button,'btn');
+    var button = this.createElement("button");
+    button.style.cssText = 'margin-left: 100px'
+    this.addClass(button, 'btn');
 
-   button.innerHTML = 'Share';
-   
+    button.innerHTML = 'Share';
 
-   form.appendChild(button);
 
-  
-   var id=''
-   this.slidesService.getSlide(slideId).subscribe(res => {
-    console.log(res)
-    id=res._id;
-    console.log('daj mi id')
+    form.appendChild(button);
 
-    var containsChar = false;
-    var question='';
-    $(res.elements).each(function () {
-      if (this.type == 'chart') {
-        console.log('ima nas chartova')
-        containsChar = true;
+
+    var id = ''
+    this.slidesService.getSlide(slideId).subscribe(res => {
+      console.log(res)
+      id = res._id;
+      console.log('daj mi id')
+
+      var containsChar = false;
+      var question = '';
+      $(res.elements).each(function () {
+        if (this.type == 'chart') {
+          console.log('ima nas chartova')
+          containsChar = true;
+        }
+        question = this.value
+
+      });
+      console.log(containsChar)
+
+
+      if (containsChar == false) {
+        console.log('cica maca')
+        console.log(question)
       }
-      question=this.value
+
+      // else {
+      //   var canva = this.procesElements(res, 'container123').canva
+      //   this.displayGraph(slideId, canva)
+
+      // }
+
+    }, (err) => {
+      console.log(err);
 
     });
-    console.log(containsChar)
 
+    button.addEventListener('click', () => {
+      console.log(id);
 
-    if (containsChar == false) {
-      console.log('cica maca')
-      console.log(question)
-    }
+      var url = 'http://localhost:4200/chat/' + id;
+      window.open(url, '_blank');
+      //this.router.navigate(['/chat', id]);
+    })
 
-    // else {
-    //   var canva = this.procesElements(res, 'container123').canva
-    //   this.displayGraph(slideId, canva)
-
-    // }
-
-  }, (err) => {
-    console.log(err);
-
-  });
-
-  button.addEventListener('click', ()=>{
-    console.log(id);
-
-    var url='http://localhost:4200/chat/' + id;
-    window.open(url, '_blank');
-    //this.router.navigate(['/chat', id]);
-  })
-   
   }
 
-  saveSlide(){
-    
+  saveSlide() {
+
     //get elements from main container
-    var arrayname = this.getElements();
+    var res = this.getElements()
+    var arrayname = res.arrayname;
+    var title = res.title;
+
+    arrayname.push(title)
     console.log('ovo su' + this.showList(arrayname));
 
     //create new slide object and set elements to result from getElements function
@@ -1193,7 +1214,7 @@ export class PresentationComponent implements OnInit {
         this.c++;
         console.log('brojaccccccc' + this.c)
 
-        this.presentationService.updatePresentation(this.presisId,this.presentation).subscribe(res=>{
+        this.presentationService.updatePresentation(this.presisId, this.presentation).subscribe(res => {
           console.log('no mas pelea')
           console.log(res)
         })
@@ -1205,75 +1226,75 @@ export class PresentationComponent implements OnInit {
 
   }
 
-   setChildrenIds(sectionId){
+  setChildrenIds(sectionId) {
 
     console.log('strahuvam se')
-      //get al child elements
-                var allChildren = $('#' + sectionId).find('*');
+    //get al child elements
+    var allChildren = $('#' + sectionId).find('*');
 
-                //var allChildren = e.find('*');
-        
-                //and set their id to slide id
-                allChildren.each(function () {
-                  console.log('desinfekt')
-                  console.log(this);
-                  (this).id = sectionId;
-                });
-        
-                console.log(allChildren)
+    //var allChildren = e.find('*');
 
-   }
-   
+    //and set their id to slide id
+    allChildren.each(function () {
+      console.log('desinfekt')
+      console.log(this);
+      (this).id = sectionId;
+    });
+
+    console.log(allChildren)
+
+  }
+
   createSlide() {
     this.counter = true;
-    var updated=false;
-    var sectionId=''
+    var updated = false;
+    var sectionId = ''
     console.log(this.counter)
 
     console.log('valentina')
     console.log($('#container123 section').find('*'))
 
-    var kids=$('#container123 section').find('*')
+    var kids = $('#container123 section').find('*')
 
     kids.each(function () {
       console.log('violett')
       console.log(this);
       console.log((this).id)
-      if((this).id.indexOf('samsung') != -1){
+      if ((this).id.indexOf('samsung') != -1) {
         console.log(" found");
-        updated=true;
-        var id=((this).id).replace('samsungA50','')
-        sectionId=id
+        updated = true;
+        var id = ((this).id).replace('samsungA50', '')
+        sectionId = id
         console.log(sectionId)
-    }
+      }
     });
 
     console.log('netipichno')
     console.log(updated)
-     
-    if(!updated){
-     this.saveSlide(); 
+
+    if (!updated) {
+      this.saveSlide();
     }
-    else{
+    else {
       console.log('baustela ' + sectionId)
-      
+
       this.updateSlide(sectionId)
       //this.setChildrenIds(sectionId);
-                //  //get al child elements
-                // var allChildren = $('#' + sectionId).find('*');
+      //  //get al child elements
+      // var allChildren = $('#' + sectionId).find('*');
 
-                // //var allChildren = e.find('*');
-        
-                // //and set their id to slide id
-                // allChildren.each(function () {
-                //   console.log('desinfekt')
-                //   console.log(this);
-                //   (this).id = sectionId;
-                // });
-        
-                // console.log(allChildren)
+      // //var allChildren = e.find('*');
+
+      // //and set their id to slide id
+      // allChildren.each(function () {
+      //   console.log('desinfekt')
+      //   console.log(this);
+      //   (this).id = sectionId;
+      // });
+
+      // console.log(allChildren)
     }
-    
+
     if (this.counter) {
       //empty fields for new slide
       $('#container123 :header').remove();
@@ -1291,40 +1312,44 @@ export class PresentationComponent implements OnInit {
 
   }
 
-  updateSlide(sectionId : any){
+  updateSlide(sectionId: any) {
     console.log('UPDATE')
-        //get elements from main container
-        var arrayname = this.getElements();
-        console.log('ovo su' + this.showList(arrayname));
+    //get elements from main container
+    var res = this.getElements();
+    var arrayname = res.arrayname;
+    var title = res.title;
+    console.log('ovo su' + this.showList(arrayname));
 
-        //create new slide object and set elements to result from getElements function
-        this.slidesService.getSlide(sectionId).subscribe(res => {
-          res.elements = arrayname;
-          console.log('iz get slidea')
-          this.showList(res.elements)
+    arrayname.push(title)
 
-          //add slide on backend
-          this.slidesService.updateSlide(sectionId, res)
-            .subscribe(res => {
-              console.log(res)
-              console.log('daj mi id iz update')
-              this.setChildrenIds(sectionId);
-              
-              this.presentation.slides.push(res);
-              this.presentationService.updatePresentation(this.presisId,this.presentation).subscribe(res=>{
-                console.log('no mas pelea')
-                console.log(res)
-              })
+    //create new slide object and set elements to result from getElements function
+    this.slidesService.getSlide(sectionId).subscribe(res => {
+      res.elements = arrayname;
+      console.log('iz get slidea')
+      this.showList(res.elements)
 
-            }, (err) => {
-              console.log(err);
+      //add slide on backend
+      this.slidesService.updateSlide(sectionId, res)
+        .subscribe(res => {
+          console.log(res)
+          console.log('daj mi id iz update')
+          this.setChildrenIds(sectionId);
 
-            });
+          this.presentation.slides.push(res);
+          this.presentationService.updatePresentation(this.presisId, this.presentation).subscribe(res => {
+            console.log('no mas pelea')
+            console.log(res)
+          })
 
-        })
-       
+        }, (err) => {
+          console.log(err);
+
+        });
+
+    })
+
   }
-  
+
   ngOnInit() {
 
     this.getPresentations();
