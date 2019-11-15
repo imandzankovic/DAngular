@@ -60,7 +60,7 @@ export class ChatComponent implements OnInit {
       if (containsChar == false) {
         this.dPool = false;
         this.h2El = h2;
-        //this.displaySlide(h2, slideId);
+
       }
       else {
         console.log(canva)

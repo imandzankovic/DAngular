@@ -950,7 +950,7 @@ export class PresentationDetailComponent implements OnInit {
 
   panelClick(e) {
     console.log(e.target.id)
-    alert(e.target.id)
+ 
     this.clickSlide(e.target.id)
     //this.share(e.target.id)
 

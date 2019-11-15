@@ -22,8 +22,9 @@ export class UserDashboardComponent implements OnInit {
   user: User;
   isLoading = true;
   presentations: Presentation[];
-  presentation:any;
+  presentation: any;
   presisId: string;
+
 
 
   constructor(private presentationService: PresentationService,
@@ -31,10 +32,20 @@ export class UserDashboardComponent implements OnInit {
     public toast: ToastComponent,
     private userService: UserService,
     private router: Router) { }
-  
+
+
+
   getUser() {
     this.userService.getUser(this.auth.currentUser).subscribe(
-      data => this.user = data,
+      data => {
+        this.user = data
+        this.presentationService.getPresentationsOfUser(this.user._id).subscribe(
+          data => this.presentations = data,
+          error => console.log(error),
+
+        );
+
+      },
       error => console.log(error),
       () => this.isLoading = false
     );
@@ -46,10 +57,11 @@ export class UserDashboardComponent implements OnInit {
       error => console.log(error)
     );
   }
-  
- addPresentation() {
+
+  addPresentation() {
 
     this.presentation = new Presentation();
+    this.presentation.author = this.user._id;
     this.presentationService.addPresentation(this.presentation)
       .subscribe(data => {
         //console.log(data._id)
@@ -57,28 +69,25 @@ export class UserDashboardComponent implements OnInit {
         this.presisId = data._id;
         console.log('lijepa azra')
         console.log(this.presentation)
-        this.router.navigate(['/presentation',this.presisId]);
+        this.router.navigate(['/presentation', this.presisId]);
       });
 
   }
-  delete(id){
+  delete(id) {
     this.presentationService.deletePresentation(id)
-    .subscribe(
-      res => {this.toast.setMessage('deleted Presentation!', 'success') 
-      this.presentations.pop()},
-      error => {console.log(error)}
-     
-    );
+      .subscribe(
+        res => {
+          this.toast.setMessage('deleted Presentation!', 'success')
+          this.presentations.pop()
+        },
+        error => { console.log(error) }
+
+      );
   }
 
   ngOnInit() {
     this.getUser();
-   
-    this.presentationService.getPresentations().subscribe(
-      data => this.presentations = data,
-      error => console.log(error),
 
-    );
   }
 
 

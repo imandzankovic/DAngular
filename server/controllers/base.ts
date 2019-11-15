@@ -44,21 +44,26 @@ abstract class BaseCtrl {
     } catch (err) {
       return res.status(500).json({ error: err.message });
     }
-    // try{
-    //   this.model.findOne({ _id :req.params.id }, function(err, doc) {
-    //     if (err){
-    //         // error
-    //         throw err;
-    //     } else if (doc) {
-    //         // film exists
-    //         console.log("Film is "+doc);
-    //         res.status(200).json(doc);
-    //     } 
-    // });
-    // }
-    // catch(err){
-    //   return res.status(500).json({ error: err.message });
-    // }
+   
+  }
+
+  customGet= async(req,res)=>{
+     try{
+      var query= { author: req.params.id};
+      this.model.find(query, function(err, doc) {
+        if (err){
+            // error
+            throw err;
+        } else if (doc) {
+            // film exists
+            console.log("Film is "+doc);
+            res.status(200).json(doc);
+        } 
+    });
+    }
+    catch(err){
+      return res.status(500).json({ error: err.message });
+    }
   }
 
   // Update by id

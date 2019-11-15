@@ -14,6 +14,7 @@ const presentationSchema = new mongoose.Schema({
     },
     //slides: [SlidesSchema]
     slides: [{type: Schema.Types.ObjectId, ref: 'slide'}],
+    author: { type: Schema.Types.ObjectId, ref: 'user' }
 });
 
 const Presentation = mongoose.model('Presentation', presentationSchema);

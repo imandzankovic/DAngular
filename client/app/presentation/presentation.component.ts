@@ -45,7 +45,7 @@ export class PresentationComponent implements OnInit {
   c: any = 0;
   counter: boolean = false;
   presisId: any;
-  id:any
+  id:any;
 
   setValue(val) {
     this.listOfShapes = val;
@@ -121,7 +121,8 @@ export class PresentationComponent implements OnInit {
   updateTitle(){
 
     var input=$('#pTitle')
-    Observable.fromEvent(input, 'keyup').debounceTime(1000)
+    console.log('kliberis')
+    Observable.fromEvent(input, 'keyup').debounceTime(500)
     .subscribe(value => 
       {
         console.log(input.val())
@@ -322,18 +323,25 @@ export class PresentationComponent implements OnInit {
     //get input elements for list to render chart
     var canvas = $('.wrapper :input[type=text]')
 
+    var hasCharts=false;
     $(canvas).each(function () {
       console.log(this.type);
     });
 
 
     //check if there is elements for chart, i fos push it into the list
-    if (canvas != undefined || canvas != null) {
+    if (canvas != undefined || canvas != null || canvas.length!=0) {
       $(canvas).each(function () {
         console.log('ovaj san')
         console.log(this)
         list.push(this)
       });
+
+      console.log('nemoguce')
+      var title = $("#tab2 :input")[0];
+      console.log('aqua viva')
+      console.log(title)
+      title = { id: title.id, type: "input", value: title.value, x: "", y: "" };
     }
 
     $.each(list, function (index, element) {
@@ -364,11 +372,14 @@ export class PresentationComponent implements OnInit {
     })
 
     this.showList(arrayname)
-    var title = $("#tab2 :input")[0];
-    console.log('aqua viva')
-    console.log(title)
-    title = { id: title.id, type: "input", value: title.value, x: "", y: "" };
-    return { arrayname, title };
+
+   if(canvas.length!=0){
+    hasCharts=true;
+   }
+      return {arrayname,title,hasCharts};
+
+    
+   
 
   }
 
@@ -775,7 +786,7 @@ export class PresentationComponent implements OnInit {
 
     //create chartContainer
     var container = document.createElement("div")
-    container.style.cssText = `height: 60px; width: 90px;`;
+    container.style.cssText = `height: 100px; width: 150px;`;
     this.setContainerId(this.NewGuid());
     container.id = this.getContainerId();
 
@@ -1248,8 +1259,6 @@ export class PresentationComponent implements OnInit {
   panelClick(e) {
 
     console.log(e.target.id)
-    alert(e.target.id)
-
 
     this.clickSlide(e.target.id)
     this.share(e.target.id)
@@ -1322,9 +1331,13 @@ export class PresentationComponent implements OnInit {
     var res = this.getElements()
     var arrayname = res.arrayname;
     var title = res.title;
+    var hasCharts=res.hasCharts;
 
-    arrayname.push(title)
+    if(hasCharts){
+      console.log('uslo gdje ne treba')
+      arrayname.push(title)
     console.log('ovo su' + this.showList(arrayname));
+    }
 
     //create new slide object and set elements to result from getElements function
     var s = new Slide();
@@ -1359,7 +1372,11 @@ export class PresentationComponent implements OnInit {
 
         console.log(allChildren)
 
-        this.presentation.slides.push(res);
+        if(this.presentation.slides.find(x => x === res) ==null || 
+        this.presentation.slides.find(x => x === res) ==undefined){
+           this.presentation.slides.push(res);
+        }
+       
         this.c++;
         console.log('brojaccccccc' + this.c)
 

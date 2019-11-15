@@ -35,6 +35,16 @@ export class PresentationService {
             catchError(this.handleError('getPresentations', []))
           );
       }
+
+      getPresentationsOfUser (userId): Observable<Presentation[]> {
+        const url = `${apiUrl}/user/${userId}`;
+        return this.http.get<Presentation[]>(url)
+          .pipe(
+            // tap(heroes => console.log('fetched presentations')),
+            tap(data => console.log('All' + JSON.stringify(data))),
+            catchError(this.handleError('getPresentations', []))
+          );
+      }
       
       getPresentation(id: number): Observable<Presentation> {
         const url = `${apiUrl}/${id}`;

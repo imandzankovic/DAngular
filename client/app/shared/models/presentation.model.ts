@@ -4,6 +4,7 @@ export class Presentation {
     //presentationId : string;
     name:string;
     title:string;
-    slides:[any]
+    slides:[any];
+    author:any;
   }
   
