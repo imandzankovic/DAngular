@@ -1,12 +1,12 @@
 import * as dotenv from 'dotenv';
-import * as express from 'express';
+//import * as express from 'express';
 import * as morgan from 'morgan';
 import * as mongoose from 'mongoose';
 import * as path from 'path';
 
 import setRoutes from './routes';
-
- var app = express(),
+var express = require('express'),
+ app = express(),
     server = require('http').createServer(app),
     io = require('socket.io').listen(server);
 
@@ -20,8 +20,6 @@ app.use(express.json());
 //bodyparser middleware
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: false }));
-
-var server = require('http').createServer(app);
 
 let mongodbURI;
 if (process.env.NODE_ENV === 'test') {
