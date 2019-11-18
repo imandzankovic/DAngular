@@ -15,9 +15,12 @@ dotenv.config();
 const http = require('http').Server(app)
 
 // require the socket.io module
-const io = require('socket.io');
-const socket = io(http);
+
 const port = process.env.PORT || 3000;
+var server = app.listen(port)
+
+//socket.io instantiation
+const socket = require("socket.io")(server)
 
 //app.set('port', (process.env.PORT || 3000));
 
@@ -71,8 +74,6 @@ socket.on("connection", socket => {
   });
 });
 
-http.listen(port, () => {
-  console.log("Running on Port: " + port);
-});
+
 
 export { app };
