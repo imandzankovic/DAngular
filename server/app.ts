@@ -6,12 +6,14 @@ import * as path from 'path';
 
 import setRoutes from './routes';
 
+ var app = express(),
+    server = require('http').createServer(app),
+    io = require('socket.io').listen(server);
 
-const app = express();
+server.listen(process.env.PORT || 3000);
 const bodyParser = require("body-parser");
 //var server = app.listen(3000);
 dotenv.config();
-const port = process.env.PORT || 3000;
 
 app.use('/', express.static(path.join(__dirname, '../public')));
 app.use(express.json());
@@ -20,11 +22,6 @@ app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: false }));
 
 var server = require('http').createServer(app);
-
-// require the socket.io module
-const io = require('socket.io');
-const socket = io.listen(server);
-
 
 let mongodbURI;
 if (process.env.NODE_ENV === 'test') {
@@ -55,7 +52,7 @@ mongoose.connect(mongodbURI, { useNewUrlParser: true })
 
 
   //setup event listener
-socket.on("connection", socket => {
+io.sockets.on("connection", socket => {
   console.log("user connected");
 
   socket.on("disconnect", function() {
@@ -67,10 +64,6 @@ socket.on("connection", socket => {
     // io.emit("message", { type: "new-message", text: message });
     socket.broadcast.emit("message", { type: "new-message", text: message });
   });
-});
-
-server.listen(port, () => {
-  console.log("Running on Port: " + port);
 });
 
 export { app };
