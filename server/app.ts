@@ -11,25 +11,20 @@ const app = express();
 const bodyParser = require("body-parser");
 //var server = app.listen(3000);
 dotenv.config();
-//require the http module
-const http = require('http').Server(app)
-
-// require the socket.io module
-
 const port = process.env.PORT || 3000;
-var server = app.listen(port)
-
-//socket.io instantiation
-const socket = require("socket.io")(server)
-
-//app.set('port', (process.env.PORT || 3000));
-
 
 app.use('/', express.static(path.join(__dirname, '../public')));
 app.use(express.json());
 //bodyparser middleware
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: false }));
+
+var server = require('http').createServer(app);
+
+// require the socket.io module
+const io = require('socket.io');
+const socket = io.listen(server);
+
 
 let mongodbURI;
 if (process.env.NODE_ENV === 'test') {
@@ -74,6 +69,8 @@ socket.on("connection", socket => {
   });
 });
 
-
+server.listen(port, () => {
+  console.log("Running on Port: " + port);
+});
 
 export { app };
