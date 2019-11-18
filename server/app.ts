@@ -17,9 +17,9 @@ const http = require('http').Server(app)
 // require the socket.io module
 const io = require('socket.io');
 const socket = io(http);
-const port = process.env.PORT || 3000;
+//const port = process.env.PORT || 3000;
 
-//app.set('port', (process.env.PORT || 3000));
+app.set('port', (process.env.PORT || 3000));
 
 
 app.use('/', express.static(path.join(__dirname, '../public')));
@@ -49,9 +49,9 @@ mongoose.connect(mongodbURI, { useNewUrlParser: true })
       res.sendFile(path.join(__dirname, '../public/index.html'));
     });
 
-    // if (!module.parent) {
-    //   app.listen(app.get('port'), () => console.log(`Angular Full Stack listening on port ${app.get('port')}`));
-    // }
+    if (!module.parent) {
+      app.listen(app.get('port'), () => console.log(`Angular Full Stack listening on port ${app.get('port')}`));
+    }
   })
   .catch(err => console.error(err));
 
@@ -98,8 +98,8 @@ socket.on("connection", socket => {
   });
 });
 
-http.listen(port, () => {
-  console.log("Running on Port: " + port);
+http.listen(app.get('port'), () => {
+  console.log("Running on Port: " + app.get('port'));
 });
 
 export { app };
