@@ -19,7 +19,7 @@ const io = require('socket.io');
 const socket = io(http);
 const port = process.env.PORT || 3000;
 
-app.set('port', (process.env.PORT || 3000));
+//app.set('port', (process.env.PORT || 3000));
 
 
 app.use('/', express.static(path.join(__dirname, '../public')));
@@ -71,8 +71,8 @@ socket.on("connection", socket => {
   });
 });
 
-http.listen(app.get('port'), () => {
-  console.log("Running on Port: " + app.get('port'));
+http.listen(port, () => {
+  console.log("Running on Port: " + port);
 });
 
 export { app };
