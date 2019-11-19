@@ -13,11 +13,11 @@ const bodyParser = require("body-parser");
 //var server = app.listen(3000);
 dotenv.config();
 //require the http module
-const http = require('http').Server(app)
+// const http = require('http').Server(app)
 
-// require the socket.io module
-const io = require('socket.io');
-const socket = io(http);
+
+// const io = require('socket.io');
+// const socket = io(http);
 //const port = process.env.PORT || 3000;
 
 app.set('port', (process.env.PORT || 3000));
@@ -58,49 +58,22 @@ mongoose.connect(mongodbURI, { useNewUrlParser: true })
 
 
   //setup event listener
-socket.on("connection", socket => {
-  console.log("user connected");
+// socket.on("connection", socket => {
+//   console.log("user connected");
 
-  socket.on("disconnect", function() {
-    console.log("user disconnected");
-  });
+//   socket.on("disconnect", function() {
+//     console.log("user disconnected");
+//   });
 
-  //Someone is typing
-  // socket.on("typing", data => {
-  //   socket.broadcast.emit("notifyTyping", {
-  //     user: data.user,
-  //     message: data.message
-  //   });
-  // });
+//   socket.on("message", message => {
+//     console.log("Message Received: " + message);
+//     // io.emit("message", { type: "new-message", text: message });
+//     socket.broadcast.emit("message", { type: "new-message", text: message });
+//   });
+// });
 
-  // //when soemone stops typing
-  // socket.on("stopTyping", () => {
-  //   socket.broadcast.emit("notifyStopTyping");
-  // });
-
-  // socket.on("chat message", function(msg) {
-  //   console.log("message: " + msg);
-
-  //   //broadcast message to everyone in port:5000 except yourself.
-  //   socket.broadcast.emit("received", { message: msg });
-
-  //   //save chat to the database
-  //   // mongoose.connect.then(db => {
-  //   //   console.log("connected correctly to the server");
-  //   //   let chatMessage = new Chat({ message: msg, sender: "Anonymous" });
-
-  //   //   chatMessage.save();
-  //   // });
-  // });
-  socket.on("message", message => {
-    console.log("Message Received: " + message);
-    // io.emit("message", { type: "new-message", text: message });
-    socket.broadcast.emit("message", { type: "new-message", text: message });
-  });
-});
-
-http.listen(socketPort, () => {
-  console.log("Running on Port: " + socketPort);
-});
+// http.listen(socketPort, () => {
+//   console.log("Running on Port: " + socketPort);
+// });
 
 export { app };
