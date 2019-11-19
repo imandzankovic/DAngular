@@ -16,7 +16,7 @@ export class WebsocketService {
     // If you aren't familiar with environment variables then
     // you can hard code `environment.ws_url` as `http://localhost:5000`
      //this.socket = io.connect('http://192.168.1.30:3000');
-     var socketURL='http://localhost:3100'
+     var socketURL='http://localhost:3000'
     this.socket = io.connect(socketURL);
 
     // We define our observable which will observe any incoming messages
