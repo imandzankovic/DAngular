@@ -8,13 +8,11 @@ import * as $ from 'jquery';
 declare var $: any;
 import * as CanvasJS from './canvasjs.min';
 import { DOMElement } from '../shared/models/DOMelements.model';
-import { ElementSchemaRegistry } from '@angular/compiler';
-import { Subject, Observable } from 'rxjs';
+import {  Observable } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
-import { User } from '../shared/models/user.model';
 import { AuthService } from '../services/auth.service';
 import { UserService } from '../services/user.service';
-
+import { environment } from '../../environments/environment'
 
 
 
@@ -106,8 +104,8 @@ export class PresentationComponent implements OnInit {
   }
 
   preview() {
-
-    var url = 'http://localhost:4200/presentation/' + this.presisId;
+    var host=environment.url
+    var url = host + '/presentation/' + this.presisId;
     window.open(url, '_blank');
     //this.router.navigate(['/presentation', this.presisId]);
 
@@ -1318,7 +1316,8 @@ export class PresentationComponent implements OnInit {
     button.addEventListener('click', () => {
       console.log(id);
 
-      var url = 'http://localhost:4200/chat/' + id;
+      var host=environment.url
+      var url = host + '/chat/' + id;
       window.open(url, '_blank');
       //this.router.navigate(['/chat', id]);
     })

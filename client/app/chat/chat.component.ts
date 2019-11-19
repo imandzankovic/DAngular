@@ -4,6 +4,7 @@ import * as $ from 'jquery';
 import { ActivatedRoute } from '@angular/router';
 import { SlideService } from '../services/slide.service';
 import { Slide } from '../shared/models/slide.model';
+import { environment } from '../../environments/environment'
 
 @Component({
   selector: 'app-chat',
@@ -109,7 +110,8 @@ export class ChatComponent implements OnInit {
 
     }
 
-    var url = 'http://localhost:4200/slide/' + this.id;
+    var host=environment.url
+    var url = host + '/slide/' + this.id;
     window.open(url, '_blank');
   }
 }
