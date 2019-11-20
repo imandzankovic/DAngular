@@ -29,11 +29,27 @@ import { TestcanvasComponent } from './testcanvas/testcanvas.component';
 import { ChatComponent } from './chat/chat.component';
 import { PresentationDetailComponent } from './presentation-detail/presentation-detail.component';
 import { SlideDetailComponent } from './slide-detail/slide-detail.component';
+import { SeeMoreComponent } from './see-more/see-more.component';
+import { JobComponent } from './job/job.component';
+import { EduComponent } from './edu/edu.component';
+import { PrivateComponent } from './private/private.component';
+import { TestimonialsComponent } from './testimonials/testimonials.component';
+import { HelpComponent } from './help/help.component';
+import { TermsComponent } from './terms/terms.component';
+import { PrivacyComponent } from './privacy/privacy.component';
 
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent},
+  { path: 'see-more', component: SeeMoreComponent},
+  { path: 'job', component: JobComponent},
+  { path: 'edu', component: EduComponent},
+  { path: 'private', component: PrivateComponent},
+  { path: 'careers', component: TestimonialsComponent},
+  { path: 'help', component: HelpComponent},
+  { path: 'terms', component: TermsComponent},
+  { path: 'privacy', component: PrivacyComponent},
   { path: 'chat/:id', component: ChatComponent},
   { path: 'about', component: AboutComponent },
   { path: 'cats', component: CatsComponent },

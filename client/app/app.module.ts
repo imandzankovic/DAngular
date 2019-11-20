@@ -45,6 +45,14 @@ import { ChatService } from './services/chat.service';
 import { WebsocketService } from './services/websocket.service';
 import { PresentationDetailComponent } from './presentation-detail/presentation-detail.component';
 import { SlideDetailComponent } from './slide-detail/slide-detail.component';
+import { SeeMoreComponent } from './see-more/see-more.component';
+import { JobComponent } from './job/job.component';
+import { EduComponent } from './edu/edu.component';
+import { PrivateComponent } from './private/private.component';
+import { TestimonialsComponent } from './testimonials/testimonials.component';
+import { HelpComponent } from './help/help.component';
+import { TermsComponent } from './terms/terms.component';
+import { PrivacyComponent } from './privacy/privacy.component';
 
 const config: SocketIoConfig = { url: 'http://localhost:4200', options: {} };
 
@@ -79,7 +87,15 @@ export function tokenGetter() {
     TestcanvasComponent,
     ChatComponent,
     PresentationDetailComponent,
-    SlideDetailComponent
+    SlideDetailComponent,
+    SeeMoreComponent,
+    JobComponent,
+    EduComponent,
+    PrivateComponent,
+    TestimonialsComponent,
+    HelpComponent,
+    TermsComponent,
+    PrivacyComponent
 
   ],
   imports: [
