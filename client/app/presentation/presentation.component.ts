@@ -44,6 +44,7 @@ export class PresentationComponent implements OnInit {
   counter: boolean = false;
   presisId: any;
   id:any;
+  slide:Slide;
 
   setValue(val) {
     this.listOfShapes = val;
@@ -111,8 +112,19 @@ export class PresentationComponent implements OnInit {
 
   }
 
-  updatePresentation(id){
+  deleteSlide(id){
 
+    
+    var elem = document.getElementById(id);
+    elem.parentNode.removeChild(elem);
+
+    $('#container123').empty();
+    $('#tab2').empty();
+    
+    this.slidesService.deleteSlide(id).subscribe(
+      data => this.slide = data,
+      error => console.log(error)
+    );
     
   }
  
@@ -1260,7 +1272,26 @@ export class PresentationComponent implements OnInit {
 
     this.clickSlide(e.target.id)
     this.share(e.target.id)
+    this.delete(e.target.id)
 
+  }
+  delete(slideId){
+
+    var form = document.getElementById("nemamKad");
+
+    var delbutton = this.createElement("button");
+    delbutton.style.cssText = 'margin-left: 110px'
+    this.addClass(delbutton, 'btn');
+
+    delbutton.innerHTML = 'Delete';
+
+
+    form.appendChild(delbutton);
+    delbutton.addEventListener('click', () => {
+      console.log(slideId);
+
+      this.deleteSlide(slideId);
+    })
   }
 
   share(slideId) {
@@ -1276,7 +1307,6 @@ export class PresentationComponent implements OnInit {
 
 
     form.appendChild(button);
-
 
     var id = ''
     this.slidesService.getSlide(slideId).subscribe(res => {
