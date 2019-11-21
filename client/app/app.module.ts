@@ -53,7 +53,8 @@ import { TestimonialsComponent } from './testimonials/testimonials.component';
 import { HelpComponent } from './help/help.component';
 import { TermsComponent } from './terms/terms.component';
 import { PrivacyComponent } from './privacy/privacy.component';
-import { Slide2Component } from './slide2/slide2.component';
+import { SlidesPanelComponent } from './slides-panel/slides-panel.component';
+
 
 const config: SocketIoConfig = { url: 'http://localhost:4200', options: {} };
 
@@ -97,7 +98,7 @@ export function tokenGetter() {
     HelpComponent,
     TermsComponent,
     PrivacyComponent,
-    Slide2Component
+    SlidesPanelComponent
 
   ],
   imports: [

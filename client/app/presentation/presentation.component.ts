@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 import { PresentationService } from '../services/presentation.service';
 import { Presentation } from '../shared/models/presentation.model';
 import { SlideService } from '../services/slide.service';
@@ -13,6 +13,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { UserService } from '../services/user.service';
 import { environment } from '../../environments/environment'
+import { SlidesPanelComponent } from '../slides-panel/slides-panel.component';
 
 
 
@@ -22,7 +23,7 @@ import { environment } from '../../environments/environment'
   styleUrls: ['./presentation.component.css']
 })
 
-export class PresentationComponent implements OnInit {
+export class PresentationComponent implements OnInit{
 
   constructor(private presentationService: PresentationService,
     private slidesService: SlideService,
@@ -45,6 +46,8 @@ export class PresentationComponent implements OnInit {
   presisId: any;
   id:any;
   slide:Slide;
+
+  
 
   setValue(val) {
     this.listOfShapes = val;
@@ -149,6 +152,8 @@ export class PresentationComponent implements OnInit {
 
 
   getCreatedPresentation() {
+
+   
     this.presentationService.getPresentation(this.id).subscribe(res => {
 
       this.presentation = res;
@@ -1548,11 +1553,13 @@ export class PresentationComponent implements OnInit {
   ngOnInit() {
 
     this.id = this.route.snapshot.paramMap.get('id');
-    this.getCreatedPresentation();
+   
+    //this.getCreatedPresentation();
     $('a[href="#tabs-1"]').click();
 
 
   }
+
 
 
 }

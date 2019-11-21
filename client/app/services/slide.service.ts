@@ -3,7 +3,7 @@ import { Observable } from 'rxjs/Observable';
 import { tap, catchError } from 'rxjs/operators';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Slide } from '../shared/models/slide.model';
-import { of } from 'rxjs';
+import { of, BehaviorSubject } from 'rxjs';
 
 
 const httpOptions = {
@@ -25,6 +25,7 @@ export class SlideService {
         };
       }
 
+
     constructor(private http: HttpClient) { }
 
     getSlides (): Observable<Slide[]> {
@@ -35,7 +36,7 @@ export class SlideService {
           );
       }
       
-      getSlide(id: number): Observable<Slide> {
+      getSlide(id: any): Observable<Slide> {
         const url = `${apiUrl}/${id}`;
         return this.http.get<Slide>(url).pipe(
           tap(_ => console.log(`fetched slide id=${id}`)),
@@ -68,6 +69,9 @@ export class SlideService {
           catchError(this.handleError<Slide>('deleteSlide'))
         );
       }
+
+
+      
 
 }
 

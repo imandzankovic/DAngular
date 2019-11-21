@@ -13,6 +13,8 @@ const httpOptions = {
   
 @Injectable()
 export class PresentationService {
+  
+
 
     private handleError<T> (operation = 'operation', result?: T) {
         return (error: any): Observable<T> => {
@@ -26,6 +28,8 @@ export class PresentationService {
       }
 
     constructor(private http: HttpClient) { }
+
+   
 
     getPresentations (): Observable<Presentation[]> {
         return this.http.get<Presentation[]>(apiUrl)
