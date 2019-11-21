@@ -37,6 +37,7 @@ import { TestimonialsComponent } from './testimonials/testimonials.component';
 import { HelpComponent } from './help/help.component';
 import { TermsComponent } from './terms/terms.component';
 import { PrivacyComponent } from './privacy/privacy.component';
+import { Slide2Component } from './slide2/slide2.component';
 
 
 const routes: Routes = [
@@ -50,6 +51,7 @@ const routes: Routes = [
   { path: 'help', component: HelpComponent},
   { path: 'terms', component: TermsComponent},
   { path: 'privacy', component: PrivacyComponent},
+  { path: 'slide2', component: Slide2Component},
   { path: 'chat/:id', component: ChatComponent},
   { path: 'about', component: AboutComponent },
   { path: 'cats', component: CatsComponent },
