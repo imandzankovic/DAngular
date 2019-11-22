@@ -54,6 +54,9 @@ import { HelpComponent } from './help/help.component';
 import { TermsComponent } from './terms/terms.component';
 import { PrivacyComponent } from './privacy/privacy.component';
 import { SlidesPanelComponent } from './slides-panel/slides-panel.component';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ChartsModule } from 'ng2-charts';
 
 
 const config: SocketIoConfig = { url: 'http://localhost:4200', options: {} };
@@ -112,7 +115,11 @@ export function tokenGetter() {
         tokenGetter,
         // whitelistedDomains: ['localhost:3000', 'localhost:4200']
       }
-    })
+    }),
+    NgxChartsModule,
+    ChartsModule,
+    BrowserAnimationsModule
+    
   ],
   providers: [
     AuthService,
