@@ -1,5 +1,8 @@
-# Angular Full Stack [![Dependencies](https://david-dm.org/DavideViolante/Angular-Full-Stack.svg)](https://david-dm.org/DavideViolante/Angular2-Full-Stack) [![Donate](https://img.shields.io/badge/paypal-donate-179BD7.svg)](https://www.paypal.me/dviolante) [![MIT license](http://img.shields.io/badge/license-MIT-lightgrey.svg)](http://opensource.org/licenses/MIT)
+# Presentation Software  
 
+Software for interactive presentations, making available for audiance to answer questions provided in slides.
+
+# Angular Full Stack 
 
 The frontend is generated with [Angular CLI](https://github.com/angular/angular-cli). The backend is made from scratch. Whole stack in [TypeScript](https://www.typescriptlang.org).
 
@@ -49,34 +52,9 @@ A window will automatically open at [localhost:4200](http://localhost:4200). Ang
 13. `git push heroku master`
 14. `heroku open` and a window will open with your app online
 
-## Preview
-![Preview](https://raw.githubusercontent.com/DavideViolante/Angular2-Full-Stack/master/demo.gif "Preview")
 
 ## Please open an issue if
 * you have any suggestion to improve this project
 * you noticed any problem or error
 
-## Running tests
-Run `ng test` to execute the frontend unit tests via [Karma](https://karma-runner.github.io).
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-Run `mongod` to run an instance of MongoDB then run `npm run testbe` to execute the backend tests via [Mocha](https://mochajs.org/).
-
-## Running linters
-Run `ng lint` to execute the frontend TS linting via [TSLint](https://github.com/palantir/tslint).
-
-Run `npm run lintbe` to execute the backend TS linting via [TSLint](https://github.com/palantir/tslint).
-
-Run `npm run linthtml` to execute the frontend HTML linting via [HTMLHint](https://github.com/htmlhint/HTMLHint).
-
-Run `npm run lintscss` to execute the frontend SCSS linting via [SASS-Lint](https://github.com/sasstools/sass-lint).
-
-## Wiki
-To get more help about this project, [visit the official wiki](https://github.com/DavideViolante/Angular-Full-Stack/wiki).
-
-## Further help
-To get more help on the `angular-cli` use `ng --help` or go check out the [Angular-CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
-
-### Author
-* [Davide Violante](https://github.com/DavideViolante)
