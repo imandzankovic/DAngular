@@ -14,7 +14,8 @@ import { AuthService } from '../services/auth.service';
 import { UserService } from '../services/user.service';
 import { environment } from '../../environments/environment'
 import { SlidesPanelComponent } from '../slides-panel/slides-panel.component';
-
+import { ChartOptions, ChartType, ChartDataSets } from 'chart.js';
+import { Label } from 'ng2-charts';
 
 
 @Component({
@@ -46,9 +47,84 @@ export class PresentationComponent implements OnInit{
   presisId: any;
   id:any;
   slide:Slide;
+  receivedData1:boolean;
+  testData:any;
 
+
+  barChartOptions: ChartOptions = {
+    responsive: true,
+    title: {
+      text: 'my title',
+      display: true
+    }
+  };
+  barChartLabels: Label[] = [];
+  barChartType: ChartType = 'bar'
+  barChartLegend: boolean = false;
+  barChartPlugins: any[] = [];
+
+  barChartData: ChartDataSets[] = [
+    {data: [], label: 'label1'},
+    {data: [], label: 'label2'}
+  ];
+
+  @ViewChild(SlidesPanelComponent,{static:false})
+  private slidesPanel: SlidesPanelComponent;
+
+  dataLoaded(slideid: any) {
+    console.log('hej hej ti')
+    console.log(slideid)
+    this.receivedData1=true;
+    this.recivedData();
+
+    
+    this.slidesService.getSlide(slideid).subscribe(res => {
+     
+      this.slide=res;
+      var chart=this.slidesService.processCharts(res);
+      this.drawChart(chart.list,chart.title);
+    })
+    
   
+  }
 
+  drawChart(list, title) {
+    //this.title=title;
+    //this.newDataPoint([900, 50, 300], 'May')
+    //this.clearCharts();
+    // this.barChartData = [
+    //   {data: [], label: 'label1'},
+    //   {data: [], label: 'label2'}
+    // ];
+    // let clone = JSON.parse(JSON.stringify(this.barChartData));
+
+    // this.barChartOptions = {
+    //   responsive: true
+    // };
+    this.barChartOptions = {
+      responsive: true,
+      title: {
+        text: title,
+        display: true,
+        fontSize:25
+      }
+    }
+   this.barChartLabels = list;
+    // this.barChartType = 'bar';
+    // this.barChartLegend = false;
+    // this.barChartPlugins = [];
+
+    // barChartData: ChartDataSets[] = [
+    //   { data: [45, 37, 60], label: 'Best Fruits' }
+    // ];
+
+    //this.barChartData = clone;
+    //other stuff like labels etc.
+  }
+
+  recivedData(){
+    return this.receivedData1;
+  }
   setValue(val) {
     this.listOfShapes = val;
   }

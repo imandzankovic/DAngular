@@ -59,6 +59,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ChartsModule } from 'ng2-charts';
 
 
+
 const config: SocketIoConfig = { url: 'http://localhost:4200', options: {} };
 
 export function tokenGetter() {

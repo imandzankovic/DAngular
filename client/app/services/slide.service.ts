@@ -4,6 +4,8 @@ import { tap, catchError } from 'rxjs/operators';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Slide } from '../shared/models/slide.model';
 import { of, BehaviorSubject } from 'rxjs';
+import { ChartOptions, ChartType, ChartDataSets } from 'chart.js';
+import { Label } from 'ng2-charts';
 
 
 const httpOptions = {
@@ -14,6 +16,35 @@ const httpOptions = {
 @Injectable()
 export class SlideService {
 
+  private _data: BehaviorSubject<any> = new BehaviorSubject<any>(null)
+
+  barChartOptions: ChartOptions = {
+    responsive: true,
+    title: {
+      text: 'my title',
+      display: true
+    }
+  };
+  barChartLabels: Label[] = [];
+  barChartType: ChartType = 'bar'
+  barChartLegend: boolean = false;
+  barChartPlugins: any[] = [];
+
+  barChartData: ChartDataSets[] = [
+    {data: [], label: 'label1'},
+    {data: [], label: 'label2'}
+  ];
+
+  getData(): Observable<any> {
+    return this._data.asObservable();
+  }
+
+  setData(data: any) {
+    console.log('setovana je data')
+    this._data.next(data);
+  }
+
+ 
     private handleError<T> (operation = 'operation', result?: T) {
         return (error: any): Observable<T> => {
       
@@ -69,7 +100,27 @@ export class SlideService {
           catchError(this.handleError<Slide>('deleteSlide'))
         );
       }
+    
+      processCharts(slide){
+        var list=[];
+        var title=''
+        slide.elements.forEach(element => {
+       
+          if(element.type=='chart'){
+            list.push(element.value)
+          }
+          if(element.type=='input')
+          title=element.value;
+        });
+        console.log('al hana')
+        console.log(list)
+       
+        return {list,title}
+       
+        
+      }
 
+   
 
       
 

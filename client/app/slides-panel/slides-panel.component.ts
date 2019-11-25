@@ -7,6 +7,8 @@ import { ActivatedRoute, Router } from "@angular/router"
 import { ChartOptions, ChartType, ChartDataSets } from 'chart.js';
 import { Label } from 'ng2-charts';
 
+import * as $ from 'jquery';
+declare var $: any;
 
 @Component({
   selector: 'slides-panel',
@@ -17,6 +19,7 @@ export class SlidesPanelComponent implements OnInit {
 
   slideHover: any;
   id: any;
+  title: any;
 
 
   constructor(private presentationService: PresentationService,
@@ -30,7 +33,11 @@ export class SlidesPanelComponent implements OnInit {
   canva: any[];
 
   barChartOptions: ChartOptions = {
-    responsive: true
+    responsive: true,
+    title: {
+      text: 'my title',
+      display: true
+    }
   };
   barChartLabels: Label[] = [];
   barChartType: ChartType = 'bar'
@@ -43,7 +50,18 @@ export class SlidesPanelComponent implements OnInit {
   ];
 
   @Input('receivedParentMessage') presentationId: string;
- 
+  @Output() dataLoaded: EventEmitter<any> = new EventEmitter<any>();
+
+
+  private _data: any[] = [];
+
+  get data(): any[] {
+    return this._data;
+  }
+
+  set data(data: any[]) {
+    this._data = data;
+  }
   
   edit(id) {
     console.log('sta je')
@@ -66,7 +84,8 @@ export class SlidesPanelComponent implements OnInit {
       this.slidesService.getSlide(element).subscribe(res => {
         slides.push(res);
 
-        this.processCharts(res);
+        var chart=this.slidesService.processCharts(res);
+        this.drawChart(chart.list,chart.title);
       })
 
     });
@@ -74,50 +93,37 @@ export class SlidesPanelComponent implements OnInit {
 
     }
 
-  processCharts(slide){
-    var list=[];
-    slide.elements.forEach(element => {
-   
-      if(element.type=='chart'){
-        list.push(element.value)
-      }
-    });
-    console.log('al hana')
-    console.log(list)
-   
-    //setTimeout(()=>{   
-      this.drawChart(list)
-//  }, 3000);
-    
-  }
-
-
-  test(id) {
-    alert('klik section' + id)
-  }
-
-  clearCharts() {
-    this.barChartLabels= [];
-    this.barChartData= [
-      {data: [], label: 'label1'},
-      {data: [], label: 'label2'}
-    ];
-  }
-
-
-  newDataPoint(dataArr = [100, 100, 100], label) {
-
-    this.barChartData.forEach((dataset, index) => {
-      this.barChartData[index] = Object.assign({}, this.barChartData[index], {
-        data: [...this.barChartData[index].data, dataArr[index]]
-      });
-    });
   
-    this.barChartLabels = [...this.barChartLabels, label];
-  
+
+
+  clickSlide(id) {
+    console.log('kliknuo na slide id')
+    this.dataLoaded.emit(id);
   }
 
-  drawChart(list) {
+  // clearCharts() {
+  //   this.barChartLabels= [];
+  //   this.barChartData= [
+  //     {data: [], label: 'label1'},
+  //     {data: [], label: 'label2'}
+  //   ];
+  // }
+
+
+  // newDataPoint(dataArr = [100, 100, 100], label) {
+
+  //   this.barChartData.forEach((dataset, index) => {
+  //     this.barChartData[index] = Object.assign({}, this.barChartData[index], {
+  //       data: [...this.barChartData[index].data, dataArr[index]]
+  //     });
+  //   });
+  
+  //   this.barChartLabels = [...this.barChartLabels, label];
+  
+  // }
+
+  drawChart(list, title) {
+    //this.title=title;
     //this.newDataPoint([900, 50, 300], 'May')
     //this.clearCharts();
     // this.barChartData = [
@@ -129,7 +135,14 @@ export class SlidesPanelComponent implements OnInit {
     // this.barChartOptions = {
     //   responsive: true
     // };
-
+    this.barChartOptions = {
+      responsive: true,
+      title: {
+        text: title,
+        display: true,
+        fontSize:7
+      }
+    }
    this.barChartLabels = list;
     // this.barChartType = 'bar';
     // this.barChartLegend = false;
