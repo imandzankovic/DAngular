@@ -11,8 +11,8 @@ import { DOMElement } from '../shared/models/DOMelements.model';
 import { ElementSchemaRegistry } from '@angular/compiler';
 import { Subject } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
-import { PresentationComponent } from '../presentation/presentation.component';
-import * as CanvasJS from '../presentation/canvasjs.min';
+import { OldPresentationComponent } from '../old-presentation/old-presentation.component';
+import * as CanvasJS from '../old-presentation/canvasjs.min';
 
 @Component({
   selector: 'app-presentation-detail',
@@ -970,7 +970,7 @@ export class PresentationDetailComponent implements OnInit {
   ngOnInit() {
     console.log('regeton montenegro')
     this.id = this.route.snapshot.paramMap.get('id');
-    this.getSlidesOfPresentation();
+    //this.getSlidesOfPresentation();
   }
 
 }

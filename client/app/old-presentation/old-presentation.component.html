@@ -1,0 +1,164 @@
+<br>
+<br>
+<br>
+
+
+
+
+<div id="wrapper">
+  <slides-panel [receivedParentMessage]="id" (dataLoaded)="dataLoaded($event)" questionFromParent="{{question}}">
+   
+  </slides-panel>
+ 
+
+  <div class="d-flex flex-column" id="content-wrapper">
+    <div id="content">
+      <div class="container-fluid">
+        <div class="d-sm-flex justify-content-between align-items-center mb-4">
+          <h3 style="margin-left: 300px" class="text-dark mb-0">Dashboard</h3>
+      
+          <!-- <button class="btn btn-primary btn-sm d-none d-sm-inline-block" (click)="addPresentation()">
+            Add Presentation
+          </button> -->
+        </div>
+      
+        <div class="d-sm-flex justify-content-between align-items-center mb-4">
+            <br>
+            <!-- <input type='text' id="pTitle" class="form-control" value="{{presentation.title}}" (click)="updateTitle()"> -->
+          <div class="d-sm-flex justify-content-between align-items-center mb-5" id="nemamKad"></div>
+          <button style="margin-left: 600px" class="btn" id="preview" (click)="preview()"><i class="fa fa-eye"></i> Preview</button>
+          <button class="btn" id="savePresentation" (click)="savePresentation()"><i class="fa fa-folder"></i> Save</button>
+
+        </div>
+      
+        <div class="row">
+          <div class="col-lg-7 col-xl-8">
+            <div class="card shadow mb-4">
+
+              <div class="card-body" id="container123" style="height: 426px;color: rgb(255,255,255);width: 639px;">
+
+                <div>
+                  {{question}}
+                       <section>
+                   
+                    <div *ngFor="let element of slide.elements">
+                       
+                        <div *ngIf="element.type=='h2'">
+                            <h2 style="font-size:35px; color:black">{{element.value}}</h2>
+                        </div>
+
+                        <div *ngIf="element.type=='chart'">
+                           
+                                <div>
+                               
+                               
+                                    <div class="row">
+                                          
+                                            <div  *ngIf="barChartData.length > 0" class="chart-wrapper" style="position:absolute;width: 550px;height: 300px;">
+                                     
+                                                <canvas baseChart style="width: 550px;height: 300px;"
+                                                    [datasets]="barChartData"
+                                                    [labels]="barChartLabels"
+                                                    [options]="barChartOptions"
+                                                    [plugins]="barChartPlugins"
+                                                    [legend]="barChartLegend"
+                                                    [chartType]="barChartType">
+                                                  </canvas>
+                                                </div>
+                                    </div>
+                         
+                              
+                                </div>
+
+                        </div>
+                    
+                    </div> 
+
+                        </section>
+  
+               
+            </div>
+              </div>
+            
+            </div>
+          </div>
+          <div class="col-lg-5 col-xl-4"
+            style="width: 99px;background-color: #eaebef;color: rgb(255,255,255);height: 428px;"><a
+              href="index.html"></a>
+            <div id="minimal-tabs">
+              <ul class="nav nav-tabs" style="color: rgb(255,255,255);">
+                <li class="nav-item">
+                  <!-- <a class="nav-link" role="tab" data-toggle="tab" id="tab1" href="#tab-1"
+                    style="color: rgb(24,135,213);">Content</a> -->
+
+                  <a class="nav-link" role="tab" data-toggle="tab" href="#tabs-1"
+                    style="color: rgb(24,135,213);">Content</a>
+                </li>
+                <li class="nav-item">
+                  <!-- <a class="nav-link" role="tab" data-toggle="tab" id="tab2" href="#tab-2"
+                                    style="color: rgb(19,141,228);">Type</a> -->
+                  <a class="nav-link" role="tab" data-toggle="tab" href="#tabs-2" style="color: rgb(19,141,228);">Type</a>
+                </li>
+                </ul>
+                <!-- <div id= "tab-content" class="tab-content"> -->
+                <div id="tab-content" class="tab-content">
+                  <div class="tab-pane" role="tabpanel" id="tabs-1">
+                    <br>
+                    <div class="col-md-6 col-xl-3 mb-4">
+                      <div class="card shadow border-left-warning py-2" style="width:150px; height: 100px;">
+                        <div class="card-body" id="addTitle" (click)="addText()">
+                          <div class="row align-items-center no-gutters">
+                            <div class="col mr-2">
+                              <div class="text-uppercase text-warning font-weight-bold text-xs mb-1"><span>Add
+                                  text</span></div>
+                              <div class="text-dark font-weight-bold h5 mb-0"><span></span></div>
+                            </div>
+
+                          <div class="col-auto"><i class="fas fa-comments fa-2x text-gray-300"></i></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <br>
+                  <div class="col-md-6 col-xl-3 mb-4">
+                    <div class="card shadow border-left-primary py-2" style="width:150px; height: 100px;">
+                      <div class="card-body" id="addGraph" (click)="addGraph()">
+                        <div class="row align-items-center no-gutters">
+                          <div class="col mr-2">
+                            <div class="text-uppercase text-primary font-weight-bold text-xs mb-1">
+                              <br><span>ADD
+                                CHART</span></div>
+                            <div class="text-dark font-weight-bold h5 mb-0"><span></span></div>
+                          </div>
+                          <div class="col-auto"><i class="fas fa-chart-bar fa-2x text-gray-300"></i></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="tab-pane" role="tabpanel" id="tabs-2">
+                  <br>
+
+                  <div class="input-group" id="tab2">
+                    <br>
+                    <input type="text" [(ngModel)]="question" placeholder="Your question">
+                  </div>
+                </div>
+                <div class="tab-pane" role="tabpanel" id="tab-3"></div>
+              </div>
+            <!-- </div> -->
+
+            <!--ovdje-->
+
+            <!--kraj-->
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="bg-white sticky-footer">
+      <div class="container my-auto">
+        <div class="text-center my-auto copyright"><span>Copyright © Brand 2019</span></div>
+      </div>
+    </footer>
+  </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
+</div>

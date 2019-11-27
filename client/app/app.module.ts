@@ -32,7 +32,6 @@ import { PricingComponent } from './pricing/pricing.component';
 import { PaymentComponent } from './pricing/payment/payment.component';
 import { FaqComponent } from './faq/faq.component';
 import { UserDashboardComponent } from './user-dashboard/user-dashboard.component';
-import { PresentationComponent } from './presentation/presentation.component';
 import { PresentationService } from './services/presentation.service';
 import { SlideService } from './services/slide.service';
 import { SlidesComponent } from './slides/slides.component';
@@ -57,6 +56,9 @@ import { SlidesPanelComponent } from './slides-panel/slides-panel.component';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ChartsModule } from 'ng2-charts';
+import { NewSlideComponent } from './new-slide/new-slide.component';
+import { OldPresentationComponent } from './old-presentation/old-presentation.component';
+import { PresentationComponent } from './presentation/presentation.component';
 
 
 
@@ -89,7 +91,7 @@ export function tokenGetter() {
     PaymentComponent,
     FaqComponent,
     UserDashboardComponent,
-    PresentationComponent,
+    OldPresentationComponent,
     TestcanvasComponent,
     ChatComponent,
     PresentationDetailComponent,
@@ -102,7 +104,9 @@ export function tokenGetter() {
     HelpComponent,
     TermsComponent,
     PrivacyComponent,
-    SlidesPanelComponent
+    SlidesPanelComponent,
+    NewSlideComponent,
+    PresentationComponent
 
   ],
   imports: [

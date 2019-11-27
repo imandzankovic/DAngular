@@ -23,7 +23,7 @@ import { PricingComponent } from './pricing/pricing.component';
 import { PaymentComponent } from './pricing/payment/payment.component';
 import { FaqComponent } from './faq/faq.component';
 import { UserDashboardComponent } from './user-dashboard/user-dashboard.component';
-import { PresentationComponent } from './presentation/presentation.component';
+import {  OldPresentationComponent } from './old-presentation/old-presentation.component';
 import { SlidesComponent } from './slides/slides.component';
 import { TestcanvasComponent } from './testcanvas/testcanvas.component';
 import { ChatComponent } from './chat/chat.component';
@@ -38,6 +38,8 @@ import { HelpComponent } from './help/help.component';
 import { TermsComponent } from './terms/terms.component';
 import { PrivacyComponent } from './privacy/privacy.component';
 import { SlidesPanelComponent } from './slides-panel/slides-panel.component';
+import { PresentationComponent } from './presentation/presentation.component';
+import { NewSlideComponent } from './new-slide/new-slide.component';
 
 
 
@@ -65,7 +67,8 @@ const routes: Routes = [
   { path: 'payment', component: PaymentComponent },
   { path: 'faq', component: FaqComponent },
   { path: 'user-dashboard', component: UserDashboardComponent },
-  { path: 'presentation/:id', component: PresentationComponent },
+  { path: 'old-presentation/:id', component: OldPresentationComponent },
+  { path: 'presentation/:id', component: NewSlideComponent },
   { path: 'presentationDetail/:id', component: PresentationDetailComponent },
   { path: 'slide/:id', component: SlideDetailComponent },
   { path: 'slides', component: SlidesComponent },

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { SlideService } from '../services/slide.service';
-import * as CanvasJS from '../presentation/canvasjs.min';
+import * as CanvasJS from '../old-presentation/canvasjs.min';
 import * as $ from 'jquery';
 declare var $: any;
 

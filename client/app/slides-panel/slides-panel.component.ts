@@ -20,6 +20,7 @@ export class SlidesPanelComponent implements OnInit {
   slideHover: any;
   id: any;
   title: any;
+  newSlide: boolean;
 
 
   constructor(private presentationService: PresentationService,
@@ -29,6 +30,7 @@ export class SlidesPanelComponent implements OnInit {
   presentations: Presentation[];
   slide: Slide;
   slides: Slide[];
+  selectedSlide:Slide;
   isChart: boolean;
   canva: any[];
 
@@ -52,6 +54,7 @@ export class SlidesPanelComponent implements OnInit {
   @Input('receivedParentMessage') presentationId: string;
   @Output() dataLoaded: EventEmitter<any> = new EventEmitter<any>();
 
+  @Input() questionFromParent = '';
 
   private _data: any[] = [];
 
@@ -93,7 +96,13 @@ export class SlidesPanelComponent implements OnInit {
 
     }
 
-  
+    createSlide() {
+      
+      var s=new Slide();
+      this.slides.push(s);
+      this.selectedSlide=s;
+
+    }
 
 
   clickSlide(id) {
@@ -101,40 +110,8 @@ export class SlidesPanelComponent implements OnInit {
     this.dataLoaded.emit(id);
   }
 
-  // clearCharts() {
-  //   this.barChartLabels= [];
-  //   this.barChartData= [
-  //     {data: [], label: 'label1'},
-  //     {data: [], label: 'label2'}
-  //   ];
-  // }
-
-
-  // newDataPoint(dataArr = [100, 100, 100], label) {
-
-  //   this.barChartData.forEach((dataset, index) => {
-  //     this.barChartData[index] = Object.assign({}, this.barChartData[index], {
-  //       data: [...this.barChartData[index].data, dataArr[index]]
-  //     });
-  //   });
-  
-  //   this.barChartLabels = [...this.barChartLabels, label];
-  
-  // }
-
   drawChart(list, title) {
-    //this.title=title;
-    //this.newDataPoint([900, 50, 300], 'May')
-    //this.clearCharts();
-    // this.barChartData = [
-    //   {data: [], label: 'label1'},
-    //   {data: [], label: 'label2'}
-    // ];
-    // let clone = JSON.parse(JSON.stringify(this.barChartData));
 
-    // this.barChartOptions = {
-    //   responsive: true
-    // };
     this.barChartOptions = {
       responsive: true,
       title: {
@@ -144,16 +121,7 @@ export class SlidesPanelComponent implements OnInit {
       }
     }
    this.barChartLabels = list;
-    // this.barChartType = 'bar';
-    // this.barChartLegend = false;
-    // this.barChartPlugins = [];
-
-    // barChartData: ChartDataSets[] = [
-    //   { data: [45, 37, 60], label: 'Best Fruits' }
-    // ];
-
-    //this.barChartData = clone;
-    //other stuff like labels etc.
+    
   }
 
   ngOnInit() {
