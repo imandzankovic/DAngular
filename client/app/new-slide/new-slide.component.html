@@ -6,7 +6,7 @@
 
 
 <div id="wrapper">
-  <slides-panel [receivedPresentationId]="pId" (clickedSlide)="dataLoaded($event)"></slides-panel>
+  <slides-panel [receivedPresentationId]="pId" (clickedSlide)="dataLoaded($event)" [currentSlide]="slide" (createdSlide)="createdSlide($event)"></slides-panel>
   <div class="d-flex flex-column" id="content-wrapper">
     <div id="content">
       <div class="container-fluid">

@@ -8,6 +8,7 @@ import { ChartOptions, ChartType, ChartDataSets } from 'chart.js';
 import { Label } from 'ng2-charts';
 
 import * as $ from 'jquery';
+import { DOMElement } from '../shared/models/DOMelements.model';
 declare var $: any;
 
 @Component({
@@ -52,19 +53,19 @@ export class SlidesPanelComponent implements OnInit {
   ];
 
   @Input('receivedPresentationId') presentationId: string;
+
+  @Input('currentSlide') Slide:any;
+  
   @Output() clickedSlide: EventEmitter<any> = new EventEmitter<any>();
   @Output() createdSlide: EventEmitter<any> = new EventEmitter<any>();
 
+  public question = '';
 
-  @Output() questionEvent = new EventEmitter<string>();
-
-
-  question: string = '';
-  
-  onQuestionChange () {
-    this.questionEvent.emit(this.question);
+  questionEventHander($event: any) {
+    console.log('u ovoj slides panelu')
+    this.question = $event;
+    console.log(this.question)
   }
-
 
   private _data: any[] = [];
 
@@ -114,6 +115,16 @@ export class SlidesPanelComponent implements OnInit {
   createSlide() {
 
     var s = new Slide();
+    s._id='1234fdsf';
+    s.elements=[];
+
+    var e=new DOMElement();
+    e.type='h2';
+
+    var elements=[];
+    elements.push(e);
+    s.elements=elements;
+
     this.slides.push(s);
     this.selectedSlide = s;
 

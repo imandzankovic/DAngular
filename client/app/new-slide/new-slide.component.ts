@@ -31,6 +31,7 @@ export class NewSlideComponent implements OnInit {
 
   questionEventHander($event: any) {
     this.question = $event;
+    this.slide.elements[0].value=this.question;
   }
 
   dataLoaded(slideId: any) {
@@ -44,7 +45,8 @@ export class NewSlideComponent implements OnInit {
   createdSlide(createdSlide: any) {
     console.log('slide kreiran event')
     console.log(createdSlide)
-    //this.presentation.recivedData(slideId);
+    this.slide=createdSlide;
+    this.presentation.createdSlide(this.slide);
 
   }
  

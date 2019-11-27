@@ -8,6 +8,7 @@ import { PresentationService } from '../services/presentation.service';
 import { ChartOptions, ChartType, ChartDataSets } from 'chart.js';
 import { Label } from 'ng2-charts';
 import * as $ from 'jquery';
+import { Slide } from '../shared/models/slide.model';
 
 
 declare var $: any;
@@ -38,7 +39,7 @@ export class PresentationComponent implements OnInit {
   ];
 
   showSlide: boolean =false;
-  slide: any;
+  slide: any = new Slide();
   id: string;
   showQuestion: boolean;
 
@@ -51,12 +52,16 @@ export class PresentationComponent implements OnInit {
     question: string = '';
 
     onQuestionChange (event) {
+      console.log('mijenja se')
       this.showQuestion=true;
       this.questionEvent.emit(this.question);
     }
 
   recivedData(slideId) {
     
+    $('a[href="#tabs-1"]').click();
+    this.question='';
+  
     if(slideId!=null || slideId!=undefined){
       this.slidesService.getSlide(slideId).subscribe(res => {
 
@@ -71,6 +76,12 @@ export class PresentationComponent implements OnInit {
   
     console.log('doslo do drugog djeteta')
     
+  }
+
+  createdSlide(slide){
+    console.log('uslo u presentation')
+      this.slide=slide;
+      this.showSlide=true;
   }
 
   drawChart(list, title) {
