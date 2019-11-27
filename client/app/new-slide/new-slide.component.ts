@@ -21,10 +21,6 @@ export class NewSlideComponent implements OnInit {
     private route: ActivatedRoute) { }
 
 
-  @Input() questionFromParent = '';
-
-  
-
   @ViewChild(SlidesPanelComponent, { static: false })
   private slidesPanel: SlidesPanelComponent;
 
@@ -33,13 +29,24 @@ export class NewSlideComponent implements OnInit {
   
   public question = '';
 
+  questionEventHander($event: any) {
+    this.question = $event;
+  }
+
   dataLoaded(slideId: any) {
     console.log('hej hej ti')
     console.log(slideId)
+ 
     this.presentation.recivedData(slideId);
 
   }
 
+  createdSlide(createdSlide: any) {
+    console.log('slide kreiran event')
+    console.log(createdSlide)
+    //this.presentation.recivedData(slideId);
+
+  }
  
   ngOnInit() {
     this.pId = this.route.snapshot.paramMap.get('id');

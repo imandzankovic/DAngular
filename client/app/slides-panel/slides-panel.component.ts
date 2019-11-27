@@ -52,9 +52,19 @@ export class SlidesPanelComponent implements OnInit {
   ];
 
   @Input('receivedPresentationId') presentationId: string;
-  @Output() dataLoaded: EventEmitter<any> = new EventEmitter<any>();
+  @Output() clickedSlide: EventEmitter<any> = new EventEmitter<any>();
+  @Output() createdSlide: EventEmitter<any> = new EventEmitter<any>();
 
-  @Input() questionFromParent = '';
+
+  @Output() questionEvent = new EventEmitter<string>();
+
+
+  question: string = '';
+  
+  onQuestionChange () {
+    this.questionEvent.emit(this.question);
+  }
+
 
   private _data: any[] = [];
 
@@ -107,12 +117,15 @@ export class SlidesPanelComponent implements OnInit {
     this.slides.push(s);
     this.selectedSlide = s;
 
+    console.log('clicked cs')
+    this.createdSlide.emit(this.selectedSlide);
   }
 
 
   clickSlide(id) {
     console.log('kliknuo na slide id')
-    this.dataLoaded.emit(id);
+    console.log(id)
+    this.clickedSlide.emit(id);
   }
 
   drawChart(list, title) {
@@ -130,7 +143,6 @@ export class SlidesPanelComponent implements OnInit {
   }
 
   ngOnInit() {
-
 
     this.slideHover = false;
     console.log(this.presentationId)

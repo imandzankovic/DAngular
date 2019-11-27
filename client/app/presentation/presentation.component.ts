@@ -18,8 +18,7 @@ declare var $: any;
   styleUrls: ['./presentation.component.scss']
 })
 export class PresentationComponent implements OnInit {
-  showSlide: boolean;
-  slide: any;
+
 
   barChartOptions: ChartOptions = {
     responsive: true,
@@ -38,13 +37,24 @@ export class PresentationComponent implements OnInit {
     {data: [], label: 'label2'}
   ];
 
+  showSlide: boolean =false;
+  slide: any;
+  id: string;
+  showQuestion: boolean;
 
   constructor(private route: ActivatedRoute,
     private presentationService: PresentationService,
     private slidesService: SlideService) { }
 
-  id: string;
-  
+    @Output() questionEvent = new EventEmitter<string>();
+
+    question: string = '';
+
+    onQuestionChange (event) {
+      this.showQuestion=true;
+      this.questionEvent.emit(this.question);
+    }
+
   recivedData(slideId) {
     
     if(slideId!=null || slideId!=undefined){
@@ -60,7 +70,7 @@ export class PresentationComponent implements OnInit {
     }
   
     console.log('doslo do drugog djeteta')
-    return this.showSlide;
+    
   }
 
   drawChart(list, title) {
@@ -75,6 +85,14 @@ export class PresentationComponent implements OnInit {
     }
    this.barChartLabels = list;
     
+  }
+
+    
+  addText(){
+
+    var tab2 = document.getElementById("tab2");
+    $('a[href="#tabs-2"]').click();
+
   }
 
   ngOnInit() {
