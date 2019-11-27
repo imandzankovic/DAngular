@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { SlideService } from '../services/slide.service';
@@ -44,9 +44,7 @@ export class PresentationComponent implements OnInit {
     private slidesService: SlideService) { }
 
   id: string;
-
-
-
+  
   recivedData(slideId) {
     
     if(slideId!=null || slideId!=undefined){
@@ -83,6 +81,8 @@ export class PresentationComponent implements OnInit {
 
     this.id = this.route.snapshot.paramMap.get('id');
     console.log(this.id)
+    //this.getPresentationId.emit(this.id);
+
     $('a[href="#tabs-1"]').click();
 
   }

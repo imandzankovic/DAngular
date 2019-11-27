@@ -30,7 +30,7 @@ export class SlidesPanelComponent implements OnInit {
   presentations: Presentation[];
   slide: Slide;
   slides: Slide[];
-  selectedSlide:Slide;
+  selectedSlide: Slide;
   isChart: boolean;
   canva: any[];
 
@@ -47,11 +47,11 @@ export class SlidesPanelComponent implements OnInit {
   barChartPlugins: any[] = [];
 
   barChartData: ChartDataSets[] = [
-    {data: [], label: 'label1'},
-    {data: [], label: 'label2'}
+    { data: [], label: 'label1' },
+    { data: [], label: 'label2' }
   ];
 
-  @Input('receivedParentMessage') presentationId: string;
+  @Input('receivedPresentationId') presentationId: string;
   @Output() dataLoaded: EventEmitter<any> = new EventEmitter<any>();
 
   @Input() questionFromParent = '';
@@ -65,7 +65,7 @@ export class SlidesPanelComponent implements OnInit {
   set data(data: any[]) {
     this._data = data;
   }
-  
+
   edit(id) {
     console.log('sta je')
     alert('edit clicked' + id);
@@ -73,6 +73,11 @@ export class SlidesPanelComponent implements OnInit {
 
   delete(id) {
     alert('delete clicked' + id);
+  }
+
+  getPresentationId(presentationId) {
+    this.presentationId = presentationId;
+    this.getSlidesOfPresentation(this.presentationId);
   }
 
   getSlidesOfPresentation(id) {
@@ -87,22 +92,22 @@ export class SlidesPanelComponent implements OnInit {
       this.slidesService.getSlide(element).subscribe(res => {
         slides.push(res);
 
-        var chart=this.slidesService.processCharts(res);
-        this.drawChart(chart.list,chart.title);
+        var chart = this.slidesService.processCharts(res);
+        this.drawChart(chart.list, chart.title);
       })
 
     });
     this.slides = slides;
 
-    }
+  }
 
-    createSlide() {
-      
-      var s=new Slide();
-      this.slides.push(s);
-      this.selectedSlide=s;
+  createSlide() {
 
-    }
+    var s = new Slide();
+    this.slides.push(s);
+    this.selectedSlide = s;
+
+  }
 
 
   clickSlide(id) {
@@ -117,20 +122,22 @@ export class SlidesPanelComponent implements OnInit {
       title: {
         text: title,
         display: true,
-        fontSize:7
+        fontSize: 7
       }
     }
-   this.barChartLabels = list;
-    
+    this.barChartLabels = list;
+
   }
 
   ngOnInit() {
 
+
     this.slideHover = false;
     console.log(this.presentationId)
+    
+    this.getSlidesOfPresentation(this.presentationId);
+    //this.getSlidesOfPresentation('5dd3e5ac1452fd00044ca7af');
 
-  this.getSlidesOfPresentation('5dd3e5ac1452fd00044ca7af');
- 
   }
 
 }

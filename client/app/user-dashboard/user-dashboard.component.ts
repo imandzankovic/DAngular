@@ -34,7 +34,6 @@ export class UserDashboardComponent implements OnInit {
     private router: Router) { }
 
 
-
   getUser() {
     this.userService.getUser(this.auth.currentUser).subscribe(
       data => {
@@ -73,6 +72,7 @@ export class UserDashboardComponent implements OnInit {
       });
 
   }
+
   delete(id) {
     this.presentationService.deletePresentation(id)
       .subscribe(
