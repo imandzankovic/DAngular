@@ -102,14 +102,31 @@
                 </div>
                 <div class="tab-pane" role="tabpanel" id="tabs-2">
                     <br>
-
+                
                     <div class="input-group" id="tab2">
                         <br>
-                        <input type="text" (keyup)="onQuestionChange($event)" [(ngModel)]="question" placeholder="Question">
+
+                        <div *ngIf="addQuestion">
+                            <input type="text" (keyup)="onQuestionChange($event)" [(ngModel)]="question" placeholder="Question">
+                        </div>
+
+                        <div *ngIf="addChart">
+                                <input type="text" class="form-control"(keyup)="onTitleChange($event,title)" [(ngModel)]="title" placeholder="Question">
+                                        <br>
+                                <div *ngFor="let option of options; let in=index">
+                                            <div class="form-group">
+                                              <input class="form-control" type="text" [(ngModel)]="options[in].value" name="name{{in}}"  (keyup)="onOptionChange($event,options[in].value,in)" #name="ngModel" required />
+                                            </div>
+                                            <br />
+                                        </div>
+                                        <button class="btn-primary" (click)="add()">Add option</button>
+                                     
+                        </div>
+                
                     </div>
                 </div>
                 <div class="tab-pane" role="tabpanel" id="tab-3"></div>
-            </div>
+                </div>
 
         </div>
     </div>

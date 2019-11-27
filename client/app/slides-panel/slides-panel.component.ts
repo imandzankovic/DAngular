@@ -119,7 +119,6 @@ export class SlidesPanelComponent implements OnInit {
     s.elements=[];
 
     var e=new DOMElement();
-    e.type='h2';
 
     var elements=[];
     elements.push(e);

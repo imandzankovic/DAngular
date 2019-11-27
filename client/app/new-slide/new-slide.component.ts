@@ -34,6 +34,19 @@ export class NewSlideComponent implements OnInit {
     this.slide.elements[0].value=this.question;
   }
 
+  public option = '';
+
+  optionEventHander($event: any) {
+    this.option = $event;
+   // this.slide.elements[0].value=this.option;
+  }
+
+  public title = '';
+  titleEventHander($event: any) {
+    this.title = $event;
+   // this.slide.elements[0].value=this.option;
+  }
+
   dataLoaded(slideId: any) {
     console.log('hej hej ti')
     console.log(slideId)
