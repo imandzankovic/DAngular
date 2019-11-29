@@ -1,79 +1,64 @@
 <div id="wrapper">
-        <nav
-            class="navbar navbar-dark text-nowrap text-truncate align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0">
-            <div class="container-fluid d-flex flex-column p-0">
-    
-                <a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="#">
-                    <div class="sidebar-brand-icon rotate-n-15"><i class="fas fa-laugh-wink"></i></div>
-                    <div class="sidebar-brand-text mx-3"><span>SLIDES</span></div>
-                </a>
-             
-                <div *ngFor="let slide of slides" (mouseenter)="slide.slideHover=true" (mouseleave)="slide.slideHover=false"
-                    class="card shadow border-left-primary py-2"
-                    style="width: 138px;height: 96px;margin: 4px;padding: 60px;" (click)="clickSlide(slide._id)">
-                           <section style="margin-left: -45px;">
-                       
-                        <div *ngFor="let element of slide.elements">
-                           
-                            <div *ngIf="element.type=='h2'">
-                                <h2 style="font-size:15px; color:black">{{element.value}}</h2>
-                                <h2 style="font-size:15px; color:black">{{question}}</h2>
+    <nav
+        class="navbar navbar-dark text-nowrap text-truncate align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0">
+        <div class="container-fluid d-flex flex-column p-0">
+
+            <a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="#">
+                <div class="sidebar-brand-icon rotate-n-15"><i class="fas fa-laugh-wink"></i></div>
+                <div class="sidebar-brand-text mx-3"><span>SLIDES</span></div>
+            </a>
+
+            <div *ngFor="let slide of slides" (mouseenter)="slide.slideHover=true" (mouseleave)="slide.slideHover=false"
+                class="card shadow border-left-primary py-2"
+                style="width: 138px;height: 96px;margin: 4px;padding: 60px;" (click)="clickSlide(slide._id)">
+                <section style="margin-left: -45px;">
+
+                    <div *ngFor="let element of slide.elements">
+
+                        <div *ngIf="element.type=='h2'">
+                            <h2 style="font-size:15px; color:black">{{element.value}}</h2>
+                            <h2 style="font-size:15px; color:black">{{question}}</h2>
+                        </div>
+
+                        <div *ngIf="element.type=='chart'">
+
+                            <div>
+
+                                <app-chart [receivedElement]="slide"></app-chart>
+
                             </div>
-    
-                            <div *ngIf="element.type=='chart'">
-                               
-                                    <div>
-                                   
-                                   
-                                        <div class="row">
-                                              
-                                                <div  *ngIf="barChartData.length > 0" class="chart-wrapper" style="position:absolute; margin-left: -10px; width: 138px;height: 109px;">
-                                         
-                                                    <canvas baseChart style=" margin-left: -7px; width: 138px;height: 109px;"
-                                                        [datasets]="barChartData"
-                                                        [labels]="barChartLabels"
-                                                        [options]="barChartOptions"
-                                                        [plugins]="barChartPlugins"
-                                                        [legend]="barChartLegend"
-                                                        [chartType]="barChartType">
-                                                      </canvas>
-                                                    </div>
-                                        </div>
-                             
-                                  
-                                    </div>
-    
-                            </div>
-                        
-                        </div> 
-    
-                            </section>
-                  
-    
-                    <div *ngIf="slide.slideHover" class="card-header"
-                        style="margin-left: 23px; width: 50px;height: 62px; margin-right: 44px; position: absolute;">
-                        <button class="btn" style=" width: 33px;height: 28px; margin-top: -28px; margin-left: -11px;"
-                            (click)="edit(slide._id)"><i class="fa fa-pencil"></i></button>
-                        <br>
-                        <button class="btn" style=" width: 33px;height: 28px; margin-top:-18px; margin-left: -11px;"
-                            (click)="delete(slide._id)"><i class="fa fa-trash-o"></i></button>
-      
+
+                        </div>
+
                     </div>
-                   
+
+                </section>
+
+
+                <div *ngIf="slide.slideHover" class="card-header"
+                    style="margin-left: 23px; width: 50px;height: 62px; margin-right: 44px; position: absolute;">
+                    <button class="btn" style=" width: 33px;height: 28px; margin-top: -28px; margin-left: -11px;"
+                        (click)="edit(slide._id)"><i class="fa fa-pencil"></i></button>
+                    <br>
+                    <button class="btn" style=" width: 33px;height: 28px; margin-top:-18px; margin-left: -11px;"
+                        (click)="delete(slide._id)"><i class="fa fa-trash-o"></i></button>
+
                 </div>
-    
-               
-                <!-- <div id="slidesWell" style="height: 100px; width:150px; background-color: white; border: 2px solid grey;
+
+            </div>
+
+
+            <!-- <div id="slidesWell" style="height: 100px; width:150px; background-color: white; border: 2px solid grey;
           border-radius: 5px;" (click)="panelClick($event)">
          
         
      </div> -->
-                <div id="operations" style="margin-top: 225px">
-                    <button class="btn btn-default" id="addSlide" type="button" style="background-color: white"
-                        (click)="createSlide()">Add
-                        Slide</button>
-                </div>
-    
+            <div id="operations" style="margin-top: 225px">
+                <button class="btn btn-default" id="addSlide" type="button" style="background-color: white"
+                    (click)="createSlide()">Add
+                    Slide</button>
             </div>
-        </nav>
+
         </div>
+    </nav>
+</div>

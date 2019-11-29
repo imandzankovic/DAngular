@@ -1,20 +1,22 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ViewChildren, QueryList } from '@angular/core';
 import { SlideService } from '../services/slide.service';
 import { PresentationService } from '../services/presentation.service';
 import { Presentation } from '../shared/models/presentation.model';
 import { Slide } from '../shared/models/slide.model';
 import { ActivatedRoute, Router } from "@angular/router"
 import { ChartOptions, ChartType, ChartDataSets } from 'chart.js';
-import { Label } from 'ng2-charts';
+import { Label, BaseChartDirective } from 'ng2-charts';
 
 import * as $ from 'jquery';
 import { DOMElement } from '../shared/models/DOMelements.model';
+import { TreeMapModule } from '@swimlane/ngx-charts';
+import { ChartComponent } from '../chart/chart.component';
 declare var $: any;
 
 @Component({
   selector: 'slides-panel',
   templateUrl: './slides-panel.component.html',
-  styleUrls: ['./slides-panel.component.scss']
+  styleUrls: ['./slides-panel.component.scss'],
 })
 export class SlidesPanelComponent implements OnInit {
 
@@ -22,7 +24,7 @@ export class SlidesPanelComponent implements OnInit {
   id: any;
   title: any;
   newSlide: boolean;
-
+  isSelectedSlide: boolean;
 
   constructor(private presentationService: PresentationService,
     private slidesService: SlideService,
@@ -35,27 +37,12 @@ export class SlidesPanelComponent implements OnInit {
   isChart: boolean;
   canva: any[];
 
-  barChartOptions: ChartOptions = {
-    responsive: true,
-    title: {
-      text: 'my title',
-      display: true
-    }
-  };
-  barChartLabels: Label[] = [];
-  barChartType: ChartType = 'bar'
-  barChartLegend: boolean = false;
-  barChartPlugins: any[] = [];
-
-  barChartData: ChartDataSets[] = [
-    { data: [], label: 'label1' },
-    { data: [], label: 'label2' }
-  ];
+  @Input('currentGraph') graph: any;
 
   @Input('receivedPresentationId') presentationId: string;
 
-  @Input('currentSlide') Slide:any;
-  
+  @Input('currentSlide') Slide: any;
+
   @Output() clickedSlide: EventEmitter<any> = new EventEmitter<any>();
   @Output() createdSlide: EventEmitter<any> = new EventEmitter<any>();
 
@@ -102,9 +89,6 @@ export class SlidesPanelComponent implements OnInit {
     listOfSlideIds.forEach(element => {
       this.slidesService.getSlide(element).subscribe(res => {
         slides.push(res);
-
-        var chart = this.slidesService.processCharts(res);
-        this.drawChart(chart.list, chart.title);
       })
 
     });
@@ -115,22 +99,19 @@ export class SlidesPanelComponent implements OnInit {
   createSlide() {
 
     var s = new Slide();
-    s._id='1234fdsf';
-    s.elements=[];
+    var e = new DOMElement();
 
-    var e=new DOMElement();
-
-    var elements=[];
+    var elements = [];
     elements.push(e);
-    s.elements=elements;
+    s.elements = elements;
 
-    this.slides.push(s);
-    this.selectedSlide = s;
+    this.slidesService.addSlide(s).subscribe(res => {
+      console.log('clicked cs')
+      this.createdSlide.emit(res);
+      this.slides.push(res);
+    })
 
-    console.log('clicked cs')
-    this.createdSlide.emit(this.selectedSlide);
   }
-
 
   clickSlide(id) {
     console.log('kliknuo na slide id')
@@ -138,25 +119,44 @@ export class SlidesPanelComponent implements OnInit {
     this.clickedSlide.emit(id);
   }
 
-  drawChart(list, title) {
+  updateGraph(slide) {
+    console.log(slide)
+    var currentSlide;
 
-    this.barChartOptions = {
-      responsive: true,
-      title: {
-        text: title,
-        display: true,
-        fontSize: 7
+    console.log(this.slides)
+    for (let i = 0; i < this.slides.length; i++) {
+      if (this.slides[i]._id == slide._id) {
+        currentSlide = this.slides[i];
+
       }
     }
-    this.barChartLabels = list;
+    currentSlide.elements[0].type = 'chart';
+
+    //currentSlide.elements[0].value = 'aqua';
+
+    //  this.slidesService.updateSlide(slide._id,currentSlide).subscribe(res=>{
+    //    console.log(res);
+
+    //     var chart = this.slidesService.processCharts(res);
+    //     this.isSelectedSlide=false;
+    //     this.drawChart(chart.list, chart.title);
+
+
+    //  })
+
+    // this.barNewChartData.push({data:[5]});
+    // this.barNewChartLabels=['fruit']
+
+
 
   }
+
 
   ngOnInit() {
 
     this.slideHover = false;
     console.log(this.presentationId)
-    
+
     this.getSlidesOfPresentation(this.presentationId);
     //this.getSlidesOfPresentation('5dd3e5ac1452fd00044ca7af');
 

@@ -24,7 +24,6 @@ import { PaymentComponent } from './pricing/payment/payment.component';
 import { FaqComponent } from './faq/faq.component';
 import { UserDashboardComponent } from './user-dashboard/user-dashboard.component';
 import {  OldPresentationComponent } from './old-presentation/old-presentation.component';
-import { SlidesComponent } from './slides/slides.component';
 import { TestcanvasComponent } from './testcanvas/testcanvas.component';
 import { ChatComponent } from './chat/chat.component';
 import { PresentationDetailComponent } from './presentation-detail/presentation-detail.component';
@@ -71,7 +70,7 @@ const routes: Routes = [
   { path: 'presentation/:id', component: NewSlideComponent },
   { path: 'presentationDetail/:id', component: PresentationDetailComponent },
   { path: 'slide/:id', component: SlideDetailComponent },
-  { path: 'slides', component: SlidesComponent },
+  //{ path: 'slides', component: SlidesComponent },
   { path: 'canvas', component: TestcanvasComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'login', component: LoginComponent },

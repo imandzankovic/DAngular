@@ -24,7 +24,7 @@ export class PresentationComponent implements OnInit {
   barChartOptions: ChartOptions = {
     responsive: true,
     title: {
-      text: 'my title',
+      text: 'Question',
       display: true
     }
   };
@@ -48,6 +48,16 @@ export class PresentationComponent implements OnInit {
   constructor(private route: ActivatedRoute,
     private presentationService: PresentationService,
     private slidesService: SlideService) { }
+
+    @Output() createdGraph = new EventEmitter<string>();
+
+    graph: any;
+  
+    onCreatedGraph(event) {
+      console.log('mijenja se graph')
+      //this.showQuestion = true;
+      this.createdGraph.emit(event);
+    }
 
   @Output() questionEvent = new EventEmitter<string>();
 
@@ -144,9 +154,13 @@ export class PresentationComponent implements OnInit {
   }
 
   addGraph() {
+
     this.slide.elements[0].type = 'chart';
+    this.barChartLabels=['Option 1'];
     this.addChart = true;
+    this.onCreatedGraph(this.slide);
     $('a[href="#tabs-2"]').click();
+    
   }
 
   add() {

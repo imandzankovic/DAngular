@@ -34,7 +34,6 @@ import { FaqComponent } from './faq/faq.component';
 import { UserDashboardComponent } from './user-dashboard/user-dashboard.component';
 import { PresentationService } from './services/presentation.service';
 import { SlideService } from './services/slide.service';
-import { SlidesComponent } from './slides/slides.component';
 import { TestcanvasComponent } from './testcanvas/testcanvas.component';
 import { ChatComponent } from './chat/chat.component';
 import { BrowserModule } from '@angular/platform-browser';
@@ -59,6 +58,7 @@ import { ChartsModule } from 'ng2-charts';
 import { NewSlideComponent } from './new-slide/new-slide.component';
 import { OldPresentationComponent } from './old-presentation/old-presentation.component';
 import { PresentationComponent } from './presentation/presentation.component';
+import { ChartComponent } from './chart/chart.component';
 
 
 
@@ -85,7 +85,6 @@ export function tokenGetter() {
     SolutionsComponent,
     HomeComponent,
     BlogComponent,
-    SlidesComponent,
     BlogPostComponent,
     PricingComponent,
     PaymentComponent,
@@ -106,7 +105,8 @@ export function tokenGetter() {
     PrivacyComponent,
     SlidesPanelComponent,
     NewSlideComponent,
-    PresentationComponent
+    PresentationComponent,
+    ChartComponent
 
   ],
   imports: [

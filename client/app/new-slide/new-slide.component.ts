@@ -47,6 +47,13 @@ export class NewSlideComponent implements OnInit {
    // this.slide.elements[0].value=this.option;
   }
 
+ 
+  createdGraphEventHander($event: any) {
+    this.slide = $event;
+    this.slidesPanel.updateGraph(this.slide)
+   // this.slide.elements[0].value=this.option;
+  }
+
   dataLoaded(slideId: any) {
     console.log('hej hej ti')
     console.log(slideId)
@@ -60,6 +67,14 @@ export class NewSlideComponent implements OnInit {
     console.log(createdSlide)
     this.slide=createdSlide;
     this.presentation.createdSlide(this.slide);
+
+  }
+
+  createdGraph(graph: any) {
+    console.log('slide kreiran event')
+    console.log(graph)
+    //this.slide=createdSlide;
+    this.slidesPanel.updateGraph(graph);
 
   }
  
