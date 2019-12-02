@@ -14,7 +14,11 @@
         </div>
       
        
-      <app-presentation (questionEvent)="questionEventHander($event)" (optionEvent)="optionEventHander($event)" (titleEvent)="titleEventHander($event)" (createdGraph)="createdGraphEventHander($event)"></app-presentation>
+      <app-presentation (questionEvent)="questionEventHander($event)" 
+                        (optionEvent)="optionEventHander($event,index,value)" 
+                        (indexEvent)="indexEventHander($event)"
+                        (titleEvent)="titleEventHander($event)" 
+                        (createdGraph)="createdGraphEventHander($event)" ></app-presentation>
       
     </div>
     <footer class="bg-white sticky-footer">

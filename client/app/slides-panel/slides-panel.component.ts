@@ -117,40 +117,33 @@ export class SlidesPanelComponent implements OnInit {
   }
 
   clickSlide(id) {
-    console.log('kliknuo na slide id')
-    console.log(id)
     this.clickedSlide.emit(id);
   }
 
-  @ViewChild('myComponentVariableName',{static:false}) myComponentVariable: ElementRef;
+  //@ViewChild('myComponentVariableName',{static:false}) myComponentVariable: ElementRef;
   @ViewChildren(ChartComponent) myComponentList: QueryList<ChartComponent>;
 
   public option = '';
   @ViewChild(ChartComponent, { static: false })
-    private chartPanel: ChartComponent;
+  private chartPanel: ChartComponent;
 
-  updateOption(option,slide){
-    console.log('uslo u slide panel')
-
-    var currentSlide;
-    for (let i = 0; i < this.slides.length; i++) {
-      if (this.slides[i]._id == slide._id) {
-        currentSlide = this.slides[i];
-  
-      }
-    }
-    this.currentSlide=currentSlide;
-    this.slide=currentSlide;
-    //this.slide.elements[0].value=option;
-    console.log('haaaaj')
-  console.log(this.myComponentList.last) 
-  var chart=this.myComponentList.last;
-  chart.barChartLabels[0]=option;
- 
-    //this.chartPanel.updateOption(option, currentSlide)
-    
+  updateOption(option, index) {
+    var chart = this.myComponentList.last;
+    chart.barChartLabels[index] = option;
   }  
 
+  updateTitle(title) {
+    var chart = this.myComponentList.last;
+    
+    chart.barChartOptions = {
+      responsive: true,
+      title: {
+        text: title,
+        display: true,
+        fontSize: 7
+      }
+    }
+  } 
 
   updateGraph(slide) {
     

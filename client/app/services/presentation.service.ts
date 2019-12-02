@@ -89,13 +89,8 @@ export class PresentationService {
         const url = `${apiUrl}/${id}`;
         console.log(presentation)
         return this.http.put(url, presentation, httpOptions)
-        // .pipe(
-        //   tap(_ => console.log(`updated presentation id=${id}`)),
-        //   catchError(this.handleError<any>('updatePresentation'))
-        // );
         .pipe(
           tap(() => console.log('staza ' + url + 'updateProduct: ' + presentation._id, 'body' + presentation.title)),
-          // Return the product on an update
           map(() => presentation),
           catchError(this.handleError<any>('updatePresentation'))
          

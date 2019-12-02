@@ -54,8 +54,6 @@ export class PresentationComponent implements OnInit {
     graph: any;
   
     onCreatedGraph(event) {
-      console.log('mijenja se graph')
-      //this.showQuestion = true;
       this.createdGraph.emit(event);
     }
 
@@ -64,7 +62,6 @@ export class PresentationComponent implements OnInit {
   question: string = '';
 
   onQuestionChange(event) {
-    console.log('mijenja se')
     this.showQuestion = true;
     this.questionEvent.emit(this.question);
   }
@@ -83,7 +80,8 @@ export class PresentationComponent implements OnInit {
     this.drawChart(options, value)
   }
 
-  @Output() optionEvent = new EventEmitter<string>();
+  @Output() optionEvent = new EventEmitter<{index: string, value: string}>();
+
 
   option: string = '';
   options = [{ value: 'option1' }];
@@ -100,11 +98,8 @@ export class PresentationComponent implements OnInit {
 
   onOptionChange(event, value, index) {
 
-    console.log(value)
-    console.log(index)
+    this.optionEvent.emit({index,value});
 
-
-    this.optionEvent.emit(value);
     var options = this.getInputOptions();
     options[index] = value;
 
@@ -134,7 +129,6 @@ export class PresentationComponent implements OnInit {
   }
 
   createdSlide(slide) {
-    console.log('uslo u presentation')
     this.slide = slide;
     this.showSlide = true;
   }
@@ -179,9 +173,6 @@ export class PresentationComponent implements OnInit {
   ngOnInit() {
 
     this.id = this.route.snapshot.paramMap.get('id');
-    console.log(this.id)
-    //this.getPresentationId.emit(this.id);
-
     $('a[href="#tabs-1"]').click();
 
   }
