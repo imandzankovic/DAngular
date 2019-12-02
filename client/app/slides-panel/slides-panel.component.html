@@ -24,7 +24,7 @@
 
                             <div>
 
-                                <app-chart [receivedElement]="slide"></app-chart>
+                                <app-chart [receivedElement]="slide" [newOption]="option" #myComponentVariableName></app-chart>
 
                             </div>
 
@@ -46,13 +46,7 @@
                 </div>
 
             </div>
-
-
-            <!-- <div id="slidesWell" style="height: 100px; width:150px; background-color: white; border: 2px solid grey;
-          border-radius: 5px;" (click)="panelClick($event)">
-         
-        
-     </div> -->
+            
             <div id="operations" style="margin-top: 225px">
                 <button class="btn btn-default" id="addSlide" type="button" style="background-color: white"
                     (click)="createSlide()">Add

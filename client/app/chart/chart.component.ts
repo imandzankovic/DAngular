@@ -1,10 +1,9 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ChartOptions, ChartType, ChartDataSets } from 'chart.js';
 import { Label } from 'ng2-charts';
-import { DOMElement } from '../shared/models/DOMelements.model';
 import { SlideService } from '../services/slide.service';
 import { Slide } from '../shared/models/slide.model';
-import { noUndefined } from '@angular/compiler/src/util';
+
 
 
 @Component({
@@ -18,6 +17,7 @@ export class ChartComponent implements OnInit {
   constructor(private slideService: SlideService) { }
 
   @Input('receivedElement') slide: Slide;
+
   @Output() initialized: EventEmitter<any> = new EventEmitter<any>();
 
   barChartOptions: ChartOptions = {
@@ -36,6 +36,18 @@ export class ChartComponent implements OnInit {
     { data: [], label: '' },
     { data: [], label: '' }
   ];
+
+  //option: string = '';
+  options = [{ value: 'option1' }];
+  inputOptions = [];
+
+  setInputOptions(i, val) {
+    this.inputOptions[i] = val;
+  }
+
+  getInputOptions() {
+    return this.inputOptions;
+  }
 
   drawChart(list, title) {
 
@@ -62,6 +74,7 @@ export class ChartComponent implements OnInit {
   ngOnInit() {
     console.log(this.slide)
 
+    this.slideService.getSlide(this.slide._id).subscribe(res=>this.slide=res)
     var chart = this.slideService.processCharts(this.slide);
     this.drawChart(chart.list, chart.title);
   }

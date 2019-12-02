@@ -1,16 +1,15 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ViewChildren, QueryList } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ViewChildren, QueryList, ElementRef } from '@angular/core';
 import { SlideService } from '../services/slide.service';
 import { PresentationService } from '../services/presentation.service';
 import { Presentation } from '../shared/models/presentation.model';
 import { Slide } from '../shared/models/slide.model';
 import { ActivatedRoute, Router } from "@angular/router"
-import { ChartOptions, ChartType, ChartDataSets } from 'chart.js';
-import { Label, BaseChartDirective } from 'ng2-charts';
+
 
 import * as $ from 'jquery';
 import { DOMElement } from '../shared/models/DOMelements.model';
-import { TreeMapModule } from '@swimlane/ngx-charts';
 import { ChartComponent } from '../chart/chart.component';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 declare var $: any;
 
 @Component({
@@ -25,6 +24,8 @@ export class SlidesPanelComponent implements OnInit {
   title: any;
   newSlide: boolean;
   isSelectedSlide: boolean;
+  currentSlide: any;
+  presentation: any;
 
   constructor(private presentationService: PresentationService,
     private slidesService: SlideService,
@@ -54,23 +55,18 @@ export class SlidesPanelComponent implements OnInit {
     console.log(this.question)
   }
 
-  private _data: any[] = [];
-
-  get data(): any[] {
-    return this._data;
-  }
-
-  set data(data: any[]) {
-    this._data = data;
-  }
-
   edit(id) {
     console.log('sta je')
     alert('edit clicked' + id);
   }
 
   delete(id) {
-    alert('delete clicked' + id);
+    this.slidesService.deleteSlide(id).subscribe(res=>{
+      console.log(res)
+      this.presentation.slides.forEach( (item, index) => {
+        if(item === id) this.presentation.slides.splice(index,1);
+      });
+    })
   }
 
   getPresentationId(presentationId) {
@@ -109,6 +105,13 @@ export class SlidesPanelComponent implements OnInit {
       console.log('clicked cs')
       this.createdSlide.emit(res);
       this.slides.push(res);
+
+      this.presentation.slides.push(res._id)
+      this.presentationService.updatePresentation(this.presentationId,this.presentation).subscribe(res=>{
+        console.log(res);
+        this.presentation=res;
+      })
+     
     })
 
   }
@@ -119,7 +122,38 @@ export class SlidesPanelComponent implements OnInit {
     this.clickedSlide.emit(id);
   }
 
+  @ViewChild('myComponentVariableName',{static:false}) myComponentVariable: ElementRef;
+  @ViewChildren(ChartComponent) myComponentList: QueryList<ChartComponent>;
+
+  public option = '';
+  @ViewChild(ChartComponent, { static: false })
+    private chartPanel: ChartComponent;
+
+  updateOption(option,slide){
+    console.log('uslo u slide panel')
+
+    var currentSlide;
+    for (let i = 0; i < this.slides.length; i++) {
+      if (this.slides[i]._id == slide._id) {
+        currentSlide = this.slides[i];
+  
+      }
+    }
+    this.currentSlide=currentSlide;
+    this.slide=currentSlide;
+    //this.slide.elements[0].value=option;
+    console.log('haaaaj')
+  console.log(this.myComponentList.last) 
+  var chart=this.myComponentList.last;
+  chart.barChartLabels[0]=option;
+ 
+    //this.chartPanel.updateOption(option, currentSlide)
+    
+  }  
+
+
   updateGraph(slide) {
+    
     console.log(slide)
     var currentSlide;
 
@@ -130,25 +164,10 @@ export class SlidesPanelComponent implements OnInit {
 
       }
     }
+    this.currentSlide=currentSlide;
     currentSlide.elements[0].type = 'chart';
-
-    //currentSlide.elements[0].value = 'aqua';
-
-    //  this.slidesService.updateSlide(slide._id,currentSlide).subscribe(res=>{
-    //    console.log(res);
-
-    //     var chart = this.slidesService.processCharts(res);
-    //     this.isSelectedSlide=false;
-    //     this.drawChart(chart.list, chart.title);
-
-
-    //  })
-
-    // this.barNewChartData.push({data:[5]});
-    // this.barNewChartLabels=['fruit']
-
-
-
+    this.slidesService.updateSlide(slide._id,currentSlide).subscribe(res=>console.log(res))
+  
   }
 
 
@@ -158,6 +177,8 @@ export class SlidesPanelComponent implements OnInit {
     console.log(this.presentationId)
 
     this.getSlidesOfPresentation(this.presentationId);
+    this.presentationService.getPresentation(this.presentationId).subscribe(res=>{
+      this.presentation=res;})
     //this.getSlidesOfPresentation('5dd3e5ac1452fd00044ca7af');
 
   }

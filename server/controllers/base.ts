@@ -73,6 +73,7 @@ abstract class BaseCtrl {
       await this.model.findOneAndUpdate({ _id: req.params.id }, req.body);
       res.send(req.body).status(200);
     } catch (err) {
+     
       return res.status(400).json({ error: err.message });
     }
   }

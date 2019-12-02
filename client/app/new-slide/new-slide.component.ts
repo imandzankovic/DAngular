@@ -5,6 +5,7 @@ import { SlideService } from '../services/slide.service';
 import { Slide } from '../shared/models/slide.model';
 import { PresentationComponent } from '../presentation/presentation.component';
 import { ActivatedRoute } from '@angular/router';
+import { ChartComponent } from '../chart/chart.component';
 
 @Component({
   selector: 'app-new-slide',
@@ -19,7 +20,6 @@ export class NewSlideComponent implements OnInit {
   constructor(private presentationService: PresentationService,
     private slidesService: SlideService,
     private route: ActivatedRoute) { }
-
 
   @ViewChild(SlidesPanelComponent, { static: false })
   private slidesPanel: SlidesPanelComponent;
@@ -38,7 +38,9 @@ export class NewSlideComponent implements OnInit {
 
   optionEventHander($event: any) {
     this.option = $event;
-   // this.slide.elements[0].value=this.option;
+   //this.slidesPanel.slide.elements[0].value=this.option;
+   console.log(this.option)
+   this.slidesPanel.updateOption(this.option,this.slide);
   }
 
   public title = '';

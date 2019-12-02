@@ -50,7 +50,7 @@ export class PresentationService {
           );
       }
       
-      getPresentation(id: number): Observable<Presentation> {
+      getPresentation(id: any): Observable<Presentation> {
         const url = `${apiUrl}/${id}`;
         return this.http.get<Presentation>(url).pipe(
           tap(_ => console.log(`fetched presentation id=${id}`)),

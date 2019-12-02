@@ -104,7 +104,7 @@ export class PresentationComponent implements OnInit {
     console.log(index)
 
 
-    this.optionEvent.emit(this.option);
+    this.optionEvent.emit(value);
     var options = this.getInputOptions();
     options[index] = value;
 
@@ -160,7 +160,7 @@ export class PresentationComponent implements OnInit {
     this.addChart = true;
     this.onCreatedGraph(this.slide);
     $('a[href="#tabs-2"]').click();
-    
+
   }
 
   add() {
