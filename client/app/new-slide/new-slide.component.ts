@@ -15,6 +15,10 @@ export class NewSlideComponent implements OnInit {
   slide: Slide;
   pId: string;
 
+  public title = '';
+  public option = '';
+  public index = 0;
+
   constructor(private route: ActivatedRoute) { }
 
   @ViewChild(SlidesPanelComponent, { static: false })
@@ -30,21 +34,14 @@ export class NewSlideComponent implements OnInit {
     this.slide.elements[0].value = this.question;
   }
 
-  public option = '';
-  public index = 0;
-  optionEventHander($event: any) {
-    console.log($event.index)
-    console.log($event.value)
 
+  optionEventHander($event: any) {
     this.option = $event.value;
     this.index = $event.index;
-
-    console.log(this.option)
 
     this.slidesPanel.updateOption(this.option, this.index);
   }
 
-  public title = '';
   titleEventHander($event: any) {
     this.title = $event;
     this.slidesPanel.updateTitle(this.title);
@@ -53,7 +50,6 @@ export class NewSlideComponent implements OnInit {
   createdGraphEventHander($event: any) {
     this.slide = $event;
     this.slidesPanel.updateGraph(this.slide)
-
   }
 
   dataLoaded(slideId: any) {
@@ -63,12 +59,10 @@ export class NewSlideComponent implements OnInit {
   createdSlide(createdSlide: any) {
     this.slide = createdSlide;
     this.presentation.createdSlide(this.slide);
-
   }
 
   createdGraph(graph: any) {
     this.slidesPanel.updateGraph(graph);
-
   }
 
   ngOnInit() {

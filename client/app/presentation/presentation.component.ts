@@ -4,12 +4,10 @@ import { ActivatedRoute } from '@angular/router';
 import { SlideService } from '../services/slide.service';
 import { PresentationService } from '../services/presentation.service';
 
-
 import { ChartOptions, ChartType, ChartDataSets } from 'chart.js';
 import { Label } from 'ng2-charts';
 import * as $ from 'jquery';
 import { Slide } from '../shared/models/slide.model';
-
 
 declare var $: any;
 
@@ -41,51 +39,40 @@ export class PresentationComponent implements OnInit {
   showSlide: boolean = false;
   slide: any = new Slide();
   id: string;
-  showQuestion: boolean;
   addQuestion: boolean;
   addChart: boolean;
+  graph: any;
+
+  question: string = '';
+  title: string = '';
+  option: string = '';
+  options = [{ value: 'option1' }];
+  inputOptions = [];
 
   constructor(private route: ActivatedRoute,
     private presentationService: PresentationService,
     private slidesService: SlideService) { }
 
-    @Output() createdGraph = new EventEmitter<string>();
-
-    graph: any;
-  
-    onCreatedGraph(event) {
-      this.createdGraph.emit(event);
-    }
-
+  @Output() createdGraph = new EventEmitter<string>();
   @Output() questionEvent = new EventEmitter<string>();
+  @Output() titleEvent = new EventEmitter<string>();
+  @Output() optionEvent = new EventEmitter<{ index: string, value: string }>();
 
-  question: string = '';
+  onCreatedGraph(event) {
+    this.createdGraph.emit(event);
+  }
 
   onQuestionChange(event) {
-    this.showQuestion = true;
     this.questionEvent.emit(this.question);
   }
 
-  @Output() titleEvent = new EventEmitter<string>();
-
-  title: string = '';
-
-  onTitleChange(event,value) {
-
+  onTitleChange(event, value) {
     this.titleEvent.emit(this.title);
+    this.title = value;
 
     var options = this.getInputOptions();
-
-    this.title=value;
     this.drawChart(options, value)
   }
-
-  @Output() optionEvent = new EventEmitter<{index: string, value: string}>();
-
-
-  option: string = '';
-  options = [{ value: 'option1' }];
-  inputOptions = [];
 
   setInputOptions(i, val) {
     this.inputOptions[i] = val;
@@ -95,10 +82,10 @@ export class PresentationComponent implements OnInit {
     return this.inputOptions;
   }
 
-
   onOptionChange(event, value, index) {
 
-    this.optionEvent.emit({index,value});
+    console.log(this.slide)
+    this.optionEvent.emit({ index, value });
 
     var options = this.getInputOptions();
     options[index] = value;
@@ -106,8 +93,8 @@ export class PresentationComponent implements OnInit {
     this.setInputOptions(index, value);
 
     this.drawChart(options, this.title)
-  }
 
+  }
 
   recivedData(slideId) {
 
@@ -123,9 +110,7 @@ export class PresentationComponent implements OnInit {
         this.drawChart(chart.list, chart.title);
         this.showSlide = true;
       })
-
     }
-
   }
 
   createdSlide(slide) {
@@ -150,7 +135,7 @@ export class PresentationComponent implements OnInit {
   addGraph() {
 
     this.slide.elements[0].type = 'chart';
-    this.barChartLabels=['Option 1'];
+    this.barChartLabels = ['Option 1'];
     this.addChart = true;
     this.onCreatedGraph(this.slide);
     $('a[href="#tabs-2"]').click();

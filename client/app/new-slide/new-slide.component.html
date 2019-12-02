@@ -2,29 +2,32 @@
 <br>
 
 <div id="wrapper">
-  <slides-panel [receivedPresentationId]="pId" (clickedSlide)="dataLoaded($event)" [currentSlide]="slide" (createdSlide)="createdSlide($event)"></slides-panel>
+  <slides-panel [receivedPresentationId]="pId"
+                [currentSlide]="slide"
+                 (clickedSlide)="dataLoaded($event)" 
+                 (createdSlide)="createdSlide($event)">
+  </slides-panel>
+  
   <div class="d-flex flex-column" id="content-wrapper">
     <div id="content">
       <div class="container-fluid">
         <br>
         <div class="d-sm-flex justify-content-between align-items-center mb-4">
-        
+
           <h3 style="margin-left: 300px" class="text-dark mb-0">Dashboard</h3>
-      
+  
         </div>
-      
        
       <app-presentation (questionEvent)="questionEventHander($event)" 
                         (optionEvent)="optionEventHander($event,index,value)" 
                         (indexEvent)="indexEventHander($event)"
                         (titleEvent)="titleEventHander($event)" 
                         (createdGraph)="createdGraphEventHander($event)" ></app-presentation>
-      
-    </div>
-    <footer class="bg-white sticky-footer">
-      <div class="container my-auto">
-        <div class="text-center my-auto copyright"><span>Copyright © Brand 2019</span></div>
       </div>
-    </footer>
-  </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
-</div>
+      <footer class="bg-white sticky-footer">
+        <div class="container my-auto">
+          <div class="text-center my-auto copyright"><span>Copyright © Brand 2019</span></div>
+        </div>
+      </footer>
+      </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
+      </div>
