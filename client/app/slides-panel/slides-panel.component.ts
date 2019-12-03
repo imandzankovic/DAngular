@@ -119,7 +119,13 @@ export class SlidesPanelComponent implements OnInit {
   }
 
   updateOption(option, index) {
+  //  for(var i=1;i<=this.myComponentList.length;i++){
+  //     if(this.myComponentList[i].slide._id==this.myComponentList[i+1].slide._id){
+  //       this.myComponentList.reduce(this.myComponentList[i],this.myComponentList[i+1])
+  //     }
+  //  }
     var chart = this.myComponentList.last;
+    console.log(this.myComponentList)
     chart.barChartLabels[index] = option;
   }
 
@@ -141,7 +147,8 @@ export class SlidesPanelComponent implements OnInit {
     slide.elements[0].type = "chart";
     this.slidesService
       .updateSlide(slide._id, slide)
-      .subscribe(res => console.log(res));
+      .subscribe(res => {console.log(res)
+      this.slides=[...this.slides]});
   }
 
   ngOnInit() {

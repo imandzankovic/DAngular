@@ -20,6 +20,7 @@
        
       <app-presentation (questionEvent)="questionEventHander($event)" 
                         (optionEvent)="optionEventHander($event,index,value)" 
+                        (addOptionEvent)="addOptionEventHander($event)" 
                         (indexEvent)="indexEventHander($event)"
                         (titleEvent)="titleEventHander($event)" 
                         (createdGraph)="createdGraphEventHander($event)" ></app-presentation>

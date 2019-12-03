@@ -4,6 +4,7 @@ import { Slide } from '../shared/models/slide.model';
 import { PresentationComponent } from '../presentation/presentation.component';
 import { ActivatedRoute } from '@angular/router';
 import { DOMElement } from '../shared/models/DOMelements.model';
+import { SlideService } from '../services/slide.service';
 
 
 @Component({
@@ -20,7 +21,7 @@ export class NewSlideComponent implements OnInit {
   public option = '';
   public index = 0;
 
-  constructor(private route: ActivatedRoute) { }
+  constructor(private route: ActivatedRoute, private slidesService:SlideService) { }
 
   @ViewChild(SlidesPanelComponent, { static: false })
   private slidesPanel: SlidesPanelComponent;
@@ -35,6 +36,18 @@ export class NewSlideComponent implements OnInit {
     this.slide.elements[0].value = this.question;
   }
 
+  addOptionEventHander($event:any){
+
+    console.log('stani pani')
+     var newEl=new DOMElement();
+    newEl.type='chart';
+    newEl.value='';
+    this.slide.elements.push(newEl)
+  
+
+    this.slidesService.updateSlide(this.slide._id,this.slide).subscribe(res=>{console.log(res)})
+    console.log(this.slide)
+  }
 
   optionEventHander($event: any) {
     this.option = $event.value;
@@ -42,10 +55,10 @@ export class NewSlideComponent implements OnInit {
 
     this.slidesPanel.updateOption(this.option, this.index);
     
-    console.log(this.slide)
-     this.slide.elements[this.index].value=this.option;
+    // console.log(this.slide)
+    //  this.slide.elements[this.index].value=this.option;
 
-       // this.slidesService.updateSlide(this.slide._id,this.slide).pipe(debounceTime(1000))
+    //    this.slidesService.updateSlide(this.slide._id,this.slide).pipe(debounceTime(1000))
     // .subscribe(res=>{})
   }
 

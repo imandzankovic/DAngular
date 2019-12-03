@@ -59,6 +59,7 @@ export class PresentationComponent implements OnInit {
   @Output() questionEvent = new EventEmitter<string>();
   @Output() titleEvent = new EventEmitter<string>();
   @Output() optionEvent = new EventEmitter<{ index: string, value: string }>();
+  @Output() addOptionEvent = new EventEmitter<any>();
 
   onCreatedGraph(event) {
     this.createdGraph.emit(event);
@@ -86,7 +87,10 @@ export class PresentationComponent implements OnInit {
 
   onOptionChange(event, value, index) {
 
+    console.log('hamzigaho')
     console.log(this.slide)
+
+
     this.optionEvent.emit({ index, value });
 
     var options = this.getInputOptions();
@@ -96,13 +100,10 @@ export class PresentationComponent implements OnInit {
 
     this.drawChart(options, this.title)
 
-    // var newEl=new DOMElement();
-    // newEl.type='chart';
-    // this.slide.elements.push(newEl)
+    this.slide.elements[index].value=value;
 
-    // this.slide.elements[index]=value;
-    // this.slidesService.updateSlide(this.slide._id,this.slide).pipe(debounceTime(1000))
-    // .subscribe(res=>{})
+    this.slidesService.updateSlide(this.slide._id,this.slide).pipe(debounceTime(1000))
+    .subscribe(res=>{console.log(res)})
   }
 
   recivedData(slideId) {
@@ -145,7 +146,11 @@ export class PresentationComponent implements OnInit {
 
   addGraph() {
 
-    this.slide.elements[0].type = 'chart';
+    this.slide.elements[0]=new DOMElement();
+    this.slide.elements[0].type='chart';
+    console.log('djevojko mala')
+    console.log(this.slide)
+
     this.barChartLabels = ['Option 1'];
     this.addChart = true;
     this.onCreatedGraph(this.slide);
@@ -154,7 +159,15 @@ export class PresentationComponent implements OnInit {
   }
 
   add() {
+   
+    this.addOptionEvent.emit(event);
     this.options.push({ value: this.option });
+    
+    // var newEl=new DOMElement();
+    // newEl.type='chart';
+    // this.slide.elements.push(newEl)
+
+    // this.slide.elements[index]=value;
   }
 
   addText() {
@@ -163,6 +176,7 @@ export class PresentationComponent implements OnInit {
     this.addQuestion = true;
     var tab2 = document.getElementById("tab2");
     $('a[href="#tabs-2"]').click();
+
 
   }
 
