@@ -8,6 +8,8 @@ import { ChartOptions, ChartType, ChartDataSets } from 'chart.js';
 import { Label } from 'ng2-charts';
 import * as $ from 'jquery';
 import { Slide } from '../shared/models/slide.model';
+import { debounceTime } from 'rxjs/operators';
+import { DOMElement } from '../shared/models/DOMelements.model';
 
 declare var $: any;
 
@@ -94,6 +96,13 @@ export class PresentationComponent implements OnInit {
 
     this.drawChart(options, this.title)
 
+    // var newEl=new DOMElement();
+    // newEl.type='chart';
+    // this.slide.elements.push(newEl)
+
+    // this.slide.elements[index]=value;
+    // this.slidesService.updateSlide(this.slide._id,this.slide).pipe(debounceTime(1000))
+    // .subscribe(res=>{})
   }
 
   recivedData(slideId) {
@@ -103,12 +112,14 @@ export class PresentationComponent implements OnInit {
 
     if (slideId != null || slideId != undefined) {
       this.slidesService.getSlide(slideId).subscribe(res => {
-
-        this.slide = res;
+        if(res!=null || res!=undefined){
+          this.slide = res;
 
         var chart = this.slidesService.processCharts(res);
         this.drawChart(chart.list, chart.title);
         this.showSlide = true;
+        }
+        
       })
     }
   }

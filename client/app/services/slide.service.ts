@@ -62,7 +62,7 @@ export class SlideService {
     );
   }
 
-  deleteSlide(id): Observable<Slide> {
+  deleteSlide(id): Observable<any> {
     const url = `${apiUrl}/${id}`;
 
     return this.http.delete<Slide>(url, httpOptions).pipe(

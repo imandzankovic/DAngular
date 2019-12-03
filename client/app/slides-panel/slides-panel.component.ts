@@ -1,19 +1,27 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ViewChildren, QueryList } from '@angular/core';
-import { SlideService } from '../services/slide.service';
-import { PresentationService } from '../services/presentation.service';
-import { Presentation } from '../shared/models/presentation.model';
-import { Slide } from '../shared/models/slide.model';
-import { ActivatedRoute } from "@angular/router"
-import { DOMElement } from '../shared/models/DOMelements.model';
-import { ChartComponent } from '../chart/chart.component';
+import {
+  Component,
+  OnInit,
+  Input,
+  Output,
+  EventEmitter,
+  ViewChild,
+  ViewChildren,
+  QueryList
+} from "@angular/core";
+import { SlideService } from "../services/slide.service";
+import { PresentationService } from "../services/presentation.service";
+import { Presentation } from "../shared/models/presentation.model";
+import { Slide } from "../shared/models/slide.model";
+import { ActivatedRoute } from "@angular/router";
+import { DOMElement } from "../shared/models/DOMelements.model";
+import { ChartComponent } from "../chart/chart.component";
 
 @Component({
-  selector: 'slides-panel',
-  templateUrl: './slides-panel.component.html',
-  styleUrls: ['./slides-panel.component.scss'],
+  selector: "slides-panel",
+  templateUrl: "./slides-panel.component.html",
+  styleUrls: ["./slides-panel.component.scss"]
 })
 export class SlidesPanelComponent implements OnInit {
-
   slideHover: any;
   id: any;
   title: any;
@@ -22,14 +30,16 @@ export class SlidesPanelComponent implements OnInit {
   slide: Slide;
   slides: Slide[];
 
-  public option = '';
-  public question = '';
+  public option = "";
+  public question = "";
 
-  constructor(private presentationService: PresentationService,
+  constructor(
+    private presentationService: PresentationService,
     private slidesService: SlideService,
-    public activatedRoute: ActivatedRoute) { }
+    public activatedRoute: ActivatedRoute
+  ) {}
 
-  @Input('receivedPresentationId') presentationId: string;
+  @Input("receivedPresentationId") presentationId: string;
 
   @Output() clickedSlide: EventEmitter<any> = new EventEmitter<any>();
   @Output() createdSlide: EventEmitter<any> = new EventEmitter<any>();
@@ -38,20 +48,28 @@ export class SlidesPanelComponent implements OnInit {
 
   questionEventHander($event: any) {
     this.question = $event;
-    console.log(this.question)
+    console.log(this.question);
   }
 
   edit(id) {
-    alert('edit clicked' + id);
+    alert("edit clicked" + id);
   }
 
   delete(id) {
     this.slidesService.deleteSlide(id).subscribe(res => {
-      console.log(res)
+      console.log(res.id);
       this.presentation.slides.forEach((item, index) => {
-        if (item === id) this.presentation.slides.splice(index, 1);
+        if (item === res.id) {
+          console.log(index);
+          this.presentation.slides.splice(index, 1);
+
+          this.getSlidesByIds(this.presentation.slides)
+          this.presentationService
+            .updatePresentation(this.presentationId, this.presentation)
+            .subscribe(res => console.log(res));
+        }
       });
-    })
+    });
   }
 
   getPresentationId(presentationId) {
@@ -61,8 +79,8 @@ export class SlidesPanelComponent implements OnInit {
 
   getSlidesOfPresentation(id) {
     this.presentationService.getPresentation(id).subscribe(res => {
-      this.getSlidesByIds(res.slides)
-    })
+      this.getSlidesByIds(res.slides);
+    });
   }
 
   getSlidesByIds(listOfSlideIds: any) {
@@ -70,15 +88,12 @@ export class SlidesPanelComponent implements OnInit {
     listOfSlideIds.forEach(element => {
       this.slidesService.getSlide(element).subscribe(res => {
         slides.push(res);
-      })
-
+      });
     });
     this.slides = slides;
-
   }
 
   createSlide() {
-
     var s = new Slide();
     var e = new DOMElement();
 
@@ -89,12 +104,14 @@ export class SlidesPanelComponent implements OnInit {
     this.slidesService.addSlide(s).subscribe(res => {
       this.createdSlide.emit(res);
       this.slides.push(res);
-      this.presentation.slides.push(res._id)
-      this.presentationService.updatePresentation(this.presentationId, this.presentation).subscribe(res => {
-        console.log(res);
-        this.presentation = res;
-      })
-    })
+      this.presentation.slides.push(res._id);
+      this.presentationService
+        .updatePresentation(this.presentationId, this.presentation)
+        .subscribe(res => {
+          console.log(res);
+          this.presentation = res;
+        });
+    });
   }
 
   clickSlide(id) {
@@ -116,24 +133,26 @@ export class SlidesPanelComponent implements OnInit {
         display: true,
         fontSize: 7
       }
-    }
+    };
   }
 
   updateGraph(slide) {
-    console.log(slide)
-    slide.elements[0].type = 'chart';
-    this.slidesService.updateSlide(slide._id, slide).subscribe(res => console.log(res))
+    console.log(slide);
+    slide.elements[0].type = "chart";
+    this.slidesService
+      .updateSlide(slide._id, slide)
+      .subscribe(res => console.log(res));
   }
 
   ngOnInit() {
-
     this.slideHover = false;
 
     this.getSlidesOfPresentation(this.presentationId);
-    this.presentationService.getPresentation(this.presentationId).subscribe(res => {
-      this.presentation = res;
-    })
+    this.presentationService
+      .getPresentation(this.presentationId)
+      .subscribe(res => {
+        this.presentation = res;
+      });
     //this.getSlidesOfPresentation('5dd3e5ac1452fd00044ca7af');
   }
-
 }

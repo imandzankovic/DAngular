@@ -82,7 +82,12 @@ abstract class BaseCtrl {
   delete = async (req, res) => {
     try {
       await this.model.findOneAndRemove({ _id: req.params.id });
-      res.sendStatus(200);
+
+      const response = {
+        message: "Slide successfully deleted",
+        id: req.params.id
+    };
+    res.send(response).status(200);
     } catch (err) {
       return res.status(400).json({ error: err.message });
     }
