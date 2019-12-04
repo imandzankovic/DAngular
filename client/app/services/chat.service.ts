@@ -6,6 +6,7 @@ import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { tap, catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { SlideService } from './slide.service';
+import { Router } from '@angular/router';
 
 const apiUrl = "/api/chats";
 
@@ -28,7 +29,8 @@ export class ChatService {
   // Our constructor calls our wsService connect method
   constructor(private wsService: WebsocketService,
               private http: HttpClient,
-              private slideService: SlideService) {
+              private slideService: SlideService,
+              private router: Router) {
 
     this.messages = <Subject<any>>wsService
       .connect()
@@ -87,7 +89,7 @@ export class ChatService {
         .subscribe(res => {
           console.log(res)
           console.log('daj mi id iz update kod chata')
-         
+          this.router.navigate(["/slide", slideId])
         }, (err) => {
           console.log(err);
 

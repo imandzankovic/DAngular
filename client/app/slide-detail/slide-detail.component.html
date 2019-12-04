@@ -8,62 +8,76 @@
 <div id="wrapper">
     <nav
     class="navbar navbar-dark text-nowrap text-truncate align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0">
-    <!-- <div class="container-fluid d-flex flex-column p-0">
-     
-      <a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="#">
-        <div class="sidebar-brand-icon rotate-n-15"><i class="fas fa-laugh-wink"></i></div>
-        <div class="sidebar-brand-text mx-3"><span>SLIDES</span></div>
-      </a>
-      <hr class="sidebar-divider my-0">
-      <ul class="nav navbar-nav text-light" id="accordionSidebar">
-        <li class="nav-item" role="presentation"><a class="nav-link active" href="index.html" style="width: 199px;"><i
-              class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
-      </ul>
-      <div class="text-center d-none d-md-inline"><button class="btn rounded-circle border-0" id="sidebarToggle"
-          type="button"></button></div>
-      <div id="slidesWell" style="height: 100px; width:140px; background-color: white" (click)="panelClick($event)"></div>
-      <div id="operations" style="margin-top: 225px" >
-        <button class="btn btn-default" id="addSlide" type="button" style="background-color: white" (click)="createSlide()">Add
-          Slide</button>
-      </div>
-
-    </div> -->
+   
   </nav>
-  <div class="d-flex flex-column" id="content-wrapper">
+
     <div id="content">
-      <div class="container-fluid">
-        <div class="d-sm-flex justify-content-between align-items-center mb-4">
-          <h3 style="margin-left: 300px" class="text-dark mb-0">Dashboard</h3>
-          <!-- <button class="btn btn-primary btn-sm d-none d-sm-inline-block" (click)="addPresentation()">
-            Add Presentation
-          </button> -->
-        </div>
-      
-        <!-- <div class="d-sm-flex justify-content-between align-items-center mb-4" id="nemamKad">
-          <button style="margin-left: 600px" class="btn" id="preview" (click)="preview()"><i class="fa fa-eye"></i> Preview</button>
-          <button class="btn" id="savePresentation" (click)="savePresentation()"><i class="fa fa-folder"></i> Save</button>
+      <div>
+        <!-- <div class="d-sm-flex justify-content-between align-items-center mb-4">
 
         </div> -->
+
+        <div >
+          <div>
+            <div class="card shadow mb-4" style="width: 1188px;
+            margin-left: 115px; height: 520px">
+
+              <div>
+                <section>
+                  <div *ngFor="let element of slide.elements" class="slideSection">
+                    <div *ngIf="element.type == 'h2'"> 
+                      <div class="question" style="margin-left: 100px;
+                      margin-top: 35px;">
+                         <h2 style="font-size:35px; color:black">{{ element.value }}</h2>
+                      </div>
+                     
+
+                      <div *ngFor="let a of answers"  style="margin-left: 100px;
+                      margin-top: 35px; border: 2px solid grey; border-radius: 5px; height:40px; width:200px; ">
+                      
+                      <div>
+                         {{a}}
+                      </div> 
+                       
+                      </div>
+                      <br>
+                    </div>
       
-        <div class="row">
-          <div class="col-lg-7 col-xl-8">
-            <div class="card shadow mb-4">
-
-              <div class="card-body" id="container123" style="height: 426px;color: rgb(255,255,255);width: 639px;">
-
-
-                <!-- <div id="chartContainer" style="height: 200px; width: 350px;"></div> -->
-
+                    <div *ngIf="element.type == 'chart'">
+                      <div>
+                        <div class="row">
+                          <div
+                            *ngIf="barChartData.length > 0"
+                            class="chart-wrapper"
+                            style="position:absolute;width: 900px;height: 300px; margin-left: 200px;"
+                          >
+                            <canvas
+                              baseChart
+                              style="width: 550px;height: 300px;"
+                              [datasets]="barChartData"
+                              [labels]="barChartLabels"
+                              [options]="barChartOptions"
+                              [plugins]="barChartPlugins"
+                              [legend]="barChartLegend"
+                              [chartType]="barChartType"
+                            >
+                            </canvas>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </section>
               </div>
-              <!-- <div class="card-body"  id="container" style="height: 826px;color: rgb(255,255,255);width: 639px; background-color:black"></div> -->
+            
             </div>
           </div>
       </div>
     </div>
-    <footer class="bg-white sticky-footer">
+    <!-- <footer class="bg-white sticky-footer">
       <div class="container my-auto">
         <div class="text-center my-auto copyright"><span>Copyright © Brand 2019</span></div>
       </div>
-    </footer>
-  </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
+    </footer> -->
+  
 </div>

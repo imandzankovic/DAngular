@@ -1,5 +1,5 @@
 import { Component, OnInit, Output, EventEmitter } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 
 import { SlideService } from "../services/slide.service";
 import { PresentationService } from "../services/presentation.service";
@@ -53,7 +53,8 @@ export class PresentationComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private presentationService: PresentationService,
-    private slidesService: SlideService
+    private slidesService: SlideService,
+    private router: Router
   ) {}
 
   @Output() createdGraph = new EventEmitter<string>();
@@ -177,8 +178,10 @@ export class PresentationComponent implements OnInit {
   }
 
   share(){
-    alert('shared slide')
+    alert('shared slide' + JSON.stringify(this.slide))
+    this.router.navigate(['/chat', this.slide._id]);
   }
+
   ngOnInit() {
     this.id = this.route.snapshot.paramMap.get("id");
     $('a[href="#tabs-1"]').click();

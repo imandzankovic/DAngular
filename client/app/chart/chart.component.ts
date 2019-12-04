@@ -75,7 +75,7 @@ export class ChartComponent implements OnInit {
     console.log(this.slide)
 
     this.slideService.getSlide(this.slide._id).subscribe(res=>this.slide=res)
-    var chart = this.slideService.processCharts(this.slide);
-    this.drawChart(chart.list, chart.title);
+    var chart = this.slideService.processCharts(this.slide)
+    this.drawChart(chart.list, chart.title)
   }
 }

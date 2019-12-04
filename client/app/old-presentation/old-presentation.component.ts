@@ -1411,8 +1411,8 @@ export class OldPresentationComponent implements OnInit {
 
 
       if (containsChar == false) {
-        console.log('cica maca')
-        console.log(question)
+        console.log("cica maca");
+        console.log(question);
       }
 
       // else {
