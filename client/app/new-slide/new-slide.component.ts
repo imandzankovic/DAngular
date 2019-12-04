@@ -5,6 +5,7 @@ import { PresentationComponent } from '../presentation/presentation.component';
 import { ActivatedRoute } from '@angular/router';
 import { DOMElement } from '../shared/models/DOMelements.model';
 import { SlideService } from '../services/slide.service';
+import { debounceTime } from 'rxjs/operators';
 
 
 @Component({
@@ -34,6 +35,12 @@ export class NewSlideComponent implements OnInit {
   questionEventHander($event: any) {
     this.question = $event;
     this.slide.elements[0].value = this.question;
+    this.slidesService
+      .updateSlide(this.slide._id, this.slide)
+      .pipe(debounceTime(1000))
+      .subscribe(res => {
+        console.log(res);
+      });
   }
 
   addOptionEventHander($event:any){
