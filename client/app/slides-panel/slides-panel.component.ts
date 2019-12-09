@@ -15,6 +15,8 @@ import { Slide } from "../shared/models/slide.model";
 import { ActivatedRoute } from "@angular/router";
 import { DOMElement } from "../shared/models/DOMelements.model";
 import { ChartComponent } from "../chart/chart.component";
+import * as $ from 'jquery';
+declare var $: any;
 
 @Component({
   selector: "slides-panel",
@@ -107,11 +109,17 @@ export class SlidesPanelComponent implements OnInit {
       this.presentation.slides.push(res._id);
       this.presentationService
         .updatePresentation(this.presentationId, this.presentation)
-        .subscribe(res => {
+        .subscribe(res => { 
           console.log(res);
           this.presentation = res;
         });
     });
+    $('a[href="#tabs-1"]').click();
+      // var title = $("#tab2 :input")[0];
+      // title.empty();
+     
+     
+     // 
   }
 
   clickSlide(id) {
@@ -119,14 +127,10 @@ export class SlidesPanelComponent implements OnInit {
   }
 
   updateOption(option, index) {
-  //  for(var i=1;i<=this.myComponentList.length;i++){
-  //     if(this.myComponentList[i].slide._id==this.myComponentList[i+1].slide._id){
-  //       this.myComponentList.reduce(this.myComponentList[i],this.myComponentList[i+1])
-  //     }
-  //  }
-    var chart = this.myComponentList.last;
-    console.log(this.myComponentList)
-    chart.barChartLabels[index] = option;
+    console.log('uslo u event')
+    
+    this.myComponentList.reset([]);
+
   }
 
   updateTitle(title) {

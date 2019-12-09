@@ -46,7 +46,8 @@ export class PresentationComponent implements OnInit {
   question: string = "";
   title: string = "";
   option: string = "";
-  options = [{ value: "option1" }];
+ // options = [{ value: "option1" }];
+  options : DOMElement[] =[];
   inputOptions = [];
   //slideClicked: boolean;
 
@@ -57,16 +58,13 @@ export class PresentationComponent implements OnInit {
     private router: Router
   ) {}
 
-  @Output() createdGraph = new EventEmitter<string>();
+
   @Output() questionEvent = new EventEmitter<string>();
   @Output() titleEvent = new EventEmitter<string>();
   @Output() optionEvent = new EventEmitter<{ index: string; value: string }>();
   @Output() addOptionEvent = new EventEmitter<any>();
 
-  onCreatedGraph(event) {
-    this.createdGraph.emit(event);
-  }
-
+  
   onQuestionChange(event) {
     this.questionEvent.emit(this.question);
   }
@@ -91,21 +89,35 @@ export class PresentationComponent implements OnInit {
     console.log("hamzigaho");
     console.log(this.slide);
 
-    this.optionEvent.emit({ index, value });
+    // this.optionEvent.emit({ index, value });
 
     var options = this.getInputOptions();
+    console.log('dame options')
+    console.log(options)
     options[index] = value;
 
+    console.log('dame slide options')
+    console.log(this.slide.elements)
+
+    console.log('da li je kreirano')
+    console.log(this.slide.elements[index])
     this.setInputOptions(index, value);
 
     this.drawChart(options, this.title);
 
+   console.log('es lo q dice el corazon')
+   console.log(this.slide.elements)
+
     this.slide.elements[index].value = value;
+    console.log(options)
+    console.log('besame ahora')
+    console.log(this.slide.elements)
 
     this.slidesService
       .updateSlide(this.slide._id, this.slide)
       .pipe(debounceTime(1000))
       .subscribe(res => {
+        //this.optionEvent.emit({ index, value });
         console.log(res);
       });
   }
@@ -152,19 +164,24 @@ export class PresentationComponent implements OnInit {
 
     this.barChartLabels = ["Option 1"];
     this.addChart = true;
-    this.onCreatedGraph(this.slide);
+
     $('a[href="#tabs-2"]').click();
   }
 
   add() {
-    this.addOptionEvent.emit(event);
-    this.options.push({ value: this.option });
+   // this.addOptionEvent.emit(event);
+    var el=new DOMElement();
+    el.type='chart';
+    el.value=this.option
+    //this.slide.elements.push(el);
+    this.options.push(el);
+    this.slide.elements=this.options;
+    console.log('hajde dodji ')
+    console.log(this.slide.elements)
 
-    // var newEl=new DOMElement();
-    // newEl.type='chart';
-    // this.slide.elements.push(newEl)
-
-    // this.slide.elements[index]=value;
+    var index=this.slide.elements.length;
+    var value=this.option;
+    this.optionEvent.emit({ index, value });
   }
 
   addText() {
@@ -174,6 +191,7 @@ export class PresentationComponent implements OnInit {
     this.slide.elements[0].type = "h2";
     this.addQuestion = true;
     var tab2 = document.getElementById("tab2");
+    $('.tab-content :input').val('');
     $('a[href="#tabs-2"]').click();
   }
 

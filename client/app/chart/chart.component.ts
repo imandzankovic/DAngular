@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
 import { ChartOptions, ChartType, ChartDataSets } from 'chart.js';
 import { Label } from 'ng2-charts';
 import { SlideService } from '../services/slide.service';
@@ -70,6 +70,7 @@ export class ChartComponent implements OnInit {
     }
 
   }
+ 
 
   ngOnInit() {
     console.log(this.slide)
@@ -78,4 +79,13 @@ export class ChartComponent implements OnInit {
     var chart = this.slideService.processCharts(this.slide)
     this.drawChart(chart.list, chart.title)
   }
+
+  ngOnChanges(changes: SimpleChanges) {
+    // changes.prop contains the old and the new value...
+    console.log('changes je tu')
+    console.log(changes)
+ 
+  }
 }
+
+

@@ -45,11 +45,11 @@ export class NewSlideComponent implements OnInit {
 
   addOptionEventHander($event:any){
 
-    console.log('stani pani')
-     var newEl=new DOMElement();
-    newEl.type='chart';
-    newEl.value='';
-    this.slide.elements.push(newEl)
+    // console.log('stani pani')
+    //  var newEl=new DOMElement();
+    // newEl.type='chart';
+    // newEl.value='';
+    // this.slide.elements.push(newEl)
   
 
     this.slidesService.updateSlide(this.slide._id,this.slide).subscribe(res=>{console.log(res)})
@@ -62,11 +62,7 @@ export class NewSlideComponent implements OnInit {
 
     this.slidesPanel.updateOption(this.option, this.index);
     
-    // console.log(this.slide)
-    //  this.slide.elements[this.index].value=this.option;
 
-    //    this.slidesService.updateSlide(this.slide._id,this.slide).pipe(debounceTime(1000))
-    // .subscribe(res=>{})
   }
 
   titleEventHander($event: any) {
@@ -74,11 +70,7 @@ export class NewSlideComponent implements OnInit {
     this.slidesPanel.updateTitle(this.title);
   }
 
-  createdGraphEventHander($event: any) {
-    this.slide = $event;
-    this.slidesPanel.updateGraph(this.slide)
-  }
-
+  
   dataLoaded(slideId: any) {
     this.presentation.recivedData(slideId);
   }
@@ -88,9 +80,6 @@ export class NewSlideComponent implements OnInit {
     this.presentation.createdSlide(this.slide);
   }
 
-  createdGraph(graph: any) {
-    this.slidesPanel.updateGraph(graph);
-  }
 
   ngOnInit() {
     this.pId = this.route.snapshot.paramMap.get('id');
