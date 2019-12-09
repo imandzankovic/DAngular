@@ -46,8 +46,8 @@ export class PresentationComponent implements OnInit {
   question: string = "";
   title: string = "";
   option: string = "";
- // options = [{ value: "option1" }];
-  options : DOMElement[] =[];
+  // options = [{ value: "option1" }];
+  options: DOMElement[] = [];
   inputOptions = [];
   //slideClicked: boolean;
 
@@ -58,13 +58,11 @@ export class PresentationComponent implements OnInit {
     private router: Router
   ) {}
 
-
   @Output() questionEvent = new EventEmitter<string>();
   @Output() titleEvent = new EventEmitter<string>();
   @Output() optionEvent = new EventEmitter<{ index: string; value: string }>();
   @Output() addOptionEvent = new EventEmitter<any>();
 
-  
   onQuestionChange(event) {
     this.questionEvent.emit(this.question);
   }
@@ -92,26 +90,26 @@ export class PresentationComponent implements OnInit {
     // this.optionEvent.emit({ index, value });
 
     var options = this.getInputOptions();
-    console.log('dame options')
-    console.log(options)
+    console.log("dame options");
+    console.log(options);
     options[index] = value;
 
-    console.log('dame slide options')
-    console.log(this.slide.elements)
+    console.log("dame slide options");
+    console.log(this.slide.elements);
 
-    console.log('da li je kreirano')
-    console.log(this.slide.elements[index])
+    console.log("da li je kreirano");
+    console.log(this.slide.elements[index]);
     this.setInputOptions(index, value);
 
     this.drawChart(options, this.title);
 
-   console.log('es lo q dice el corazon')
-   console.log(this.slide.elements)
+    console.log("es lo q dice el corazon");
+    console.log(this.slide.elements);
 
     this.slide.elements[index].value = value;
-    console.log(options)
-    console.log('besame ahora')
-    console.log(this.slide.elements)
+    console.log(options);
+    console.log("besame ahora");
+    console.log(this.slide.elements);
 
     this.slidesService
       .updateSlide(this.slide._id, this.slide)
@@ -157,47 +155,46 @@ export class PresentationComponent implements OnInit {
   }
 
   addGraph() {
+    this.addQuestion = false;
     this.slide.elements[0] = new DOMElement();
     this.slide.elements[0].type = "chart";
-    console.log("djevojko mala");
-    console.log(this.slide);
 
     this.barChartLabels = ["Option 1"];
     this.addChart = true;
+    this.addQuestion=false;
 
     $('a[href="#tabs-2"]').click();
   }
 
   add() {
-   // this.addOptionEvent.emit(event);
-    var el=new DOMElement();
-    el.type='chart';
-    el.value=this.option
-    //this.slide.elements.push(el);
-    this.options.push(el);
-    this.slide.elements=this.options;
-    console.log('hajde dodji ')
-    console.log(this.slide.elements)
+    var el = new DOMElement();
+    el.type = "chart";
+    el.value = this.option;
 
-    var index=this.slide.elements.length;
-    var value=this.option;
+    this.options.push(el);
+    this.slide.elements = this.options;
+
+    var index = this.slide.elements.length;
+    var value = this.option;
     this.optionEvent.emit({ index, value });
   }
 
   addText() {
     this.slide.elements[0] = new DOMElement();
     // this.slide.elements[0].type = "chart";
-    console.log('ist das ok')
+
     this.slide.elements[0].type = "h2";
     this.addQuestion = true;
+    this.addChart=false;
     var tab2 = document.getElementById("tab2");
-    $('.tab-content :input').val('');
+    $(".tab-content :input").val("");
+    this.addQuestion=true;
     $('a[href="#tabs-2"]').click();
   }
 
-  share(){
-    alert('shared slide' + JSON.stringify(this.slide))
-    this.router.navigate(['/chat', this.slide._id]);
+  share() {
+    alert("shared slide" + JSON.stringify(this.slide));
+    this.router.navigate(["/chat", this.slide._id]);
   }
 
   ngOnInit() {
