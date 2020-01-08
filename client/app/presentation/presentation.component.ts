@@ -193,7 +193,7 @@ export class PresentationComponent implements OnInit {
   }
 
   share() {
-    alert("shared slide" + JSON.stringify(this.slide));
+    //alert("shared slide" + JSON.stringify(this.slide));
     this.router.navigate(["/chat", this.slide._id]);
   }
 
